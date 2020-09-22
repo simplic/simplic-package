@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30406.217
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package", "Simplic.Package\Simplic.Package.csproj", "{0ACA9764-A25D-4517-B64E-95645674666B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Service", "Simplic.Package.Service\Simplic.Package.Service.csproj", "{2568B37D-7937-4368-A6E3-2ADE2AD7196B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Test", "Simplic.Package.Test\Simplic.Package.Test.csproj", "{FA18C7B4-2535-4369-BFE3-BB6F2F7EF07D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{0ACA9764-A25D-4517-B64E-95645674666B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ACA9764-A25D-4517-B64E-95645674666B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0ACA9764-A25D-4517-B64E-95645674666B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2568B37D-7937-4368-A6E3-2ADE2AD7196B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2568B37D-7937-4368-A6E3-2ADE2AD7196B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2568B37D-7937-4368-A6E3-2ADE2AD7196B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2568B37D-7937-4368-A6E3-2ADE2AD7196B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA18C7B4-2535-4369-BFE3-BB6F2F7EF07D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA18C7B4-2535-4369-BFE3-BB6F2F7EF07D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA18C7B4-2535-4369-BFE3-BB6F2F7EF07D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA18C7B4-2535-4369-BFE3-BB6F2F7EF07D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

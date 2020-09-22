@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simplic.Package.POCO
+namespace Simplic.Package
 {
-    public class Object
+    public interface IPackObjectService
     {
-        public IList<ObjectListItem> Items { get; set; }
+        Task<PackObjectResult> ReadAsync(ObjectListItem item);
     }
 }
