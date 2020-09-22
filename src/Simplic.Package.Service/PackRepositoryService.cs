@@ -1,11 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.CodeDom;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Simplic.Package.Service
 {
-    public class PackGridService : IPackObjectService
+    class PackRepositoryService : IPackObjectService
     {
         private readonly IFileService fileService;
-        public PackGridService(IFileService fileService)
+        public PackRepositoryService(IFileService fileService)
         {
             this.fileService = fileService;
         }

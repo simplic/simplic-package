@@ -42,6 +42,7 @@ namespace Simplic.Package.Service
                         // configuration is of Type ObjectListItem
                         foreach (var configuration in item.Value)
                         {
+                            // await extracts PackObjectResult from Task<PackObjectResult> 
                             var result = await packObjectService.ReadAsync(configuration);
 
                             // Creates a path inside the zip

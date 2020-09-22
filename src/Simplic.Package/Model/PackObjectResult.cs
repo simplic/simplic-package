@@ -10,6 +10,5 @@ namespace Simplic.Package
     {
         public byte[] File { get; set; }
         public string Location { get; set; }
-        public string Locaton { get; set; }
     }
 }
