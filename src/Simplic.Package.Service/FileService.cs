@@ -15,17 +15,31 @@ namespace Simplic.Package.Service
             return File.ReadAllBytes(path);
         }
 
-        public async Task<byte[]> ReadAllBytesAsync(ZipArchiveEntry entry)
+        public async Task<string> ReadAllTextAsync(string path)
         {
-            using (Stream stream = entry.Open())
+            var byteArray = await ReadAllBytesAsync(path);
+
+            return Encoding.Default.GetString(byteArray);
+        }
+
+        public async Task<byte[]> ReadAllBytesAsync(Stream stream)
+        {
+            using (stream)
             {
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
-                    stream.CopyTo(memoryStream);
+                    await stream.CopyToAsync(memoryStream);
+
                     return memoryStream.ToArray();
                 }
             }
         }
+        // So muss nur einmal asynchron gelesen werden
+        public async Task<string> ReadAllTextAsync(Stream stream)
+        {
+            var byteArray = await ReadAllBytesAsync(stream);
 
+            return Encoding.Default.GetString(byteArray);
+        }
     }
 }

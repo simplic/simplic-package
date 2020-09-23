@@ -33,7 +33,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,19 +41,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exception\InvalidPackageException.cs" />
     <Compile Include="IFileService.cs" />
-    <Compile Include="IUnpackObjectService.cs" />
+    <Compile Include="IDeserializeObjectService.cs" />
     <Compile Include="IPackObjectService.cs" />
     <Compile Include="IPackService.cs" />
     <Compile Include="IUnpackService.cs" />
     <Compile Include="Model\Dependency.cs" />
-    <Compile Include="Model\DeserializedGrid.cs" />
+    <Compile Include="Model\Grid\ColumnConfiguration.cs" />
+    <Compile Include="Model\Grid\DeserializedGrid.cs" />
+    <Compile Include="Model\Grid\GridMenuConfiguration.cs" />
+    <Compile Include="Model\Grid\GridProfileConfiguration.cs" />
+    <Compile Include="Model\Grid\GridVirtualGroupConfiguration.cs" />
     <Compile Include="Model\IDeserializedContent.cs" />
-    <Compile Include="Model\UnpackedPackge.cs" />
-    <Compile Include="Model\UnpackObjectResult.cs" />
+    <Compile Include="Model\UnpackedPackage.cs" />
     <Compile Include="Model\ObjectListItem.cs" />
     <Compile Include="Model\Package.cs" />
-    <Compile Include="PackageConfigurationException.cs" />
+    <Compile Include="Exception\PackageConfigurationException.cs" />
     <Compile Include="Model\PackObjectResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

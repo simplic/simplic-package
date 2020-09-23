@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Threading.Tasks;
 
 namespace Simplic.Package
@@ -10,7 +6,8 @@ namespace Simplic.Package
     public interface IFileService
     {
         Task<byte[]> ReadAllBytesAsync(string path);
-
-        Task<byte[]> ReadAllBytesAsync(ZipArchiveEntry entry);
+        Task<string> ReadAllTextAsync(string path);
+        Task<byte[]> ReadAllBytesAsync(Stream stream);
+        Task<string> ReadAllTextAsync(Stream stream);
     }
 }

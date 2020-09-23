@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
+    // TODO: Rename something more fitting. e.g. PackageConfiguration
     public class Package
     {
         public string Name { get; set; }
