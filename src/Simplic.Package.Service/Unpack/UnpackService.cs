@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Simplic.Package.Model;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,17 +55,17 @@ namespace Simplic.Package.Service
                     var configurationFile = zipArchive.Entries.Where(x => x.Name == "package.json").First();  // TODO: Exception handeling
 
                     var json = await fileService.ReadAllTextAsync(configurationFile.Open());
-                    var package = JsonConvert.DeserializeObject<Package>(json);
+                    var packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(json);
 
                     var unpackedPackage = new UnpackedPackage
                     {
-                        Name = package.Name,
-                        Version = package.Version,
-                        Dependencies = package.Dependencies
+                        Name = packageConfiguration.Name,
+                        Version = packageConfiguration.Version,
+                        Dependencies = packageConfiguration.Dependencies
                     };
 
                     var deserializedObjects = new Dictionary<string, IList<IDeserializedContent>>();
-                    foreach (var item in package.Objects)
+                    foreach (var item in packageConfiguration.Objects)
                     {
                         var deserializeObjectService = container.Resolve<IDeserializeObjectService>(item.Key);
 
@@ -73,7 +75,12 @@ namespace Simplic.Package.Service
                             var zipEntry = zipArchive.GetEntry(objectListItem.Target);
                             var zipEntryBytes = await fileService.ReadAllBytesAsync(zipEntry.Open()); // Ggf. wrapper class
 
-                            var deserializedContent = deserializeObjectService.DeserializeObject(zipEntryBytes);
+                            var unpackObjectResult = new UnpackObjectResult
+                            {
+                                ReadBytes = zipEntryBytes
+                            };
+
+                            var deserializedContent = deserializeObjectService.DeserializeObject(unpackObjectResult);
 
                             deserializedContents.Add(deserializedContent);
                         }

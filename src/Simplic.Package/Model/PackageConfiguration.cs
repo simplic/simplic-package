@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 namespace Simplic.Package
 {
-    // TODO: Rename something more fitting. e.g. PackageConfiguration
-    public class Package
+    public class PackageConfiguration
     {
         public string Name { get; set; }
         public Version Version { get; set; }

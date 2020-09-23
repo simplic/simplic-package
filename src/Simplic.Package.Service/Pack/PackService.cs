@@ -22,18 +22,18 @@ namespace Simplic.Package.Service
 
         public async Task<byte[]> Pack(string json)
         {
-            var package = JsonConvert.DeserializeObject<Package>(json);
+            var packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(json);
 
-            return await Pack(package);
+            return await Pack(packageConfiguration);
         }
 
-        public async Task<byte[]> Pack(Package package)
+        public async Task<byte[]> Pack(PackageConfiguration packageConfiguration)
         {
             using (var stream = new MemoryStream())
             {
                 using (var zip = new ZipArchive(stream, ZipArchiveMode.Create))
                 {
-                    foreach (var item in package.Objects)
+                    foreach (var item in packageConfiguration.Objects)
                     {
                         // Resolves the concrete registered PackObjectService
                         // Hier exception handeling, falls ein type registriert werden soll, der nicht existiert

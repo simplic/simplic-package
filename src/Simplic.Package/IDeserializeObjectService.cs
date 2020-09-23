@@ -1,7 +1,9 @@
-﻿namespace Simplic.Package
+﻿using Simplic.Package.Model;
+
+namespace Simplic.Package
 {
     public interface IDeserializeObjectService
     {
-        IDeserializedContent DeserializeObject(byte[] entryBytes);
+        IDeserializedContent DeserializeObject(UnpackObjectResult unpackObjectResult);
     }
 }
