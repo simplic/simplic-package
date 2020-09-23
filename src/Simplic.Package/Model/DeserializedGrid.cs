@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
-    public class UnpackObjectResult
+    public class DeserializedGrid : IDeserializedContent
     {
-        public IDeserializedContent DeserializedContent { get; set; }
+        // TODO
     }
 }

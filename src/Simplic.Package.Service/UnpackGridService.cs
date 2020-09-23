@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.IO.Compression;
@@ -17,9 +18,14 @@ namespace Simplic.Package.Service
         }
         public async Task<UnpackObjectResult> UnpackObject(ZipArchiveEntry entry)
         {
+            // Deserialize Grid
+            var bytes = await fileService.ReadAllBytesAsync(entry);
+            var json = Encoding.Default.GetString(bytes);
+            var deserializedGrid = JsonConvert.DeserializeObject<DeserializedGrid>(json);
+
             return new UnpackObjectResult
             {
-                SerializedContent = await fileService.ReadAllBytesAsync(entry)
+                DeserializedContent = deserializedGrid
             };
         }
     }

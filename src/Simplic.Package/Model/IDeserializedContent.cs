@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
-    public class UnpackObjectResult
+    public interface IDeserializedContent
     {
-        public IDeserializedContent DeserializedContent { get; set; }
     }
 }
