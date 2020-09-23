@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
@@ -7,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
-    public interface IFileService
+    public interface IUnpackService
     {
-        Task<byte[]> ReadAllBytesAsync(string path);
-
-        Task<byte[]> ReadAllBytesAsync(ZipArchiveEntry entry);
+        Task<UnpackedPackage> Unpack(string zipArchive);
+        Task<UnpackedPackage> Unpack(ZipArchive zipArchive);
     }
 }

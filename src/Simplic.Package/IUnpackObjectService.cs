@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
-    public interface IFileService
+    public interface IUnpackObjectService
     {
-        Task<byte[]> ReadAllBytesAsync(string path);
-
-        Task<byte[]> ReadAllBytesAsync(ZipArchiveEntry entry);
+        Task<UnpackObjectResult> UnpackObject(ZipArchiveEntry entry);
     }
 }
