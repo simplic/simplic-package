@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
-using Simplic.Package.Model;
+using Simplic.Package;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -52,7 +53,12 @@ namespace Simplic.Package.Service
 
                 using (ZipArchive zipArchive = new ZipArchive(stream, ZipArchiveMode.Read))
                 {
-                    var configurationFile = zipArchive.Entries.Where(x => x.Name == "package.json").First();  // TODO: Exception handeling
+                    ZipArchiveEntry configurationFile = null;
+
+                    configurationFile = zipArchive.Entries.Where(x => x.Name == "package.json").FirstOrDefault();
+
+                    if (configurationFile == null)
+                        throw new InvalidPackageException("Package doesnt contain a correctly named configuration file");
 
                     var json = await fileService.ReadAllTextAsync(configurationFile.Open());
                     var packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(json);
@@ -64,36 +70,35 @@ namespace Simplic.Package.Service
                         Dependencies = packageConfiguration.Dependencies
                     };
 
-                    var deserializedObjects = new Dictionary<string, IList<IDeserializedContent>>();
+                    var unpackedObjects = new Dictionary<string, IList<InstallableObject>>();
                     foreach (var item in packageConfiguration.Objects)
                     {
-                        var deserializeObjectService = container.Resolve<IDeserializeObjectService>(item.Key);
+                        var unpackObjectService = container.Resolve<IUnpackObjectService>(item.Key);
 
-                        var deserializedContents = new List<IDeserializedContent>();
+                        var contents = new List<InstallableObject>();
                         foreach (var objectListItem in item.Value)
                         {
                             var zipEntry = zipArchive.GetEntry(objectListItem.Target);
-                            var zipEntryBytes = await fileService.ReadAllBytesAsync(zipEntry.Open()); // Ggf. wrapper class
+                            var zipEntryContent = await fileService.ReadAllBytesAsync(zipEntry.Open());
 
                             var unpackObjectResult = new UnpackObjectResult
                             {
-                                ReadBytes = zipEntryBytes
+                                Data = zipEntryContent,
+                                Location = objectListItem.Target
                             };
 
-                            var deserializedContent = deserializeObjectService.DeserializeObject(unpackObjectResult);
-
-                            deserializedContents.Add(deserializedContent);
+                            if (objectListItem.Deserialize)
+                                contents.Add(unpackObjectService.DeserializeObject(unpackObjectResult));
+                            else
+                                contents.Add(unpackObjectService.UnpackObject(unpackObjectResult));
                         }
-
-                        deserializedObjects[item.Key] = deserializedContents;
+                        unpackedObjects[item.Key] = contents;
                     }
-
-                    unpackedPackage.UnpackedObjects = deserializedObjects;
+                    unpackedPackage.UnpackedObjects = unpackedObjects;
 
                     return unpackedPackage;
                 }
             }
         }
     }
-}
 }

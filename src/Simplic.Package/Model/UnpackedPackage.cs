@@ -8,6 +8,6 @@ namespace Simplic.Package
         public string Name { get; set; }
         public Version Version { get; set; }
         public IList<Dependency> Dependencies { get; set; }
-        public Dictionary<string, IList<IDeserializedContent>> UnpackedObjects { get; set; }
+        public Dictionary<string, IList<InstallableObject>> UnpackedObjects { get; set; }
     }
 }

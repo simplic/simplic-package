@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
-    public class UnpackObjectResult
+    public interface IContent
     {
-        public byte[] Data { get; set; }
-        public string Location { get; set; }
     }
 }

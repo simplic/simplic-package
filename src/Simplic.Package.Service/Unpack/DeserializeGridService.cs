@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Simplic.Package.Model;
+using Simplic.Package;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -10,19 +10,30 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Service
 {
-    public class DeserializeGridService : IDeserializeObjectService
+    public class DeserializeGridService : IUnpackObjectService
     {
         private readonly IFileService fileService;
         public DeserializeGridService(IFileService fileService)
         {
             this.fileService = fileService;
         }
-        public IDeserializedContent DeserializeObject(UnpackObjectResult unpackObjectResult)
+
+        public InstallableObject DeserializeObject(UnpackObjectResult unpackObjectResult)
         {
-            var json = Encoding.Default.GetString(unpackObjectResult.ReadBytes);
+            var json = Encoding.Default.GetString(unpackObjectResult.Data);
             var deserializedGrid = JsonConvert.DeserializeObject<DeserializedGrid>(json);
 
-            return deserializedGrid;
+            return new InstallableObject
+            {
+                Content = deserializedGrid,
+                Location = unpackObjectResult.Location
+            };
+        }
+
+        // This should not be called, as grids should be deserialized
+        public InstallableObject UnpackObject(UnpackObjectResult unpackObjectResult)
+        {
+            throw new NotImplementedException();
         }
     }
 }

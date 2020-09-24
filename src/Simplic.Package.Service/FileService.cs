@@ -15,9 +15,11 @@ namespace Simplic.Package.Service
         /// </summary>
         /// <param name="path">The path to the file</param>
         /// <returns>The read bytes as an array</returns>
-        public async Task<byte[]> ReadAllBytesAsync(string path) //TODO: Actually make async
+        public async Task<byte[]> ReadAllBytesAsync(string path)
         {
-            return File.ReadAllBytes(path);
+            var fileStream = File.OpenRead(path);
+
+            return await ReadAllBytesAsync(fileStream);
         }
 
         /// <summary>
