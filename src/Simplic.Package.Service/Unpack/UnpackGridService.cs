@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Service
 {
-    public class DeserializeGridService : IUnpackObjectService
+    public class UnpackGridService : IUnpackObjectService
     {
         private readonly IFileService fileService;
-        public DeserializeGridService(IFileService fileService)
+        public UnpackGridService(IFileService fileService)
         {
             this.fileService = fileService;
         }
@@ -26,7 +26,7 @@ namespace Simplic.Package.Service
             return new InstallableObject
             {
                 Content = deserializedGrid,
-                Location = unpackObjectResult.Location
+                Target = unpackObjectResult.Location // TODO: Has to point to database in some form (e.g. a table)
             };
         }
 

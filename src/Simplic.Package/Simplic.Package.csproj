@@ -87,15 +87,26 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exception\InvalidObjectException.cs" />
     <Compile Include="Exception\InvalidPackageException.cs" />
     <Compile Include="IFileService.cs" />
+    <Compile Include="IInstallObjectService.cs" />
+    <Compile Include="IInstallService.cs" />
     <Compile Include="IUnpackObjectService.cs" />
     <Compile Include="IPackObjectService.cs" />
     <Compile Include="IPackService.cs" />
     <Compile Include="IUnpackService.cs" />
     <Compile Include="Model\Dependency.cs" />
+    <Compile Include="Model\Grid\ColumnConfiguration.cs" />
     <Compile Include="Model\Grid\DeserializedGrid.cs" />
-    <Compile Include="Model\InstallableObject1.cs" />
+    <Compile Include="Model\Grid\DivergentColumnType.cs" />
+    <Compile Include="Model\Grid\GridCellHighlight.cs" />
+    <Compile Include="Model\Grid\GridColumnConfiguration.cs" />
+    <Compile Include="Model\Grid\GridMenuConfiguration.cs" />
+    <Compile Include="Model\Grid\GridProfileConfiguration.cs" />
+    <Compile Include="Model\Grid\GridVirtualGroupConfiguration.cs" />
+    <Compile Include="Model\Grid\VirtualGroupDefinition.cs" />
+    <Compile Include="Model\IContent.cs" />
     <Compile Include="Model\InstallableObject.cs" />
     <Compile Include="Model\UnpackedPackage.cs" />
     <Compile Include="Model\ObjectListItem.cs" />
@@ -107,38 +118,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Scripts\2013.2.611\jquery-1.7.1.min.js" />
-    <Content Include="Scripts\2013.2.611\jquery.validate.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.all.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.autocomplete.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.calendar.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.chart.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.combobox.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.common.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.datepicker.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.datetimepicker.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.draganddrop.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.editor.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.grid.editing.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.grid.filtering.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.grid.grouping.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.grid.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.grid.reordering.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.grid.resizing.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.imagebrowser.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.list.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.menu.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.panelbar.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.slider.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.splitter.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.tabstrip.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.textbox.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.timepicker.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.treeview.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.upload.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.window.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simplic.Package
+namespace Simplic.Package.Model.Grid
 {
-    public interface IContent
+    public class VirtualGroupDefinition
     {
+        public string Name { get; set; }
     }
 }

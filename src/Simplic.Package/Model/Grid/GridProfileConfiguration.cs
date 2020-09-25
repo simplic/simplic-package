@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
+
 namespace Simplic.Package.Model.Grid
 {
     public class GridProfileConfiguration
@@ -26,7 +26,7 @@ namespace Simplic.Package.Model.Grid
         public string ResolveDroppedDataStatement { get; set; }
         public bool UseHierarchicalGrid { get; set; }
         public string HierachicalGridName { get; set; }
-        public IList<GridVirtualGroupConfiguration> VirtualGroupDefinitions { get; set; }
+        public IList<VirtualGroupDefinition> VirtualGroupDefinitions { get; set; }
         public bool CollapseAfterExecute { get; set; }
         public GridVirtualGroupConfiguration SelectedVirtualGroup { get; set; }
         public ColumnConfiguration SelectedColumn { get; set; }
