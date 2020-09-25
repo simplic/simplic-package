@@ -68,6 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unpack\UnpackGridService.cs" />
     <Compile Include="Unpack\UnpackService.cs" />
+    <Compile Include="Unpack\UnpackSqlService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Package\Simplic.Package.csproj">

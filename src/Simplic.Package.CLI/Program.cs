@@ -3,17 +3,21 @@ using Simplic.Package.Service;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Unity;
 
 namespace Simplic.Package.CLI
 {
     public class Program
     {
-        public static int Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
             var showHelp = false;
             var pack = false;
             var install = false;
+            var forceInstall = false;
+
+            var dummy = ""; // Debug
 
             var path = "";
 
@@ -21,7 +25,9 @@ namespace Simplic.Package.CLI
             {
                 { "p|pack:", "The path to the Package configuration file (package.json) directory. Defaults to the current working directory.", v => {pack = true; if (v == null) path = "."; else path = v; } },
                 { "i|install=", "The path to the package.", v => {install = true; path = v; } },
-                { "h|help",  "show this message and exit", v => showHelp = true }
+                { "h|help",  "show this message and exit", v => showHelp = true },
+                { "f|force", "Set to force the install", v => forceInstall = true },
+                { "d|dummy=", "", v => dummy = v } // Debug
             };
 
             if (!args.Any())
@@ -49,6 +55,19 @@ namespace Simplic.Package.CLI
 
             var container = new UnityContainer();
             container.RegisterType<IPackService, PackService>();
+            container.RegisterType<IUnpackService, UnpackService>();
+            container.RegisterType<IInstallService, InstallService>();
+
+            // Debug
+            if (dummy != "")
+            {
+                Console.WriteLine(dummy);
+
+                if (forceInstall)
+                {
+                    Console.WriteLine("Force install");
+                }
+            }
 
             if (pack)
             {
@@ -70,17 +89,33 @@ namespace Simplic.Package.CLI
                 Console.WriteLine(fullPath);
 
                 var packService = container.Resolve<IPackService>();
-                packService.Pack(fullPath);
+                await packService.Pack(fullPath);
             }
 
             if (install)
             {
-                if (File.Exists(path))
+                if (!File.Exists(path))
                 {
-                    // Unpacking Package will throw InvalidPackageException if file isnt a package
+                    Console.WriteLine($"File {Path.GetFullPath(path)} not found!");
+                    return 1;
                 }
-            }
 
+                // Unpacking Package will throw InvalidPackageException if file isnt a package
+                var unpackService = container.Resolve<IUnpackService>();
+                var unpackedPackage = await unpackService.Unpack(Path.GetFullPath(path));
+
+                var installService = container.Resolve<IInstallService>();
+
+                if (forceInstall) // Disregard missing dependencies, etc.
+                {
+                    await installService.Overwrite(unpackedPackage);
+                }
+                else
+                { 
+                    await installService.Install(unpackedPackage);
+                }
+                return 0;
+            }
             return 0;
         }
 

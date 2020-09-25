@@ -8,7 +8,6 @@ namespace Simplic.Package.Test
 {
     public class SimplePack
     {
-        [Fact]
         public async Task TestMethod1()
         {
             var container = new UnityContainer();

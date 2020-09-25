@@ -108,6 +108,7 @@
     <Compile Include="Model\Grid\VirtualGroupDefinition.cs" />
     <Compile Include="Model\IContent.cs" />
     <Compile Include="Model\InstallableObject.cs" />
+    <Compile Include="Model\SqlContent.cs" />
     <Compile Include="Model\UnpackedPackage.cs" />
     <Compile Include="Model\ObjectListItem.cs" />
     <Compile Include="Model\PackageConfiguration.cs" />
