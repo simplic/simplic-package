@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
@@ -14,7 +10,7 @@ namespace Simplic.Package
         /// <param name="unpackedPackage">The package to install</param>
         /// <returns></returns>
         Task Install(UnpackedPackage unpackedPackage);
-        
+
         /// <summary>
         /// Uninstalls a existing package by removing it from the database
         /// </summary>

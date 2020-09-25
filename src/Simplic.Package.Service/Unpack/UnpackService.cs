@@ -1,15 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Simplic.Package;
-using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 using Unity;
 
@@ -54,6 +47,7 @@ namespace Simplic.Package.Service
                 using (ZipArchive zipArchive = new ZipArchive(stream, ZipArchiveMode.Read))
                 {
                     ZipArchiveEntry configurationFile = null;
+                    PackageConfiguration packageConfiguration = null;
 
                     configurationFile = zipArchive.Entries.Where(x => x.Name == "package.json").FirstOrDefault();
 
@@ -61,7 +55,15 @@ namespace Simplic.Package.Service
                         throw new InvalidPackageException("Package doesnt contain a correctly named configuration file");
 
                     var json = await fileService.ReadAllTextAsync(configurationFile.Open());
-                    var packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(json);
+
+                    try
+                    {
+                        packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(json, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error });
+                    }
+                    catch (JsonSerializationException jse)
+                    {
+                        throw new PackageConfigurationException("Couldent deserialize the package configuration.", jse);
+                    }
 
                     var unpackedPackage = new UnpackedPackage
                     {

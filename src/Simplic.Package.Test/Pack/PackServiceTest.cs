@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Moq;
+using Simplic.Package.Service;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
-using Simplic.Package.Service;
 using Unity;
-using Moq;
-using System.IO.Compression;
-using System.IO;
+using Xunit;
 
 namespace Simplic.Package.Test
 {
@@ -121,7 +121,6 @@ namespace Simplic.Package.Test
             fileService.Setup(x => x.ReadAllBytesAsync(It.IsAny<string>())).Returns(Task.FromResult(new byte[] { 0, 1 }));
 
             container.RegisterInstance<IFileService>(fileService.Object);
-
 
             var service = container.Resolve<IPackService>();
 

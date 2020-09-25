@@ -1,9 +1,7 @@
-﻿using Simplic.Package;
+﻿using Simplic.Package.Model.Grid;
 using System;
-using System.Windows;
 using System.Collections.Generic;
-using Simplic.Framework.DBUI;
-using Simplic.Package.Model.Grid;
+using System.Windows;
 
 namespace Simplic.Package
 {

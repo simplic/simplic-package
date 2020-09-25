@@ -1,9 +1,6 @@
 ﻿using Simplic.Package.Service;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Unity;
 using Xunit;
 
@@ -505,13 +502,18 @@ namespace Simplic.Package.Test.Unpack
             var installableObject = service.DeserializeObject(unpackObjectResult);
 
             Assert.IsType<DeserializedGrid>(installableObject.Content);
-
             var deserializedGrid = (DeserializedGrid)installableObject.Content;
+
             // Check if it was properly deserialized for some examples
             Assert.Single(deserializedGrid.Profiles);
             Assert.Equal(4, deserializedGrid.Profiles[0].ColumnConfiguration.Count());
             Assert.Equal("Virtuelle Gruppe", deserializedGrid.SelectedProfile.VirtualGroupDefinitions[0].Name);
             Assert.Null(deserializedGrid.SelectedProfile.SelectedVirtualGroup);
+
+            //var serializedGrid = JsonConvert.SerializeObject(deserializedGrid);
+            // var originalDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            // var afterSerialationDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedGrid);
+            // Assert.Equal(originalDict.Count(), afterSerialationDict.Count());
         }
     }
 }

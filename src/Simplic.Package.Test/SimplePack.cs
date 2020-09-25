@@ -1,8 +1,5 @@
 ﻿using Moq;
 using Simplic.Package.Service;
-using System;
-using System.ComponentModel;
-using System.IO;
 using System.Threading.Tasks;
 using Unity;
 using Xunit;
@@ -51,7 +48,7 @@ namespace Simplic.Package.Test
             ";
 
             await service.Pack(json);
-            // Assert.Equal 
+            // Assert.Equal
             // File.WriteAllBytes(@"C:\temp\test.zip", await service.Pack(json));
         }
     }

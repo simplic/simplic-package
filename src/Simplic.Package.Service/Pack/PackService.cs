@@ -1,11 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Net.Configuration;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
@@ -23,9 +18,15 @@ namespace Simplic.Package.Service
 
         public async Task<byte[]> Pack(string json)
         {
-            var packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(json);
-
-            return await Pack(packageConfiguration);
+            try
+            {
+                var packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(json, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error });
+                return await Pack(packageConfiguration);
+            }
+            catch (JsonSerializationException jse)
+            {
+                throw new PackageConfigurationException("Couldent deserialize the package configuration.", jse);
+            }
         }
 
         public async Task<byte[]> Pack(PackageConfiguration packageConfiguration)
@@ -50,7 +51,7 @@ namespace Simplic.Package.Service
 
                         foreach (var objectListItem in item.Value)
                         {
-                            // await extracts PackObjectResult from Task<PackObjectResult> 
+                            // await extracts PackObjectResult from Task<PackObjectResult>
                             var result = await packObjectService.ReadAsync(objectListItem);
 
                             // Creates a path inside the zip
@@ -59,6 +60,7 @@ namespace Simplic.Package.Service
                         }
                     }
                 }
+                // File.WriteAllBytes(".", stream.ToArray());
                 return stream.ToArray();
             }
         }

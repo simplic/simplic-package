@@ -13,7 +13,7 @@ namespace Simplic.Package.Model.Grid
         public bool IsDefault { get; set; }
         public bool ShowNumerationColumn { get; set; }
         public bool UseSelectColumn { get; set; }
-        public IList<ColumnConfiguration> ColumnConfiguration { get; set; }
+        public IList<GridColumnConfiguration> ColumnConfiguration { get; set; }
         public Guid Id { get; set; }
         public string SelectStatements { get; set; }
         public bool LoadAllData { get; set; }
@@ -42,5 +42,6 @@ namespace Simplic.Package.Model.Grid
         public bool EnableStickyGroupHeaders { get; set; }
         public string GroupConfigurationJson { get; set; }
         public IList<GridVirtualGroupConfiguration> VirtualGroups { get; set; }
+        public string SelectStatement { get; set; }
     }
 }
