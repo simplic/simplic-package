@@ -2,7 +2,7 @@
 
 namespace Simplic.Package.Service
 {
-    internal class PackRepositoryService : IPackObjectService
+    public class PackRepositoryService : IPackObjectService
     {
         private readonly IFileService fileService;
 
@@ -16,7 +16,7 @@ namespace Simplic.Package.Service
             return new PackObjectResult
             {
                 File = await fileService.ReadAllBytesAsync(item.Source),
-                Location = item.Target
+                Location = $"repository/{item.Target}"
             };
         }
     }

@@ -4,7 +4,7 @@ using System.Text;
 using Unity;
 using Xunit;
 
-namespace Simplic.Package.Test.Unpack
+namespace Simplic.Package.Test
 {
     public class UnpackGridServiceTest
     {

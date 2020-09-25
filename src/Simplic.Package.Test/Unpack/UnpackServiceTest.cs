@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Unity;
 using Xunit;
 
-namespace Simplic.Package.Test.Unpack
+namespace Simplic.Package.Test
 {
     public class UnpackServiceTest
     {
