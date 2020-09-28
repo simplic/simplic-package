@@ -87,8 +87,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\CheckDependencyResult.cs" />
     <Compile Include="Exception\InvalidObjectException.cs" />
     <Compile Include="Exception\InvalidPackageException.cs" />
+    <Compile Include="ICheckDependencyService.cs" />
     <Compile Include="IFileService.cs" />
     <Compile Include="IInstallObjectService.cs" />
     <Compile Include="IInstallService.cs" />
