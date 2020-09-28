@@ -8,14 +8,20 @@ namespace Simplic.Package.Service.Unpack
 {
     public class UnpackSqlService : IUnpackObjectService
     {
-        // Sql Files should not be deserialized
+        public InstallableObject UnpackObject(UnpackObjectResult unpackObjectResult, bool deserialize)
+        {
+            if (deserialize)
+                return DeserializeObject(unpackObjectResult);
+            else
+                return CopyObject(unpackObjectResult);
+        }
+
         public InstallableObject DeserializeObject(UnpackObjectResult unpackObjectResult)
         {
             throw new NotImplementedException();
         }
 
-
-        public InstallableObject UnpackObject(UnpackObjectResult unpackObjectResult)
+        public InstallableObject CopyObject(UnpackObjectResult unpackObjectResult)
         {
             var sqlContent = new SqlContent
             {
@@ -25,7 +31,8 @@ namespace Simplic.Package.Service.Unpack
             return new InstallableObject
             {
                 Content = sqlContent,
-                Target = unpackObjectResult.Location
+                Target = unpackObjectResult.Location,
+                Mode = unpackObjectResult.Mode
             };
         }
     }

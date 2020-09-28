@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Data;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -45,18 +47,31 @@ namespace Simplic.Package.Service
 
                     foreach (var item in packageConfiguration.Objects)
                     {
-                        // Resolves the concrete registered PackObjectService
-                        // Hier exception handeling, falls ein type registriert werden soll, der nicht existiert
                         var packObjectService = container.Resolve<IPackObjectService>(item.Key);
 
                         foreach (var objectListItem in item.Value)
                         {
-                            // await extracts PackObjectResult from Task<PackObjectResult>
                             var result = await packObjectService.ReadAsync(objectListItem);
 
-                            // Creates a path inside the zip
-                            var entry = zip.CreateEntry(result.Location);
-                            await WriteToEntry(entry, result.File);
+                            // Validate the packgedObject before it can be written
+                            ValidateObjectResult validateObjectResult = null;
+                            try
+                            {
+                                var validateObjectService = container.Resolve<IValidateObjectService>(item.Key);
+                                validateObjectResult = await validateObjectService.Validate(result);
+                            } catch (ResolutionFailedException ufe)
+                            {
+                            }
+
+                            // Write the object to the zipfile
+                            if (validateObjectResult == null || validateObjectResult.IsOkay) { // If no validation implemented or validation returned true                            {
+                                var entry = zip.CreateEntry(result.Location);
+                                await WriteToEntry(entry, result.File);
+                            }
+                            else
+                            {
+                                throw new InvalidObjectException($"{objectListItem.Source} is an Invalid Object.\n{validateObjectResult.ErrorMessage}");
+                            }
                         }
                     }
                 }

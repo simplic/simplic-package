@@ -2,7 +2,7 @@
 
 namespace Simplic.Package
 {
-    internal class InvalidObjectException : Exception
+    public class InvalidObjectException : Exception
     {
         public InvalidObjectException()
         {

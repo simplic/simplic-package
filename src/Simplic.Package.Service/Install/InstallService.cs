@@ -4,18 +4,16 @@ namespace Simplic.Package.Service
 {
     public class InstallService : IInstallService
     {
-        public async Task Install(UnpackedPackage unpackedPackage)
+        public async Task Install(Package unpackedPackage)
         {
         }
 
-        public async Task Uninstall(UnpackedPackage unpackedPackage)
+        public async Task Uninstall(Package unpackedPackage)
         {
         }
 
-        public async Task Overwrite(UnpackedPackage unpackedPackage)
+        public async Task Overwrite(Package unpackedPackage)
         {
-            Uninstall(unpackedPackage);
-            Install(unpackedPackage);
         }
     }
 }

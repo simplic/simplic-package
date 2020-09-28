@@ -1,8 +1,11 @@
 ﻿using NDesk.Options;
+using Newtonsoft.Json;
 using Simplic.Package.Service;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Unity;
 
@@ -13,6 +16,10 @@ namespace Simplic.Package.CLI
         public static async Task<int> Main(string[] args)
         {
             var showHelp = false;
+
+            var create = false;
+            var name = "";
+
             var pack = false;
             var install = false;
             var forceInstall = false;
@@ -23,6 +30,7 @@ namespace Simplic.Package.CLI
 
             var optionSet = new OptionSet()
             {
+                {"c|create=", "The Name of the package you want to create.", v =>  {create = true; name = v; } },
                 { "p|pack:", "The path to the Package configuration file (package.json) directory. Defaults to the current working directory.", v => {pack = true; if (v == null) path = "."; else path = v; } },
                 { "i|install=", "The path to the package.", v => {install = true; path = v; } },
                 { "h|help",  "show this message and exit", v => showHelp = true },
@@ -57,6 +65,7 @@ namespace Simplic.Package.CLI
             container.RegisterType<IPackService, PackService>();
             container.RegisterType<IUnpackService, UnpackService>();
             container.RegisterType<IInstallService, InstallService>();
+            container.RegisterType<IFileService, FileService>();
 
             // Debug
             if (dummy != "")
@@ -67,6 +76,21 @@ namespace Simplic.Package.CLI
                 {
                     Console.WriteLine("Force install");
                 }
+            }
+
+            if (create)
+            {
+                var packageConfiguration = new PackageConfiguration
+                {
+                    Name = name,
+                    Version = new Version(1, 0, 0, 0),
+                    Dependencies = new List<Dependency>(),
+                    Objects = new Dictionary<string, IList<ObjectListItem>>()
+                };
+
+                var json = JsonConvert.SerializeObject(packageConfiguration);
+                Console.WriteLine(json);
+                File.WriteAllText("package.json", json);
             }
 
             if (pack)

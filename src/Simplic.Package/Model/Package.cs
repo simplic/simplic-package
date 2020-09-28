@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Simplic.Package
 {
-    public class UnpackedPackage
+    public class Package
     {
         public string Name { get; set; }
         public Version Version { get; set; }

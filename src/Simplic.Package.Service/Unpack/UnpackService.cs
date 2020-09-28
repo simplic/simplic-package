@@ -24,7 +24,7 @@ namespace Simplic.Package.Service
         /// </summary>
         /// <param name="packagePath">The path to the package</param>
         /// <returns>A UnpackedPackage object</returns>
-        public async Task<UnpackedPackage> Unpack(string packagePath)
+        public async Task<Package> Unpack(string packagePath)
         {
             var packageBytes = await fileService.ReadAllBytesAsync(packagePath);
             return await Unpack(packageBytes);
@@ -35,7 +35,7 @@ namespace Simplic.Package.Service
         /// </summary>
         /// <param name="packageBytes">The package as bytes</param>
         /// <returns>A UnpackedPackage object</returns>
-        public async Task<UnpackedPackage> Unpack(byte[] packageBytes)
+        public async Task<Package> Unpack(byte[] packageBytes)
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -65,7 +65,7 @@ namespace Simplic.Package.Service
                         throw new PackageConfigurationException("Couldent deserialize the package configuration.", jse);
                     }
 
-                    var unpackedPackage = new UnpackedPackage
+                    var unpackedPackage = new Package
                     {
                         Name = packageConfiguration.Name,
                         Version = packageConfiguration.Version,
@@ -86,13 +86,11 @@ namespace Simplic.Package.Service
                             var unpackObjectResult = new UnpackObjectResult
                             {
                                 Data = zipEntryContent,
-                                Location = objectListItem.Target
+                                Location = objectListItem.Target,
+                                Mode = objectListItem.Mode
                             };
 
-                            if (objectListItem.Deserialize)
-                                contents.Add(unpackObjectService.DeserializeObject(unpackObjectResult));
-                            else
-                                contents.Add(unpackObjectService.UnpackObject(unpackObjectResult));
+                            contents.Add(unpackObjectService.UnpackObject(unpackObjectResult, objectListItem.Deserialize));
                         }
                         unpackedObjects[item.Key] = contents;
                     }

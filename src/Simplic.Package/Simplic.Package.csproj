@@ -96,6 +96,8 @@
     <Compile Include="IPackObjectService.cs" />
     <Compile Include="IPackService.cs" />
     <Compile Include="IUnpackService.cs" />
+    <Compile Include="IValidateObjectService.cs" />
+    <Compile Include="MigrationMode.cs" />
     <Compile Include="Model\Dependency.cs" />
     <Compile Include="Model\Grid\ColumnConfiguration.cs" />
     <Compile Include="Model\Grid\DeserializedGrid.cs" />
@@ -109,13 +111,14 @@
     <Compile Include="Model\IContent.cs" />
     <Compile Include="Model\InstallableObject.cs" />
     <Compile Include="Model\SqlContent.cs" />
-    <Compile Include="Model\UnpackedPackage.cs" />
+    <Compile Include="Model\Package.cs" />
     <Compile Include="Model\ObjectListItem.cs" />
     <Compile Include="Model\PackageConfiguration.cs" />
     <Compile Include="Exception\PackageConfigurationException.cs" />
     <Compile Include="Model\PackObjectResult.cs" />
     <Compile Include="Model\UnpackObjectResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model\ValidateObjectResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

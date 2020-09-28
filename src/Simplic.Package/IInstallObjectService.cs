@@ -5,6 +5,14 @@ namespace Simplic.Package
     public interface IInstallObjectService
     {
         /// <summary>
+        /// Installs an existing object using the given mode
+        /// </summary>
+        /// <param name="installableObject">The object to install</param>
+        /// <param name="mode">The mode in which the object should be installed</param>
+        /// <returns></returns>
+        Task Install(InstallableObject installableObject, MigrationMode mode);
+
+        /// <summary>
         /// Installs an existing Object
         /// </summary>
         /// <param name="installableObject">The Object to install</param>
