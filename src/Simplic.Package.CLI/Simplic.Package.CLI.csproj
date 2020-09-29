@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -36,11 +36,35 @@
     <Reference Include="Colorful.Console, Version=1.2.11.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Colorful.Console.1.2.11\lib\net461\Colorful.Console.dll</HintPath>
     </Reference>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="iAnywhere.Data.SQLAnywhere.EF6, Version=16.0.0.26144, Culture=neutral, PublicKeyToken=f222fc4333e0d400, processorArchitecture=MSIL">
+      <HintPath>..\packages\iAnywhere.Data.SQLAnywhere.EF6.16.0.0.26144\lib\net45\iAnywhere.Data.SQLAnywhere.EF6.dll</HintPath>
+    </Reference>
     <Reference Include="NDesk.Options, Version=1.2.5.0, Culture=neutral, PublicKeyToken=11d31d3c6b89255c, processorArchitecture=MSIL">
       <HintPath>..\packages\NDesk.Options.Core.1.2.5\lib\net48\NDesk.Options.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.CoreLib, Version=6.0.18.63, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.0.18.63\lib\net451\Simplic.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Data, Version=1.6.120.322, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Data.1.6.120.322\lib\net48\Simplic.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Data.Sql, Version=1.14.220.427, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Data.Sql.1.14.220.427\lib\net48\Simplic.Data.Sql.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Framework.DAL, Version=7.2.220.329, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Framework.DAL.7.2.220.329\lib\net48\Simplic.Framework.DAL.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Sql, Version=6.3.20.322, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Sql.6.3.20.322\lib\net48\Simplic.Sql.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Sql.SqlAnywhere.Service, Version=5.95.318.101, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Sql.SqlAnywhere.Service.5.95.318.101\lib\net48\Simplic.Sql.SqlAnywhere.Service.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,6 +97,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Simplic.Package.Data.DB\Simplic.Package.Data.DB.csproj">
+      <Project>{061247F8-3F50-4271-852E-4AD4DC8592B0}</Project>
+      <Name>Simplic.Package.Data.DB</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Package.Service\Simplic.Package.Service.csproj">
       <Project>{2568b37d-7937-4368-a6e3-2ade2ad7196b}</Project>
       <Name>Simplic.Package.Service</Name>

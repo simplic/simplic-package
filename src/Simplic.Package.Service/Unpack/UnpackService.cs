@@ -12,11 +12,13 @@ namespace Simplic.Package.Service
     {
         private readonly IUnityContainer container;
         private readonly IFileService fileService;
+        private readonly ILogService logService;
 
-        public UnpackService(IUnityContainer container, IFileService fileService)
+        public UnpackService(IUnityContainer container, IFileService fileService, ILogService logService)
         {
             this.container = container;
             this.fileService = fileService;
+            this.logService = logService;
         }
 
         /// <summary>

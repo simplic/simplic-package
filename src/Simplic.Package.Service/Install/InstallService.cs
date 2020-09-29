@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO.Pipes;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity;
 
@@ -12,13 +14,19 @@ namespace Simplic.Package.Service
     public class InstallService : IInstallService
     {
         private readonly IUnityContainer container;
-        public InstallService(IUnityContainer container)
+        private readonly ILogService logService;
+
+        public InstallService(IUnityContainer container, ILogService logService)
         {
             this.container = container;
+            this.logService = logService;
         }
 
         public async Task Install(Package unpackedPackage)
         {
+
+            Debugger.Launch();
+
             var checkDependencyService = container.Resolve<ICheckDependencyService>();
             
             var checkDependencyResults = new List<CheckDependencyResult>();

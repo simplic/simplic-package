@@ -1,13 +1,22 @@
-﻿using NDesk.Options;
+﻿using iAnywhere.Data.SQLAnywhere;
+using NDesk.Options;
 using Newtonsoft.Json;
+using Simplic.Framework.DAL;
+using Simplic.Package.Data.DB;
 using Simplic.Package.Service;
+using Simplic.Package.Service.Install;
+using Simplic.Package.Service.Unpack;
+using Simplic.Sql;
+using Simplic.Sql.SqlAnywhere.Service;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Unity;
+using Unity.Lifetime;
 
 namespace Simplic.Package.CLI
 {
@@ -16,26 +25,27 @@ namespace Simplic.Package.CLI
         public static async Task<int> Main(string[] args)
         {
             var showHelp = false;
+            var verbosity = LogLevel.Error;
 
             var create = false;
             var name = "";
 
             var pack = false;
+
             var install = false;
-            var forceInstall = false;
-
-            var dummy = ""; // Debug
-
+            var forceInstall = false; // TODO
             var path = "";
+            var connectionString = "dbn=PackageTest;server=PackageTest;uid=admin;pwd=admin";
 
             var optionSet = new OptionSet()
             {
-                {"c|create=", "The Name of the package you want to create.", v =>  {create = true; name = v; } },
-                { "p|pack:", "The path to the Package configuration file (package.json) directory. Defaults to the current working directory.", v => {pack = true; if (v == null) path = "."; else path = v; } },
-                { "i|install=", "The path to the package.", v => {install = true; path = v; } },
-                { "h|help",  "show this message and exit", v => showHelp = true },
-                { "f|force", "Set to force the install", v => forceInstall = true },
-                { "d|dummy=", "", v => dummy = v } // Debug
+                { "m|mkconfig=", "Creates a package.json file with given Name.", v =>  {create = true; name = v; } },
+                { "p|pack", "Creats a package archive from the package.json in the  current working directory.", v => pack = true },
+                { "i|install=", "Installs a package from the given path.", v => {install = true; path = v; } },
+                { "c|connection=", "The database connection string.", v =>  {connectionString = v; } },
+                { "h|help",  "Shows help", v => showHelp = true },
+                { "f|force", "Set to force the install. TODO: DOES NOTHING!", v => forceInstall = true },
+                { "v|verbosity=", "Sets the Loglevel.\n Error: 0, Warning: 1, Info: 2, Debug: 3. Default: 0", v => verbosity = (LogLevel)Int32.Parse(v) },
             };
 
             if (!args.Any())
@@ -67,27 +77,40 @@ namespace Simplic.Package.CLI
                 return 0;
             }
 
+            Debugger.Launch();
             var container = new UnityContainer();
+            container.RegisterType<ILogService, LogService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IPackService, PackService>();
             container.RegisterType<IUnpackService, UnpackService>();
             container.RegisterType<IInstallService, InstallService>();
             container.RegisterType<IFileService, FileService>();
+            container.RegisterType<ICheckDependencyService, CheckDependencyService>();
+            container.RegisterType<IVersionRepository, VersionRepository>();
 
-            // Debug
-            if (dummy != "")
+            container.RegisterType<IInstallObjectService, InstallSqlService>("sql");
+            container.RegisterType<IObjectRepository, SqlRepository>("sql");
+            container.RegisterType<IPackObjectService, PackSqlService>("sql");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("sql");
+
+            container.RegisterType<ISqlService, SqlService>();
+            container.RegisterType<ISqlColumnService, SqlColumnService>();
+            Framework.DAL.DALManager.Init(connectionString);
+            Framework.DAL.ConnectionManager.Init(Thread.CurrentThread);
+
+            var logService = container.Resolve<ILogService>();
+
+            logService.Logged += (sender, e) =>
             {
-                Console.WriteLine(dummy);
-
-                if (forceInstall)
-                {
-                    Console.WriteLine("Force install");
-                }
-            }
+                var eventArgs = (LogMessageEventArgs)e;
+                if ((int)eventArgs.LogLevel <= (int)verbosity)
+                    Console.WriteLine(eventArgs.Message);
+            };
 
             if (create)
             {
                 var packageConfiguration = new PackageConfiguration
                 {
+                    PackageFormatVersion = new Version(1,0,0,0),
                     Name = name,
                     Version = new Version(1, 0, 0, 0),
                     Dependencies = new List<Dependency>(),
@@ -95,31 +118,24 @@ namespace Simplic.Package.CLI
                 };
 
                 var json = JsonConvert.SerializeObject(packageConfiguration);
-                Console.WriteLine(json);
                 File.WriteAllText("package.json", json);
+                Console.WriteLine($"Succesfully created a new package.json!");
             }
 
             if (pack)
             {
-                if (!Directory.Exists(path))
-                {
-                    Console.WriteLine($"The path {Path.GetFullPath(path)} doesnt exist.");
-                    return -1;
-                }
-
-                var packageConfig = Directory.GetFiles(path, "package.json", SearchOption.TopDirectoryOnly).FirstOrDefault();
+                var packageConfig = Directory.GetFiles(".", "package.json", SearchOption.TopDirectoryOnly).FirstOrDefault();
 
                 if (packageConfig == null)
                 {
-                    Console.WriteLine($"Couldent find a package.json file in {Path.GetFullPath(path)}");
+                    Console.WriteLine($"Couldent find a package.json file in {Path.GetFullPath(".")}");
                     return 1;
                 }
 
-                var fullPath = Path.GetFullPath($"{path}/{packageConfig}");
-                Console.WriteLine(fullPath);
-
+                var fullPath = Path.GetFullPath($"./{packageConfig}");
                 var packService = container.Resolve<IPackService>();
-                await packService.Pack(fullPath);
+                await packService.Pack(File.ReadAllText(fullPath));
+                Console.WriteLine($"Succesfully packed {fullPath}!");
             }
 
             if (install)
@@ -130,20 +146,21 @@ namespace Simplic.Package.CLI
                     return 1;
                 }
 
-                // Unpacking Package will throw InvalidPackageException if file isnt a package
+                Console.WriteLine("Check database connection ...");
+
+                using (var connection = ConnectionManager.GetOpenPoolConnection<SAConnection>(connectionString))
+                {
+                   Console.WriteLine("Connected!");
+                }
+
                 var unpackService = container.Resolve<IUnpackService>();
                 var unpackedPackage = await unpackService.Unpack(Path.GetFullPath(path));
 
                 var installService = container.Resolve<IInstallService>();
 
-                if (forceInstall) // Disregard missing dependencies, etc.
-                {
-                    await installService.Overwrite(unpackedPackage);
-                }
-                else
-                { 
-                    await installService.Install(unpackedPackage);
-                }
+                // TODO: Force install
+                await installService.Install(unpackedPackage);
+                Console.WriteLine($"Succesfully installed {unpackedPackage.Name}!");
                 return 0;
             }
             return 0;

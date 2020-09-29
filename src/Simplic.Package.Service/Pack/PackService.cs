@@ -12,21 +12,24 @@ namespace Simplic.Package.Service
     public class PackService : IPackService
     {
         private readonly IUnityContainer container;
-
-        public PackService(IUnityContainer container)
+        private readonly ILogService logService;
+        
+        public PackService(IUnityContainer container, ILogService logService)
         {
             this.container = container;
+            this.logService = logService;
         }
 
         public async Task<byte[]> Pack(string json)
         {
             try
             {
-                var packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(json, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error });
+                var packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(json);
                 return await Pack(packageConfiguration);
             }
             catch (JsonSerializationException jse)
             {
+                await logService.WriteAsync("Couldent deserialize the package configuration.", LogLevel.Error);
                 throw new PackageConfigurationException("Couldent deserialize the package configuration.", jse);
             }
         }
@@ -59,12 +62,14 @@ namespace Simplic.Package.Service
                             {
                                 var validateObjectService = container.Resolve<IValidateObjectService>(item.Key);
                                 validateObjectResult = await validateObjectService.Validate(result);
-                            } catch (ResolutionFailedException ufe)
+                            }
+                            catch (ResolutionFailedException ufe)
                             {
                             }
 
                             // Write the object to the zipfile
-                            if (validateObjectResult == null || validateObjectResult.IsOkay) { // If no validation implemented or validation returned true                            {
+                            if (validateObjectResult == null || validateObjectResult.IsOkay)
+                            { // If no validation implemented or validation returned true                            {
                                 var entry = zip.CreateEntry(result.Location);
                                 await WriteToEntry(entry, result.File);
                             }
@@ -75,7 +80,8 @@ namespace Simplic.Package.Service
                         }
                     }
                 }
-                // File.WriteAllBytes($"{packageConfiguration.Name}_{packageConfiguration.Version}", stream.ToArray());
+
+                File.WriteAllBytes($"{packageConfiguration.Name}_{packageConfiguration.Version}.zip", stream.ToArray());
                 return stream.ToArray();
             }
         }

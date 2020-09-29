@@ -73,6 +73,7 @@
     <Compile Include="Install\InstallGridService.cs" />
     <Compile Include="Install\InstallService.cs" />
     <Compile Include="Install\InstallSqlService.cs" />
+    <Compile Include="LogService.cs" />
     <Compile Include="Pack\PackGridService.cs" />
     <Compile Include="Pack\PackRepositoryService.cs" />
     <Compile Include="Pack\PackService.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="Unpack\UnpackService.cs" />
     <Compile Include="Unpack\UnpackSqlService.cs" />
     <Compile Include="Validate\ValidateGridService.cs" />
-    <Compile Include="Validate\ValidateSqlService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Package.Data.DB\Simplic.Package.Data.DB.csproj">

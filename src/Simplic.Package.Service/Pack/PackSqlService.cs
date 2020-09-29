@@ -16,7 +16,7 @@ namespace Simplic.Package.Service
             return new PackObjectResult
             {
                 File = await fileService.ReadAllBytesAsync(item.Source),
-                Location = $"sql/{item.Target}"
+                Location = $"{item.Target}"
             };
         }
     }

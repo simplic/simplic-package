@@ -10,10 +10,10 @@ namespace Simplic.Package
     {
         private Protocol protocol;
 
-        public event EventHandler<AddMessageEventArgs> InfoMessageAdded;
-        public event EventHandler<AddMessageEventArgs> WarningMessageAdded;
-        public event EventHandler<AddMessageEventArgs> ErrorMessageAdded;
-        public event EventHandler<AddMessageEventArgs> DebugMessageAdded;
+        public event EventHandler<LogMessageEventArgs> InfoMessageAdded;
+        public event EventHandler<LogMessageEventArgs> WarningMessageAdded;
+        public event EventHandler<LogMessageEventArgs> ErrorMessageAdded;
+        public event EventHandler<LogMessageEventArgs> DebugMessageAdded;
 
         public ProtocolWriter(Protocol protocol)
         {
@@ -23,25 +23,25 @@ namespace Simplic.Package
         public void WriteInfo(string message)
         {
             protocol.Info.Add(message);
-            InfoMessageAdded?.Invoke(this, new AddMessageEventArgs { Message = message });
+            InfoMessageAdded?.Invoke(this, new LogMessageEventArgs { Message = message });
         }
 
         public void WriteWarning(string message)
         {
             protocol.Warning.Add(message);
-            WarningMessageAdded?.Invoke(this, new AddMessageEventArgs { Message = message });
+            WarningMessageAdded?.Invoke(this, new LogMessageEventArgs { Message = message });
         }
 
         public void WriteError(string message)
         {
             protocol.Error.Add(message);
-            ErrorMessageAdded?.Invoke(this, new AddMessageEventArgs { Message = message });
+            ErrorMessageAdded?.Invoke(this, new LogMessageEventArgs { Message = message });
         }
 
         public void WriteDebug(string message)
         {
             protocol.Debug.Add(message);
-            DebugMessageAdded?.Invoke(this, new AddMessageEventArgs { Message = message });
+            DebugMessageAdded?.Invoke(this, new LogMessageEventArgs { Message = message });
         }
         public Protocol GetProtocol => protocol;
     }

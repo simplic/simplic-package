@@ -90,8 +90,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\AddMessageEventArgs.cs" />
-    <Compile Include="CheckMigrationResult.cs" />
+    <Compile Include="ILogService.cs" />
+    <Compile Include="Model\LogMessageEventArgs.cs" />
+    <Compile Include="Model\CheckMigrationResult.cs" />
     <Compile Include="Exception\MissingObjectException.cs" />
     <Compile Include="Exception\MissingDependencyException.cs" />
     <Compile Include="IObjectRepository.cs" />
@@ -108,7 +109,8 @@
     <Compile Include="IPackService.cs" />
     <Compile Include="IUnpackService.cs" />
     <Compile Include="IValidateObjectService.cs" />
-    <Compile Include="Model\MigrationMode.cs" />
+    <Compile Include="Enum\LogLevel.cs" />
+    <Compile Include="Enum\MigrationMode.cs" />
     <Compile Include="Model\Dependency.cs" />
     <Compile Include="Model\Grid\ColumnConfiguration.cs" />
     <Compile Include="Model\Grid\DeserializedGrid.cs" />

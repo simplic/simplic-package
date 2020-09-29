@@ -2,8 +2,9 @@
 
 namespace Simplic.Package
 {
-    public class AddMessageEventArgs : EventArgs
+    public class LogMessageEventArgs : EventArgs
     {
         public string Message { get; set; }
+        public LogLevel LogLevel { get; set; }
     }
 }
