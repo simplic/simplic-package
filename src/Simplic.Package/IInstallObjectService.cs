@@ -27,5 +27,6 @@ namespace Simplic.Package
         /// <param name="installableObject">The Object to overwrite</param>
         /// <returns></returns>
         Task OverwriteObject(InstallableObject installableObject);
+        Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject);
     }
 }

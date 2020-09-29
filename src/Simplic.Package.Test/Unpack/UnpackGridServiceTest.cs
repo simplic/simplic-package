@@ -499,7 +499,7 @@ namespace Simplic.Package.Test
             };
 
             var service = container.Resolve<IUnpackObjectService>();
-            var installableObject = service.DeserializeObject(unpackObjectResult);
+            var installableObject = service.UnpackObject(unpackObjectResult);
 
             Assert.IsType<DeserializedGrid>(installableObject.Content);
             var deserializedGrid = (DeserializedGrid)installableObject.Content;
@@ -509,11 +509,6 @@ namespace Simplic.Package.Test
             Assert.Equal(4, deserializedGrid.Profiles[0].ColumnConfiguration.Count());
             Assert.Equal("Virtuelle Gruppe", deserializedGrid.SelectedProfile.VirtualGroupDefinitions[0].Name);
             Assert.Null(deserializedGrid.SelectedProfile.SelectedVirtualGroup);
-
-            //var serializedGrid = JsonConvert.SerializeObject(deserializedGrid);
-            // var originalDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
-            // var afterSerialationDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedGrid);
-            // Assert.Equal(originalDict.Count(), afterSerialationDict.Count());
         }
     }
 }

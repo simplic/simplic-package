@@ -8,7 +8,7 @@ namespace Simplic.Package
 {
     public enum MigrationMode
     {
-        Execute = 0,
-        // TODO
+        Deploy = 0,
+        Migrate = 1
     }
 }

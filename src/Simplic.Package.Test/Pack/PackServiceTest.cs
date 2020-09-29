@@ -60,6 +60,7 @@ namespace Simplic.Package.Test
         {
             var packageConfiguration = new PackageConfiguration
             {
+                PackageFormatVersion = new Version(1,0,0,0),
                 Name = "",
                 Version = new Version(),
                 Dependencies = new List<Dependency>(),
@@ -92,6 +93,10 @@ namespace Simplic.Package.Test
         {
             var packageConfiguration = new PackageConfiguration()
             {
+                PackageFormatVersion = new Version(1, 0, 0, 0),
+                Name = "",
+                Version = new Version(),
+                Dependencies = new List<Dependency>(),
                 Objects = new Dictionary<string, IList<ObjectListItem>>
                 {
                     ["sql"] = new List<ObjectListItem>
@@ -99,12 +104,12 @@ namespace Simplic.Package.Test
                         new ObjectListItem {
                             Source = "source/Source",
                             Target = "target/Target",
-                            Deserialize = true
+                            Mode = MigrationMode.Deploy
                         },
                         new ObjectListItem {
                             Source = "source/Source",
                             Target = "target/Target",
-                            Deserialize = false
+                             Mode = MigrationMode.Migrate
                         }
                     }
                 }

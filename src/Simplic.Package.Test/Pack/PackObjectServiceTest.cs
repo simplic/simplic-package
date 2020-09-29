@@ -1,5 +1,6 @@
 ﻿using Moq;
 using Simplic.Package.Service;
+using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
@@ -9,14 +10,6 @@ namespace Simplic.Package.Test
 {
     public class PackObjectServiceTest
     {
-        private UnityContainer container = new UnityContainer();
-        private void RegisterTypes()
-        {
-            container.RegisterType<IPackObjectService, PackSqlService>("sql");
-            container.RegisterType<IPackObjectService, PackRepositoryService>("repository");
-            container.RegisterType<IPackObjectService, PackGridService>("grid");
-        }
-
         // Potentially test various files with encoding special cases
         [Theory]
         [InlineData("sql")]
@@ -24,7 +17,8 @@ namespace Simplic.Package.Test
         [InlineData("grid")]
         public async Task ReadAsync_ReadingFromFile_Test(string objectType, string fileText = "Select * from test")
         {
-            RegisterTypes();
+            var container = DependencyInjectionHelper.GetContainer();
+
             var objectListItem = new ObjectListItem
             {
                 Source = "",

@@ -17,7 +17,8 @@ namespace Simplic.Package
         /// <summary>
         /// Creates and writes a package based on the package configuration file
         /// </summary>
-        /// <param name="packageConfiguration">The deserialized configuration file</param>
+        /// <param name="packageConfiguration">The 
+        /// d configuration file</param>
         /// <returns>The written package in bytes</returns>
         Task<byte[]> Pack(PackageConfiguration packageConfiguration);
     }

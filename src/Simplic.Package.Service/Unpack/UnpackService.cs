@@ -37,13 +37,8 @@ namespace Simplic.Package.Service
         /// <returns>A UnpackedPackage object</returns>
         public async Task<Package> Unpack(byte[] packageBytes)
         {
-            using (MemoryStream stream = new MemoryStream())
+            using (MemoryStream stream = new MemoryStream(packageBytes))
             {
-                foreach (var _byte in packageBytes)
-                {
-                    stream.WriteByte(_byte);
-                }
-
                 using (ZipArchive zipArchive = new ZipArchive(stream, ZipArchiveMode.Read))
                 {
                     ZipArchiveEntry configurationFile = null;
@@ -81,16 +76,20 @@ namespace Simplic.Package.Service
                         foreach (var objectListItem in item.Value)
                         {
                             var zipEntry = zipArchive.GetEntry(objectListItem.Target);
+
+                            if (zipEntry == null)
+                                throw new MissingObjectException(""); // TODO: Excepiton handeling if entry doesnt exist
+
                             var zipEntryContent = await fileService.ReadAllBytesAsync(zipEntry.Open());
 
                             var unpackObjectResult = new UnpackObjectResult
                             {
                                 Data = zipEntryContent,
-                                Location = objectListItem.Target,
+                                Location = objectListItem.Target, // TODO: is this needed?
                                 Mode = objectListItem.Mode
                             };
 
-                            contents.Add(unpackObjectService.UnpackObject(unpackObjectResult, objectListItem.Deserialize));
+                            contents.Add(unpackObjectService.UnpackObject(unpackObjectResult));
                         }
                         unpackedObjects[item.Key] = contents;
                     }

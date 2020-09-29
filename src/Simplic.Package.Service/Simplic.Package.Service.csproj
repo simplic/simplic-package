@@ -31,8 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.CoreLib, Version=6.0.18.63, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.0.18.63\lib\net451\Simplic.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Sql, Version=6.3.20.322, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Sql.6.3.20.322\lib\net48\Simplic.Sql.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,7 +70,9 @@
   <ItemGroup>
     <Compile Include="FileService.cs" />
     <Compile Include="Install\CheckDependencyService.cs" />
+    <Compile Include="Install\InstallGridService.cs" />
     <Compile Include="Install\InstallService.cs" />
+    <Compile Include="Install\InstallSqlService.cs" />
     <Compile Include="Pack\PackGridService.cs" />
     <Compile Include="Pack\PackRepositoryService.cs" />
     <Compile Include="Pack\PackService.cs" />
@@ -72,8 +83,13 @@
     <Compile Include="Unpack\UnpackService.cs" />
     <Compile Include="Unpack\UnpackSqlService.cs" />
     <Compile Include="Validate\ValidateGridService.cs" />
+    <Compile Include="Validate\ValidateSqlService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Simplic.Package.Data.DB\Simplic.Package.Data.DB.csproj">
+      <Project>{061247f8-3f50-4271-852e-4ad4dc8592b0}</Project>
+      <Name>Simplic.Package.Data.DB</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Package\Simplic.Package.csproj">
       <Project>{0aca9764-a25d-4517-b64e-95645674666b}</Project>
       <Name>Simplic.Package</Name>

@@ -75,7 +75,7 @@ namespace Simplic.Package.Service
                         }
                     }
                 }
-                // File.WriteAllBytes(".", stream.ToArray());
+                // File.WriteAllBytes($"{packageConfiguration.Name}_{packageConfiguration.Version}", stream.ToArray());
                 return stream.ToArray();
             }
         }

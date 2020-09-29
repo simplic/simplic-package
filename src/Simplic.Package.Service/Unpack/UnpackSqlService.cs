@@ -8,30 +8,17 @@ namespace Simplic.Package.Service.Unpack
 {
     public class UnpackSqlService : IUnpackObjectService
     {
-        public InstallableObject UnpackObject(UnpackObjectResult unpackObjectResult, bool deserialize)
-        {
-            if (deserialize)
-                return DeserializeObject(unpackObjectResult);
-            else
-                return CopyObject(unpackObjectResult);
-        }
-
-        public InstallableObject DeserializeObject(UnpackObjectResult unpackObjectResult)
-        {
-            throw new NotImplementedException();
-        }
-
-        public InstallableObject CopyObject(UnpackObjectResult unpackObjectResult)
+        public InstallableObject UnpackObject(UnpackObjectResult unpackObjectResult)
         {
             var sqlContent = new SqlContent
             {
-                Data = unpackObjectResult.Data
+                Data = Encoding.Default.GetString(unpackObjectResult.Data)
             };
 
             return new InstallableObject
             {
                 Content = sqlContent,
-                Target = unpackObjectResult.Location,
+                Target = unpackObjectResult.Location, // TODO:
                 Mode = unpackObjectResult.Mode
             };
         }

@@ -8,6 +8,11 @@ namespace Simplic.Package
 {
     public interface ICheckDependencyService
     {
+        /// <summary>
+        /// Checks if a given dependecy is satisfied or not
+        /// </summary>
+        /// <param name="dependency">The dependency to check</param>
+        /// <returns>A CheckDependecyResult object</returns>
         Task<CheckDependencyResult> Check(Dependency dependency);
     }
 }

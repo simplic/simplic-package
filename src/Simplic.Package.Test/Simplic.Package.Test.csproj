@@ -79,6 +79,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DependencyInjectionHelper.cs" />
+    <Compile Include="Install\CheckDependencyServiceTest.cs" />
     <Compile Include="Pack\PackServiceTest.cs" />
     <Compile Include="Pack\PackObjectServiceTest.cs" />
     <Compile Include="SimplePack.cs" />
@@ -93,6 +95,10 @@
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Simplic.Package.Data.DB\Simplic.Package.Data.DB.csproj">
+      <Project>{061247F8-3F50-4271-852E-4AD4DC8592B0}</Project>
+      <Name>Simplic.Package.Data.DB</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Package.Service\Simplic.Package.Service.csproj">
       <Project>{2568b37d-7937-4368-a6e3-2ade2ad7196b}</Project>
       <Name>Simplic.Package.Service</Name>

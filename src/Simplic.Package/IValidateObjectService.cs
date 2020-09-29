@@ -9,5 +9,6 @@ namespace Simplic.Package
     public interface IValidateObjectService
     {
         Task<ValidateObjectResult> Validate(PackObjectResult packObjectResult);
+        // Task<ValidateObjectResult> ValidateMigration(InstallableObject installableObject);
     }
 }

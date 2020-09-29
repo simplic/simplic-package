@@ -57,6 +57,12 @@ namespace Simplic.Package.CLI
 
             if (showHelp)
             {
+                if (create)
+                {
+                    ShowConfigurationHelp();
+                    return 0;
+                }
+
                 ShowHelp(optionSet);
                 return 0;
             }
@@ -149,6 +155,11 @@ namespace Simplic.Package.CLI
             Console.WriteLine();
             Console.WriteLine("Options:");
             optionSet.WriteOptionDescriptions(Console.Out);
+        }
+
+        private static void ShowConfigurationHelp()
+        {
+            Console.WriteLine("Configuration Help");
         }
     }
 }

@@ -8,17 +8,7 @@ namespace Simplic.Package.Service.Unpack
 {
     public class UnpackRepositoryService : IUnpackObjectService
     {
-        public InstallableObject CopyObject(UnpackObjectResult unpackObjectResult)
-        {
-            throw new NotImplementedException();
-        }
-
-        public InstallableObject DeserializeObject(UnpackObjectResult unpackObjectResult)
-        {
-            throw new NotImplementedException();
-        }
-
-        public InstallableObject UnpackObject(UnpackObjectResult unpackObjectResult, bool deserialize)
+        public InstallableObject UnpackObject(UnpackObjectResult unpackObjectResult)
         {
             throw new NotImplementedException();
         }

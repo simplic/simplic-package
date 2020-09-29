@@ -8,6 +8,6 @@ namespace Simplic.Package
 {
     public class SqlContent : IContent
     {
-        public byte[] Data { get; set; }
+        public string Data { get; set; }
     }
 }

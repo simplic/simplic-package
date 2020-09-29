@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Test", "Sim
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.CLI", "Simplic.Package.CLI\Simplic.Package.CLI.csproj", "{D49674CC-DB8D-4C91-A74E-6E178E5F6CA3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Data.DB", "Simplic.Package.Data.DB\Simplic.Package.Data.DB.csproj", "{061247F8-3F50-4271-852E-4AD4DC8592B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{D49674CC-DB8D-4C91-A74E-6E178E5F6CA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D49674CC-DB8D-4C91-A74E-6E178E5F6CA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D49674CC-DB8D-4C91-A74E-6E178E5F6CA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{061247F8-3F50-4271-852E-4AD4DC8592B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{061247F8-3F50-4271-852E-4AD4DC8592B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{061247F8-3F50-4271-852E-4AD4DC8592B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{061247F8-3F50-4271-852E-4AD4DC8592B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
