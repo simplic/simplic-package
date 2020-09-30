@@ -10,6 +10,6 @@ namespace Simplic.Package
     {
         Task<IEnumerable<Version>> GetPackageVersions(string packageName);
         Task<Version> GetLatestPackageVersion(string packageName);
-        Task<int> AddPackgageVersion(string packageName, Version version);
+        Task<bool> AddPackgageVersion(string packageName, Version version);
     }
 }

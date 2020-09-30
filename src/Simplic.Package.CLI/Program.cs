@@ -11,12 +11,15 @@ using Simplic.Sql.SqlAnywhere.Service;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Unity;
 using Unity.Lifetime;
+using Console = Colorful.Console;
+
 
 namespace Simplic.Package.CLI
 {
@@ -77,7 +80,7 @@ namespace Simplic.Package.CLI
                 return 0;
             }
 
-            Debugger.Launch();
+            // Debugger.Launch();
             var container = new UnityContainer();
             container.RegisterType<ILogService, LogService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IPackService, PackService>();
@@ -99,18 +102,17 @@ namespace Simplic.Package.CLI
 
             var logService = container.Resolve<ILogService>();
 
-            logService.Logged += (sender, e) =>
+            logService.MessageAdded += (sender, e) =>
             {
-                var eventArgs = (LogMessageEventArgs)e;
-                if ((int)eventArgs.LogLevel <= (int)verbosity)
-                    Console.WriteLine(eventArgs.Message);
+                if ((int)e.LogLevel <= (int)verbosity)
+                    MyWriteLine(e.Message, e.LogLevel);                    
             };
 
             if (create)
             {
                 var packageConfiguration = new PackageConfiguration
                 {
-                    PackageFormatVersion = new Version(1,0,0,0),
+                    PackageFormatVersion = new Version(1, 0, 0, 0),
                     Name = name,
                     Version = new Version(1, 0, 0, 0),
                     Dependencies = new List<Dependency>(),
@@ -147,10 +149,9 @@ namespace Simplic.Package.CLI
                 }
 
                 Console.WriteLine("Check database connection ...");
-
                 using (var connection = ConnectionManager.GetOpenPoolConnection<SAConnection>(connectionString))
                 {
-                   Console.WriteLine("Connected!");
+                    Console.WriteLine("Connected!");
                 }
 
                 var unpackService = container.Resolve<IUnpackService>();
@@ -164,6 +165,20 @@ namespace Simplic.Package.CLI
                 return 0;
             }
             return 0;
+        }
+
+        private static void MyWriteLine(string message, LogLevel logLevel)
+        {
+            if (logLevel == LogLevel.Error)
+                Console.WriteLine(message, Color.Red);
+            else if (logLevel == LogLevel.Warning)
+                Console.WriteLine(message, Color.Orange);
+            else if (logLevel == LogLevel.Info)
+                Console.WriteLine(message, Color.WhiteSmoke);
+            else if (logLevel == LogLevel.Debug)
+                Console.WriteLine(message, Color.Yellow);
+            else
+                Console.WriteLine(message);
         }
 
         private static void ShowHelp(OptionSet optionSet)

@@ -90,6 +90,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exception\ExistingPackageException.cs" />
     <Compile Include="ILogService.cs" />
     <Compile Include="Model\InstallObjectResult.cs" />
     <Compile Include="Model\LogMessageEventArgs.cs" />
@@ -135,7 +136,6 @@
     <Compile Include="Model\ValidateObjectResult.cs" />
     <Compile Include="Model\ValidatePackageResult.cs" />
     <Compile Include="Model\Protocol.cs" />
-    <Compile Include="ProtocolWriter.cs" />
     <Compile Include="UnpackObjectResult.cs" />
   </ItemGroup>
   <ItemGroup>

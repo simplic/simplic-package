@@ -25,8 +25,7 @@ namespace Simplic.Package.Service
 
         public async Task Install(Package unpackedPackage)
         {
-
-            Debugger.Launch();
+            // Debugger.Launch();
             // Check for dependencies
             var checkDependencyService = container.Resolve<ICheckDependencyService>();
 
@@ -42,13 +41,15 @@ namespace Simplic.Package.Service
 
             // Check if package already exists and act accordingly
             var existingPackageVersion = await packageTrackingRepository.GetLatestPackageVersion(unpackedPackage.Name);
-            if (existingPackageVersion != null && existingPackageVersion == unpackedPackage.Version)
+            if (unpackedPackage?.Version == existingPackageVersion)
             {
-                await logService.WriteAsync($"A package with name {unpackedPackage.Name} and version {unpackedPackage.Version} is already installed.", LogLevel.Info);
+                await logService.WriteAsync($"Version {existingPackageVersion} of {unpackedPackage.Name} is already installed.", LogLevel.Error);
+                // throw new ExistingPackageException($"The version {existingPackageVersion} of this package is already installed.");
             }
-            else if (existingPackageVersion != null && existingPackageVersion > unpackedPackage.Version)
+            else if (unpackedPackage?.Version < existingPackageVersion)
             {
-                await logService.WriteAsync($"A package with name {unpackedPackage.Name} and version {existingPackageVersion} is already installed.", LogLevel.Info);
+                await logService.WriteAsync($"A later version ({existingPackageVersion}) of {unpackedPackage.Name} is already installed.", LogLevel.Info);
+                // throw new ExistingPackageException($"A later version ({existingPackageVersion}) of the package is already installed.");
             }
 
             // Install the objects
@@ -78,11 +79,10 @@ namespace Simplic.Package.Service
 
             // Add to InstalledPackages in database
             var success = await packageTrackingRepository.AddPackgageVersion(unpackedPackage.Name, unpackedPackage.Version);
-            if (success == 1)
+            if (success)
                 await logService.WriteAsync($"Wrote package with name {unpackedPackage.Name} and version {unpackedPackage.Version} to installed packages table", LogLevel.Info);
             else
                 await logService.WriteAsync($"Failed to write package with name {unpackedPackage.Name} and version {unpackedPackage.Version} to installed packages table.", LogLevel.Error);
-
         }
 
         public async Task Uninstall(Package unpackedPackage)

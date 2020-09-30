@@ -8,7 +8,7 @@ namespace Simplic.Package
 {
     public interface ILogService
     {
-        event EventHandler<EventArgs> Logged;
+        event EventHandler<LogMessageEventArgs> MessageAdded;
         Task WriteAsync(string message, LogLevel logLevel);
     }
 }

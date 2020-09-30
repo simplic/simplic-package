@@ -8,12 +8,12 @@ namespace Simplic.Package.Service
 {
     public class LogService : ILogService
     {
-        public event EventHandler<EventArgs> Logged;
+        public event EventHandler<LogMessageEventArgs> MessageAdded;
         public Protocol Protocol { get; set; } = new Protocol();
 
         public async Task WriteAsync(string message, LogLevel logLevel)
         {
-            Logged?.Invoke(this, new LogMessageEventArgs { Message = message, LogLevel = logLevel });
+            MessageAdded?.Invoke(this, new LogMessageEventArgs { Message = message, LogLevel = logLevel });
 
             if (logLevel == LogLevel.Error)
                 Protocol.Error.Add(message);

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Data.DB
 {
+    // TODO: change to correct table names!
     public class PackageTrackingRepository : IPackageTrackingRepository
     {
         private readonly ISqlService sqlService;
@@ -19,11 +20,10 @@ namespace Simplic.Package.Data.DB
 
         public async Task<IEnumerable<Version>> GetPackageVersions(string packageName)
         {
-            // TODO: This shouldent be select *
-            Func<IDbConnection, Task<IEnumerable<Version>>> func = async conn => await conn.QueryAsync<Version>("Select * from PACKAGETABLE where packagename = :packageName", new { packageName });
-            var versions = await sqlService.OpenConnection(func);
-
-            return versions;
+            var rows = await sqlService.OpenConnection(
+                    async (c) => await c.QueryAsync("Select major, minor, build, revision from Package where package_name = :packageName", new { packageName }
+                ));
+            return rows.Select(row => new Version(row.major, row.minor, row.build, row.revision));
         }
 
         public async Task<Version> GetLatestPackageVersion(string packageName)
@@ -32,16 +32,16 @@ namespace Simplic.Package.Data.DB
             var versionList = versions.ToList();
             versionList.Sort((x, y) => x.CompareTo(y));
 
-            return versionList.Last();
+            return versionList.LastOrDefault();
         }
 
-        public async Task<int> AddPackgageVersion(string packageName, Version version)
+        public async Task<bool> AddPackgageVersion(string packageName, Version version)
         {
-            var success = await sqlService.OpenConnection(
-                async (conn) => await conn.ExecuteAsync("Insert into InstalledPackages (package_name, major, minor, build, revision) values (:packageName, :major, :minor, :build, :revision",
+            var affectedRows = await sqlService.OpenConnection(
+                async (c) => await c.ExecuteAsync("Insert into Package (package_name, major, minor, build, revision) values (:packageName, :major, :minor, :build, :revision)",
                                             new { packageName = packageName, major = version.Major, minor = version.Minor, build = version.Build, revision = version.Revision }
             ));
-            return success;
+            return affectedRows == 1;
         }
     }
 }
