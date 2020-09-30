@@ -9,6 +9,6 @@ namespace Simplic.Package
     public interface IObjectRepository
     {
         Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject);
-        Task InstallObject(InstallableObject installableObject);
+        Task<InstallObjectResult> InstallObject(InstallableObject installableObject);
     }
 }

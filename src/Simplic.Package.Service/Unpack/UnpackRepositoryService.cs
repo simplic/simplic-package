@@ -8,7 +8,7 @@ namespace Simplic.Package.Service.Unpack
 {
     public class UnpackRepositoryService : IUnpackObjectService
     {
-        public InstallableObject UnpackObject(UnpackObjectResult unpackObjectResult)
+        Task<UnpackObjectResult> IUnpackObjectService.UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             throw new NotImplementedException();
         }

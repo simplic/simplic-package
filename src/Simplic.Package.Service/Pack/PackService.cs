@@ -38,10 +38,10 @@ namespace Simplic.Package.Service
         {
             using (var stream = new MemoryStream())
             {
-                using (var zip = new ZipArchive(stream, ZipArchiveMode.Create))
+                using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
                 {
                     // Create entry for package.json
-                    var configurationEntry = zip.CreateEntry("package.json");
+                    var configurationEntry = archive.CreateEntry("package.json");
 
                     var json = JsonConvert.SerializeObject(packageConfiguration);
                     var jsonBytes = Encoding.Default.GetBytes(json);
@@ -62,25 +62,26 @@ namespace Simplic.Package.Service
                             {
                                 var validateObjectService = container.Resolve<IValidateObjectService>(item.Key);
                                 validateObjectResult = await validateObjectService.Validate(result);
-                            }
-                            catch (ResolutionFailedException ufe)
-                            {
-                            }
+                                await logService.WriteAsync(validateObjectResult.LogMessage, validateObjectResult.LogLevel);
 
-                            // Write the object to the zipfile
-                            if (validateObjectResult == null || validateObjectResult.IsOkay)
-                            { // If no validation implemented or validation returned true                            {
-                                var entry = zip.CreateEntry(result.Location);
-                                await WriteToEntry(entry, result.File);
+                                if (!validateObjectResult.IsOkay)
+                                    throw new InvalidObjectException(validateObjectResult.LogMessage, validateObjectResult.Exception);
                             }
-                            else
+                            catch (ResolutionFailedException)
                             {
-                                throw new InvalidObjectException($"{objectListItem.Source} is an Invalid Object.\n{validateObjectResult.ErrorMessage}");
+                                await logService.WriteAsync($"Skipped Validation on {objectListItem.Source} due to no inability to resolve validation service for {item.Key}", LogLevel.Info);
+                            }
+                            finally // Write the object to the archive
+                            {
+                                if (validateObjectResult == null || validateObjectResult.IsOkay)
+                                {
+                                    var entry = archive.CreateEntry(result.Location);
+                                    await WriteToEntry(entry, result.File);
+                                }
                             }
                         }
                     }
                 }
-
                 File.WriteAllBytes($"{packageConfiguration.Name}_{packageConfiguration.Version}.zip", stream.ToArray());
                 return stream.ToArray();
             }

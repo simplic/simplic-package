@@ -20,9 +20,9 @@ namespace Simplic.Package.Service.Install
             return await repository.CheckMigration(installableObject);
         }
 
-        public async Task InstallObject(InstallableObject installableObject)
+        public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            await repository.InstallObject(installableObject);
+            return await repository.InstallObject(installableObject);
         }
 
         public Task OverwriteObject(InstallableObject installableObject)

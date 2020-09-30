@@ -12,7 +12,7 @@ namespace Simplic.Package
         ///
         /// Exceptions:
         /// Object exists, Invalid Object Exception (Object has no target / content), Database Connection failed, various DatabaseExceptions
-        Task InstallObject(InstallableObject installableObject);
+        Task<InstallObjectResult> InstallObject(InstallableObject installableObject);
 
         /// <summary>
         /// Uninstalls an existing Object

@@ -11,8 +11,8 @@ namespace Simplic.Package.Service.Install
 {
     public class CheckDependencyService : ICheckDependencyService
     {
-        private readonly IVersionRepository versionService;
-        public CheckDependencyService(IVersionRepository versionService)
+        private readonly IPackageTrackingRepository versionService;
+        public CheckDependencyService(IPackageTrackingRepository versionService)
         {
             this.versionService = versionService;
         }
@@ -24,7 +24,7 @@ namespace Simplic.Package.Service.Install
                 Dependency = dependency
             };
 
-            var versions = await versionService.GetVersionsAsync(dependency.PackageName);
+            var versions = await versionService.GetPackageVersions(dependency.PackageName);
             var versionsList = versions.ToList();
             versionsList.Sort((x, y) => x.CompareTo(y));
 

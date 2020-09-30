@@ -91,12 +91,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ILogService.cs" />
+    <Compile Include="Model\InstallObjectResult.cs" />
     <Compile Include="Model\LogMessageEventArgs.cs" />
     <Compile Include="Model\CheckMigrationResult.cs" />
     <Compile Include="Exception\MissingObjectException.cs" />
     <Compile Include="Exception\MissingDependencyException.cs" />
     <Compile Include="IObjectRepository.cs" />
-    <Compile Include="IVersionRepository.cs" />
+    <Compile Include="IPackageTrackingRepository.cs" />
     <Compile Include="Model\CheckDependencyResult.cs" />
     <Compile Include="Exception\InvalidObjectException.cs" />
     <Compile Include="Exception\InvalidPackageException.cs" />
@@ -129,12 +130,13 @@
     <Compile Include="Model\PackageConfiguration.cs" />
     <Compile Include="Exception\PackageConfigurationException.cs" />
     <Compile Include="Model\PackObjectResult.cs" />
-    <Compile Include="Model\UnpackObjectResult.cs" />
+    <Compile Include="Model\ExtractArchiveEntryResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\ValidateObjectResult.cs" />
     <Compile Include="Model\ValidatePackageResult.cs" />
     <Compile Include="Model\Protocol.cs" />
     <Compile Include="ProtocolWriter.cs" />
+    <Compile Include="UnpackObjectResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

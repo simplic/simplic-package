@@ -1,6 +1,7 @@
 ﻿using Simplic.Package.Service;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Unity;
 using Xunit;
 
@@ -483,7 +484,7 @@ namespace Simplic.Package.Test
 }";
 
         [Fact]
-        public void DeserializeObject_Deserialization_Test()
+        public async Task DeserializeObject_Deserialization_Test()
         {
             var container = new UnityContainer();
             container.RegisterType<IUnpackObjectService, UnpackGridService>();
@@ -492,14 +493,15 @@ namespace Simplic.Package.Test
             // var fileService = container.Resolve<IFileService>();
             // var x = await fileService.ReadAllTextAsync("C:\Users\Froehlich\Desktop\blab.txt");
 
-            var unpackObjectResult = new UnpackObjectResult
+            var extractArchiveEntryResult = new ExtractArchiveEntryResult
             {
                 Data = Encoding.Default.GetBytes(json),
                 Location = ""
             };
 
             var service = container.Resolve<IUnpackObjectService>();
-            var installableObject = service.UnpackObject(unpackObjectResult);
+            var unpackObjectResult = await service.UnpackObject(extractArchiveEntryResult);
+            var installableObject = unpackObjectResult.InstallableObject;
 
             Assert.IsType<DeserializedGrid>(installableObject.Content);
             var deserializedGrid = (DeserializedGrid)installableObject.Content;

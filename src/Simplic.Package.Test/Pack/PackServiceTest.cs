@@ -17,8 +17,7 @@ namespace Simplic.Package.Test
         [Fact]
         public async void WriteToEntry_WritingToEntry_Test()
         {
-            var container = new UnityContainer();
-            container.RegisterType<IPackService, PackService>();
+            var container = DependencyInjectionHelper.GetContainer();
 
             var entryName = "TestEntry";
             var contentString = "{TestContent}";
@@ -29,9 +28,9 @@ namespace Simplic.Package.Test
                 using (var zipArchive = new ZipArchive(stream, ZipArchiveMode.Create, true))
                 {
                     var entry = zipArchive.CreateEntry(entryName);
-                    var service = container.Resolve<PackService>();
+                    var packService = container.Resolve<PackService>();
 
-                    await service.WriteToEntry(entry, contentBytes);
+                    await packService.WriteToEntry(entry, contentBytes);
                 }
 
                 // Test if it worked
@@ -56,8 +55,10 @@ namespace Simplic.Package.Test
         }
 
         [Fact]
-        public async void Pack_WritingConfigFile_Test()
+        public async Task Pack_WritingConfigFile_Test()
         {
+            var container = DependencyInjectionHelper.GetContainer();
+
             var packageConfiguration = new PackageConfiguration
             {
                 PackageFormatVersion = new Version(1,0,0,0),
@@ -67,12 +68,9 @@ namespace Simplic.Package.Test
                 Objects = new Dictionary<string, IList<ObjectListItem>>()
             };
 
-            var container = new UnityContainer();
-            container.RegisterType<IPackService, PackService>();
+            var packService = container.Resolve<IPackService>();
 
-            var service = container.Resolve<IPackService>();
-
-            var streamBytes = await service.Pack(packageConfiguration);
+            var streamBytes = await packService.Pack(packageConfiguration);
 
             using (var stream = new MemoryStream())
             {
@@ -91,6 +89,8 @@ namespace Simplic.Package.Test
         [Fact]
         public async void Pack_WritingObjectFiles_Test()
         {
+            var container = DependencyInjectionHelper.GetContainer();
+
             var packageConfiguration = new PackageConfiguration()
             {
                 PackageFormatVersion = new Version(1, 0, 0, 0),
@@ -116,20 +116,16 @@ namespace Simplic.Package.Test
             };
 
             for (int i = 0; i < 12; i++)
-                packageConfiguration.Objects["sql"].Add(new ObjectListItem());
-
-            var container = new UnityContainer();
-            container.RegisterType<IPackService, PackService>();
-            container.RegisterType<IPackObjectService, PackSqlService>("sql");
+                packageConfiguration.Objects["sql"].Add(new ObjectListItem { Target = "sql/Blub.sql" });
 
             var fileService = new Mock<IFileService>();
             fileService.Setup(x => x.ReadAllBytesAsync(It.IsAny<string>())).Returns(Task.FromResult(new byte[] { 0, 1 }));
 
             container.RegisterInstance<IFileService>(fileService.Object);
 
-            var service = container.Resolve<IPackService>();
+            var packService = container.Resolve<IPackService>();
 
-            var streamBytes = await service.Pack(packageConfiguration);
+            var streamBytes = await packService.Pack(packageConfiguration);
 
             using (var stream = new MemoryStream())
             {

@@ -10,20 +10,21 @@ namespace Simplic.Package.Service.Install
 {
     public class InstallGridService : IInstallObjectService
     {
-        private readonly IObjectRepository repository; // Unity container
+        private readonly IObjectRepository repository;
         public InstallGridService([Dependency("grid")] IObjectRepository repository)
         {
             this.repository = repository;
         }
 
-        public Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject)
+        public async Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject)
         {
             throw new NotImplementedException();
         }
 
-        public async Task InstallObject(InstallableObject installableObject)
+        public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             // Todo: Automapper und Simplic API
+            throw new NotImplementedException();
         }
 
         public Task OverwriteObject(InstallableObject installableObject)

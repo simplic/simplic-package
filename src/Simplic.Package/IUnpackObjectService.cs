@@ -1,7 +1,9 @@
-﻿namespace Simplic.Package
+﻿using System.Threading.Tasks;
+
+namespace Simplic.Package
 {
     public interface IUnpackObjectService
     {
-        InstallableObject UnpackObject(UnpackObjectResult unpackObjectResult);
+        Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult);
     }
 }

@@ -36,7 +36,7 @@ namespace Simplic.Package.Test
 
             Assert.Equal(fileBytes, packObjectResult.File);
             Assert.Equal(fileText, Encoding.Default.GetString(packObjectResult.File));
-            Assert.Equal($"{objectType}/{objectListItem.Target}", packObjectResult.Location);
+            Assert.Equal(objectListItem.Target, packObjectResult.Location);
         }
     }
 }

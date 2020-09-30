@@ -89,9 +89,9 @@ namespace Simplic.Package.Test
         {
             var container = DependencyInjectionHelper.GetContainer();
 
-            var versionServiceMock = new Mock<IVersionRepository>();
-            versionServiceMock.Setup(x => x.GetVersionsAsync(It.IsAny<string>())).Returns(Task.FromResult(exisingVersionsList));
-            container.RegisterInstance<IVersionRepository>(versionServiceMock.Object);
+            var versionServiceMock = new Mock<IPackageTrackingRepository>();
+            versionServiceMock.Setup(x => x.GetPackageVersions(It.IsAny<string>())).Returns(Task.FromResult(exisingVersionsList));
+            container.RegisterInstance<IPackageTrackingRepository>(versionServiceMock.Object);
 
             var service = container.Resolve<CheckDependencyService>();
             var result = await service.Check(dependency);

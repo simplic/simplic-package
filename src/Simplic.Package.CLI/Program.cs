@@ -85,7 +85,7 @@ namespace Simplic.Package.CLI
             container.RegisterType<IInstallService, InstallService>();
             container.RegisterType<IFileService, FileService>();
             container.RegisterType<ICheckDependencyService, CheckDependencyService>();
-            container.RegisterType<IVersionRepository, VersionRepository>();
+            container.RegisterType<IPackageTrackingRepository, PackageTrackingRepository>();
 
             container.RegisterType<IInstallObjectService, InstallSqlService>("sql");
             container.RegisterType<IObjectRepository, SqlRepository>("sql");

@@ -1,22 +1,39 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Simplic.Package.Service
 {
     public class UnpackGridService : IUnpackObjectService
     {
-        public InstallableObject UnpackObject(UnpackObjectResult unpackObjectResult)
+        public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
-            var json = Encoding.Default.GetString(unpackObjectResult.Data);
-            var deserializedGrid = JsonConvert.DeserializeObject<DeserializedGrid>(json, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error }); // TODO: try catch
+            var unpackObjectResult = new UnpackObjectResult();
 
-            return new InstallableObject
+            var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
+            
+            try
             {
-                Content = deserializedGrid,
-                Target = unpackObjectResult.Location, // TODO: is this even needed?
-                Mode = unpackObjectResult.Mode
-            };
+                var content = JsonConvert.DeserializeObject<DeserializedGrid>(json, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error }); // TODO: try catch
+
+                unpackObjectResult.InstallableObject = new InstallableObject
+                {
+                    Content = content,
+                    Target = extractArchiveEntryResult.Location, // TODO: What to put here? this could be useful
+                    Mode = extractArchiveEntryResult.Mode
+                };
+                unpackObjectResult.LogMessage = $"Succesfully deserialiazed the grid at {extractArchiveEntryResult.Location}";
+                unpackObjectResult.LogLevel = LogLevel.Info;
+            }
+            catch (JsonSerializationException jse)
+            {
+                unpackObjectResult.LogMessage = $"Failed to serialize the grid at {extractArchiveEntryResult.Location}";
+                unpackObjectResult.LogLevel = LogLevel.Error;
+                unpackObjectResult.Exception = jse;
+            }
+
+            return unpackObjectResult;
         }
     }
 }

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
-    public class ValidateObjectResult
+    public class UnpackObjectResult
     {
-        public bool IsOkay { get; set; }
+        public InstallableObject InstallableObject { get; set; }
         public string LogMessage { get; set; }
         public LogLevel LogLevel { get; set; }
         public Exception Exception { get; set; }
