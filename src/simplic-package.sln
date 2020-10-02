@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Grid", "Sim
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Repository", "Simplic.Package.Repository\Simplic.Package.Repository.csproj", "{1366426D-40CE-4E6F-9990-A5AC7D67B9A6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ObjectTypes", "ObjectTypes", "{FEC87CDA-841F-43DB-882C-7F40DF7A8B5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +62,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{49767089-50D5-48B6-A07A-DA54FEB493A3} = {FEC87CDA-841F-43DB-882C-7F40DF7A8B5D}
+		{0B4D1189-8A3F-4436-8DE4-9378CF5E5761} = {FEC87CDA-841F-43DB-882C-7F40DF7A8B5D}
+		{1366426D-40CE-4E6F-9990-A5AC7D67B9A6} = {FEC87CDA-841F-43DB-882C-7F40DF7A8B5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4EA82266-D86E-4D97-B0C6-41D6E7D8A584}
