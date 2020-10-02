@@ -2,6 +2,10 @@
 
 namespace Simplic.Package
 {
+    /// <summary>
+    /// An exception thrown when the package configuration is invalid
+    /// Can be thrown when packing or unpacking
+    /// </summary>
     public class PackageConfigurationException : Exception
     {
         public PackageConfigurationException()

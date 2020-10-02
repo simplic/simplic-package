@@ -1,16 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Service
 {
     public class LogService : ILogService
-    {
+
+    {       /// <summary>
+            /// Subscribers to this event are invoked whenever a message is added to the log
+            /// </summary>
         public event EventHandler<LogMessageEventArgs> MessageAdded;
+
         public Protocol Protocol { get; set; } = new Protocol();
 
+        /// <summary>
+        /// Adds a message to the log
+        /// </summary>
+        /// <param name="message">The message to add</param>
+        /// <param name="logLevel">The LogLevel of the message, indicating its severity</param>
+        /// <returns></returns>
         public async Task WriteAsync(string message, LogLevel logLevel)
         {
             MessageAdded?.Invoke(this, new LogMessageEventArgs { Message = message, LogLevel = logLevel });

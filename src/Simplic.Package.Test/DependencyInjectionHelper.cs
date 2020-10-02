@@ -1,13 +1,6 @@
 ﻿using Simplic.Package.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Unity;
 using Unity.Lifetime;
-using Xunit.Sdk;
 
 namespace Simplic.Package.Test
 {

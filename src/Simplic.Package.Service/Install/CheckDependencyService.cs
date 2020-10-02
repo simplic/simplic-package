@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Simplic.Package.Data.DB;
-using Unity;
 
 namespace Simplic.Package.Service.Install
 {
     public class CheckDependencyService : ICheckDependencyService
     {
         private readonly IPackageTrackingRepository versionService;
+
         public CheckDependencyService(IPackageTrackingRepository versionService)
         {
             this.versionService = versionService;
         }
 
+        /// <summary>
+        /// Checks if a given dependecy is satisfied or not
+        /// </summary>
+        /// <param name="dependency">The dependency to check</param>
+        /// <returns>A CheckDependecyResult object</returns>
         public async Task<CheckDependencyResult> Check(Dependency dependency)
         {
             var result = new CheckDependencyResult
@@ -32,11 +32,13 @@ namespace Simplic.Package.Service.Install
             {
                 result.Exists = true;
                 result.LatestExistingVersion = versionsList.Last();
-            } else if (versions.Any())
+            }
+            else if (versions.Any())
             {
                 result.Exists = false;
                 result.LatestExistingVersion = versionsList.Last();
-            } else
+            }
+            else
             {
                 result.Exists = false;
                 result.LatestExistingVersion = null;

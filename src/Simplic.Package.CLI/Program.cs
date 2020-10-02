@@ -10,7 +10,6 @@ using Simplic.Sql;
 using Simplic.Sql.SqlAnywhere.Service;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -19,7 +18,6 @@ using System.Threading.Tasks;
 using Unity;
 using Unity.Lifetime;
 using Console = Colorful.Console;
-
 
 namespace Simplic.Package.CLI
 {
@@ -105,7 +103,7 @@ namespace Simplic.Package.CLI
             logService.MessageAdded += (sender, e) =>
             {
                 if ((int)e.LogLevel <= (int)verbosity)
-                    MyWriteLine(e.Message, e.LogLevel);                    
+                    MyWriteLine(e.Message, e.LogLevel);
             };
 
             if (create)

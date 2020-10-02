@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
+    /// <summary>
+    /// Service for checking if all dependencies are satisfied
+    /// </summary>
     public interface ICheckDependencyService
     {
         /// <summary>

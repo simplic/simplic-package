@@ -1,8 +1,4 @@
-﻿using Simplic.Sql;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
 using Unity;
 
@@ -11,6 +7,7 @@ namespace Simplic.Package.Service.Install
     public class InstallGridService : IInstallObjectService
     {
         private readonly IObjectRepository repository;
+
         public InstallGridService([Dependency("grid")] IObjectRepository repository)
         {
             this.repository = repository;

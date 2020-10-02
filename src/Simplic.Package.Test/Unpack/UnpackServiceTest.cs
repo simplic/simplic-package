@@ -1,5 +1,4 @@
-﻿using Simplic.Package.Service;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -128,7 +127,6 @@ namespace Simplic.Package.Test
                         var exception = await Record.ExceptionAsync(async () => await service.Unpack(stream.ToArray()));
                         Assert.IsNotType<PackageConfigurationException>(exception);
                     }
-
                 }
             }
         }

@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,7 +17,7 @@ namespace Simplic.Package.Service
                 JsonConvert.SerializeObject(deserializedGrid);
                 result.LogMessage = $"Succesfully validated {packObjectResult.Location}";
                 result.LogLevel = LogLevel.Info;
-            } 
+            }
             catch (Exception ex)
             {
                 result.IsOkay = false;

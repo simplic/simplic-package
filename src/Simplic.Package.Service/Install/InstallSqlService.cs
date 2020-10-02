@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Unity;
 
@@ -10,6 +7,7 @@ namespace Simplic.Package.Service.Install
     public class InstallSqlService : IInstallObjectService
     {
         private readonly IObjectRepository repository;
+
         public InstallSqlService([Dependency("sql")] IObjectRepository repository)
         {
             this.repository = repository;

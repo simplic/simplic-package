@@ -1,14 +1,10 @@
 ﻿using Moq;
-using Simplic.Package;
+using Simplic.Package.Service.Install;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Xunit;
 using Unity;
-using Simplic.Package.Service.Install;
-using System.Dynamic;
+using Xunit;
 
 namespace Simplic.Package.Test
 {
@@ -26,7 +22,7 @@ namespace Simplic.Package.Test
                     new List<Version> {
                         new Version(1,2,3,4),
                         new Version(3,42,24),
-                        new Version(1,2,34,5) 
+                        new Version(1,2,34,5)
                         },
                     true,
                     new Version(3,42,24),

@@ -6,6 +6,6 @@
     {
         public string Target { get; set; }
         public IContent Content { get; set; }
-        public MigrationMode Mode { get; set; }
+        public InstallMode Mode { get; set; }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Data;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -13,13 +11,18 @@ namespace Simplic.Package.Service
     {
         private readonly IUnityContainer container;
         private readonly ILogService logService;
-        
+
         public PackService(IUnityContainer container, ILogService logService)
         {
             this.container = container;
             this.logService = logService;
         }
 
+        /// <summary>
+        /// Creates and writes a package based on the package configuration file
+        /// </summary>
+        /// <param name="json">The package configuration file as a string</param>
+        /// <returns>The written archive in bytes</returns>
         public async Task<byte[]> Pack(string json)
         {
             try
@@ -34,6 +37,11 @@ namespace Simplic.Package.Service
             }
         }
 
+        /// <summary>
+        /// Creates and writes a package based on the given PackageConfiguration object
+        /// </summary>
+        /// <param name="packageConfiguration">The PackageConfiguration to create from</param>
+        /// <returns>The written archive in bytes</returns>
         public async Task<byte[]> Pack(PackageConfiguration packageConfiguration)
         {
             using (var stream = new MemoryStream())
@@ -54,14 +62,14 @@ namespace Simplic.Package.Service
 
                         foreach (var objectListItem in item.Value)
                         {
-                            var result = await packObjectService.ReadAsync(objectListItem);
+                            var packObjectResult = await packObjectService.ReadAsync(objectListItem);
 
                             // Validate the packgedObject before it can be written
                             ValidateObjectResult validateObjectResult = null;
                             try
                             {
                                 var validateObjectService = container.Resolve<IValidateObjectService>(item.Key);
-                                validateObjectResult = await validateObjectService.Validate(result);
+                                validateObjectResult = await validateObjectService.Validate(packObjectResult);
                                 await logService.WriteAsync(validateObjectResult.LogMessage, validateObjectResult.LogLevel);
 
                                 if (!validateObjectResult.IsOkay)
@@ -75,8 +83,8 @@ namespace Simplic.Package.Service
                             {
                                 if (validateObjectResult == null || validateObjectResult.IsOkay)
                                 {
-                                    var entry = archive.CreateEntry(result.Location);
-                                    await WriteToEntry(entry, result.File);
+                                    var entry = archive.CreateEntry(packObjectResult.Location);
+                                    await WriteToEntry(entry, packObjectResult.File);
                                 }
                             }
                         }

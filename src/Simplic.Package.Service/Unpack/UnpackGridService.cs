@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +11,7 @@ namespace Simplic.Package.Service
             var unpackObjectResult = new UnpackObjectResult();
 
             var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
-            
+
             try
             {
                 var content = JsonConvert.DeserializeObject<DeserializedGrid>(json, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error }); // TODO: try catch

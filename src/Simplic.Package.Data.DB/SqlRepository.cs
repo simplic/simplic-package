@@ -1,10 +1,6 @@
 ﻿using Dapper;
 using Simplic.Sql;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Data.DB
@@ -25,7 +21,7 @@ namespace Simplic.Package.Data.DB
                 var result = new CheckMigrationResult();
 
                 var row = await c.QueryFirstOrDefaultAsync("Select * from Package_Object where object_type = 'sql' and target = :target", new { installableObject.Target });
-                
+
                 if (row != null)
                 {
                     result.CanMigrate = false;

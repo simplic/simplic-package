@@ -22,10 +22,10 @@ namespace Simplic.Package.Service
         }
 
         /// <summary>
-        /// Unpacks and deserializes the contents of a given package
+        /// Unpacks the contents of a given package
         /// </summary>
         /// <param name="packagePath">The path to the package</param>
-        /// <returns>A UnpackedPackage object</returns>
+        /// <returns>A Package object</returns>
         public async Task<Package> Unpack(string packagePath)
         {
             var packageBytes = await fileService.ReadAllBytesAsync(packagePath); // Dont have to throw anything here, just let it throw itself.
@@ -33,10 +33,10 @@ namespace Simplic.Package.Service
         }
 
         /// <summary>
-        /// Unpacks and deserializes the contents of a given package
+        /// Unpacks the contents of a given package
         /// </summary>
         /// <param name="packageBytes">The package as bytes</param>
-        /// <returns>A UnpackedPackage object</returns>
+        /// <returns>A Packge object</returns>
         public async Task<Package> Unpack(byte[] packageBytes)
         {
             using (MemoryStream stream = new MemoryStream(packageBytes))

@@ -2,7 +2,6 @@
 using Simplic.Package.Service;
 using System.Threading.Tasks;
 using Unity;
-using Xunit;
 
 namespace Simplic.Package.Test
 {

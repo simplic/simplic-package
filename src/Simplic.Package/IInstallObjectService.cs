@@ -2,6 +2,9 @@
 
 namespace Simplic.Package
 {
+    /// <summary>
+    /// Service for installing objects
+    /// </summary>
     public interface IInstallObjectService
     {
         /// <summary>
@@ -15,6 +18,7 @@ namespace Simplic.Package
         Task<InstallObjectResult> InstallObject(InstallableObject installableObject);
 
         /// <summary>
+        /// NOT IMPLEMENTED!
         /// Uninstalls an existing Object
         /// </summary>
         /// <param name="installableObject">The Object to uninstall</param>
@@ -22,11 +26,13 @@ namespace Simplic.Package
         Task UninstallObject(InstallableObject installableObject);
 
         /// <summary>
+        /// NOT IMPLEMENTED!
         /// Force installs an Object by first uninstalling an existing one and then installing the new one
         /// </summary>
         /// <param name="installableObject">The Object to overwrite</param>
         /// <returns></returns>
         Task OverwriteObject(InstallableObject installableObject);
+
         Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject);
     }
 }

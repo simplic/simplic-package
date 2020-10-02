@@ -61,7 +61,7 @@ namespace Simplic.Package.Test
 
             var packageConfiguration = new PackageConfiguration
             {
-                PackageFormatVersion = new Version(1,0,0,0),
+                PackageFormatVersion = new Version(1, 0, 0, 0),
                 Name = "",
                 Version = new Version(),
                 Dependencies = new List<Dependency>(),
@@ -104,12 +104,12 @@ namespace Simplic.Package.Test
                         new ObjectListItem {
                             Source = "source/Source",
                             Target = "target/Target",
-                            Mode = MigrationMode.Deploy
+                            Mode = InstallMode.Deploy
                         },
                         new ObjectListItem {
                             Source = "source/Source",
                             Target = "target/Target",
-                             Mode = MigrationMode.Migrate
+                             Mode = InstallMode.Migrate
                         }
                     }
                 }

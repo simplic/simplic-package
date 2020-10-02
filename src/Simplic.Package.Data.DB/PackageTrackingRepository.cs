@@ -4,20 +4,24 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Data.DB
 {
-    // TODO: change to correct table names!
     public class PackageTrackingRepository : IPackageTrackingRepository
     {
         private readonly ISqlService sqlService;
+
         public PackageTrackingRepository(ISqlService sqlService)
         {
             this.sqlService = sqlService;
         }
 
+        /// <summary>
+        /// Gets all installed versions of a given package from the database
+        /// </summary>
+        /// <param name="packageName">The name of the package</param>
+        /// <returns>An Enumerable of the installed versions</returns>
         public async Task<IEnumerable<Version>> GetPackageVersions(string packageName)
         {
             var rows = await sqlService.OpenConnection(
@@ -26,6 +30,11 @@ namespace Simplic.Package.Data.DB
             return rows.Select(row => new Version(row.major, row.minor, row.build, row.revision));
         }
 
+        /// <summary>
+        /// Gets the latest installed version of a given package
+        /// </summary>
+        /// <param name="packageName">The name of the package</param>
+        /// <returns>The latest version or null if no version exists</returns>
         public async Task<Version> GetLatestPackageVersion(string packageName)
         {
             var versions = await GetPackageVersions(packageName);
@@ -35,6 +44,12 @@ namespace Simplic.Package.Data.DB
             return versionList.LastOrDefault();
         }
 
+        /// <summary>
+        /// Adds the version of a given package to the database
+        /// </summary>
+        /// <param name="packageName">The name of the package</param>
+        /// <param name="version">The version of the package</param>
+        /// <returns>Whether adding the version worked</returns>
         public async Task<bool> AddPackgageVersion(string packageName, Version version)
         {
             var affectedRows = await sqlService.OpenConnection(

@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
+    /// <summary>
+    /// Service for validating objects
+    /// </summary>
     public interface IValidateObjectService
     {
+        /// <summary>
+        /// Validates a given object
+        /// </summary>
+        /// <param name="packObjectResult">The PackObjectResult whose File to validate</param>
+        /// <returns>A ValidateObjectResult object</returns>
         Task<ValidateObjectResult> Validate(PackObjectResult packObjectResult);
-        // Task<ValidateObjectResult> ValidateMigration(InstallableObject installableObject);
     }
 }

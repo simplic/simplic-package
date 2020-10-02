@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO.Pipes;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity;
 
@@ -16,6 +11,7 @@ namespace Simplic.Package.Service
         private readonly IUnityContainer container;
         private readonly ILogService logService;
         private readonly IPackageTrackingRepository packageTrackingRepository;
+
         public InstallService(IUnityContainer container, ILogService logService, IPackageTrackingRepository packageTrackingRepository)
         {
             this.container = container;
@@ -23,6 +19,10 @@ namespace Simplic.Package.Service
             this.packageTrackingRepository = packageTrackingRepository;
         }
 
+        /// <summary>
+        /// Installs a package
+        /// </summary>
+        /// <param name="unpackedPackage">The package to install</param>
         public async Task Install(Package unpackedPackage)
         {
             // Debugger.Launch();
@@ -59,15 +59,16 @@ namespace Simplic.Package.Service
 
                 foreach (var installableObject in item.Value)
                 {
-                    var install = installableObject.Mode == MigrationMode.Deploy;
-                    if (installableObject.Mode == MigrationMode.Migrate)
+                    var install = installableObject.Mode == InstallMode.Deploy;
+                    if (installableObject.Mode == InstallMode.Migrate)
                     {
                         var checkMigrationResult = await installService.CheckMigration(installableObject);
                         install = checkMigrationResult.CanMigrate;
                         await logService.WriteAsync(checkMigrationResult.LogMessage, checkMigrationResult.LogLevel);
                     }
 
-                    if (install) {
+                    if (install)
+                    {
                         var installObjectResult = await installService.InstallObject(installableObject);
                         await logService.WriteAsync(installObjectResult.LogMessage, installObjectResult.LogLevel);
 

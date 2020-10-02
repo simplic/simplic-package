@@ -1,9 +1,7 @@
 ﻿namespace Simplic.Package
 {
-    public class CheckMigrationResult
+    public class CheckMigrationResult : LogResult
     {
         public bool CanMigrate { get; set; }
-        public string LogMessage { get; set; }
-        public LogLevel LogLevel { get; set; }
     }
 }
