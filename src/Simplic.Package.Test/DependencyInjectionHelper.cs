@@ -16,9 +16,10 @@ namespace Simplic.Package.Test
             container.RegisterType<IPackService, PackService>();
             container.RegisterType<IInstallService, InstallService>();
 
-            container.RegisterType<IPackObjectService, PackSqlService>("sql");
-            container.RegisterType<IPackObjectService, PackRepositoryService>("repository");
-            container.RegisterType<IPackObjectService, PackGridService>("grid");
+            // TODO: move tests to own project
+            // container.RegisterType<IPackObjectService, PackSqlService>("sql");
+            // container.RegisterType<IPackObjectService, PackRepositoryService>("repository");
+            // container.RegisterType<IPackObjectService, PackGridService>("grid");
             return container;
         }
     }

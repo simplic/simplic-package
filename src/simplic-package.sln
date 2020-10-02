@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.CLI", "Simp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Data.DB", "Simplic.Package.Data.DB\Simplic.Package.Data.DB.csproj", "{061247F8-3F50-4271-852E-4AD4DC8592B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Sql", "Simplic.Package.Sql\Simplic.Package.Sql.csproj", "{49767089-50D5-48B6-A07A-DA54FEB493A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Grid", "Simplic.Package.Grid\Simplic.Package.Grid.csproj", "{0B4D1189-8A3F-4436-8DE4-9378CF5E5761}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Repository", "Simplic.Package.Repository\Simplic.Package.Repository.csproj", "{1366426D-40CE-4E6F-9990-A5AC7D67B9A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +45,18 @@ Global
 		{061247F8-3F50-4271-852E-4AD4DC8592B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{061247F8-3F50-4271-852E-4AD4DC8592B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{061247F8-3F50-4271-852E-4AD4DC8592B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49767089-50D5-48B6-A07A-DA54FEB493A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49767089-50D5-48B6-A07A-DA54FEB493A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49767089-50D5-48B6-A07A-DA54FEB493A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49767089-50D5-48B6-A07A-DA54FEB493A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B4D1189-8A3F-4436-8DE4-9378CF5E5761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B4D1189-8A3F-4436-8DE4-9378CF5E5761}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B4D1189-8A3F-4436-8DE4-9378CF5E5761}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B4D1189-8A3F-4436-8DE4-9378CF5E5761}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1366426D-40CE-4E6F-9990-A5AC7D67B9A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1366426D-40CE-4E6F-9990-A5AC7D67B9A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1366426D-40CE-4E6F-9990-A5AC7D67B9A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1366426D-40CE-4E6F-9990-A5AC7D67B9A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

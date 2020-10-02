@@ -8,6 +8,9 @@ namespace Simplic.Package
     {
         [JsonProperty(Required = Required.Always)]
         public Version PackageFormatVersion { get; set; }
+        
+        [JsonProperty(Required = Required.Always)]
+        public Guid Guid { get; set; }
 
         [JsonProperty(Required = Required.Always)]
         public string Name { get; set; }

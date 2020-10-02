@@ -33,6 +33,11 @@ namespace Simplic.Package
         /// <returns></returns>
         Task OverwriteObject(InstallableObject installableObject);
 
+        /// <summary>
+        /// Checks if a given Object can be migrated
+        /// </summary>
+        /// <param name="installableObject">The Object to check</param>
+        /// <returns>A CheckMigrationResult object</returns>
         Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject);
     }
 }

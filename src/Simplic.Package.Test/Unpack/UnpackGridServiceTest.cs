@@ -487,7 +487,7 @@ namespace Simplic.Package.Test
         public async Task DeserializeObject_Deserialization_Test()
         {
             var container = new UnityContainer();
-            container.RegisterType<IUnpackObjectService, UnpackGridService>();
+            //container.RegisterType<IUnpackObjectService, UnpackGridService>();
             container.RegisterType<IFileService, FileService>();
 
             // var fileService = container.Resolve<IFileService>();
@@ -503,8 +503,8 @@ namespace Simplic.Package.Test
             var unpackObjectResult = await service.UnpackObject(extractArchiveEntryResult);
             var installableObject = unpackObjectResult.InstallableObject;
 
-            Assert.IsType<DeserializedGrid>(installableObject.Content);
-            var deserializedGrid = (DeserializedGrid)installableObject.Content;
+           // Assert.IsType<DeserializedGrid>(installableObject.Content);
+            //var deserializedGrid = (DeserializedGrid)installableObject.Content;
 
             // Check if it was properly deserialized for some examples
             Assert.Single(deserializedGrid.Profiles);

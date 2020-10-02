@@ -115,6 +115,10 @@
       <Project>{2568b37d-7937-4368-a6e3-2ade2ad7196b}</Project>
       <Name>Simplic.Package.Service</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.Sql\Simplic.Package.Sql.csproj">
+      <Project>{49767089-50D5-48B6-A07A-DA54FEB493A3}</Project>
+      <Name>Simplic.Package.Sql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Package\Simplic.Package.csproj">
       <Project>{0aca9764-a25d-4517-b64e-95645674666b}</Project>
       <Name>Simplic.Package</Name>

@@ -6,5 +6,6 @@ namespace Simplic.Package
     {
         public string Message { get; set; }
         public LogLevel LogLevel { get; set; }
+        public Exception Exception { get; set; }
     }
 }

@@ -18,7 +18,8 @@ namespace Simplic.Package
         /// </summary>
         /// <param name="message">The message to add</param>
         /// <param name="logLevel">The LogLevel of the message, indicating its severity</param>
+        /// <param name="exception">The Exception that was caught</param>
         /// <returns></returns>
-        Task WriteAsync(string message, LogLevel logLevel);
+        Task WriteAsync(string message, LogLevel logLevel, Exception exception = null);
     }
 }

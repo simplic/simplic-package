@@ -59,5 +59,25 @@ namespace Simplic.Package.Service
 
             return Encoding.Default.GetString(byteArray);
         }
+
+        public Task WriteAllBytesAsync(byte[] bytes, string path)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task WriteAllBytesAsync(Stream stream, string path)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task WriteAllTextAsync(string text, string path)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task WriteAllTextAsync(Stream stream, string path)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace Simplic.Package.Data.DB
         public async Task<IEnumerable<Version>> GetPackageVersions(string packageName)
         {
             var rows = await sqlService.OpenConnection(
-                    async (c) => await c.QueryAsync("Select major, minor, build, revision from Package where package_name = :packageName", new { packageName }
+                    async (c) => await c.QueryAsync("Select major, minor, build, revision from Package where packagename = :packageName", new { packageName }
                 ));
             return rows.Select(row => new Version(row.major, row.minor, row.build, row.revision));
         }
@@ -49,13 +49,23 @@ namespace Simplic.Package.Data.DB
         /// </summary>
         /// <param name="packageName">The name of the package</param>
         /// <param name="version">The version of the package</param>
+        /// <param name="guid">The guid of the package</param>
         /// <returns>Whether adding the version worked</returns>
-        public async Task<bool> AddPackgageVersion(string packageName, Version version)
+        /// 
+        public async Task<bool> AddPackgageVersion(string packageName, Guid guid, Version version)
         {
             var affectedRows = await sqlService.OpenConnection(
-                async (c) => await c.ExecuteAsync("Insert into Package (package_name, major, minor, build, revision) values (:packageName, :major, :minor, :build, :revision)",
-                                            new { packageName = packageName, major = version.Major, minor = version.Minor, build = version.Build, revision = version.Revision }
-            ));
+                async (c) => await c.ExecuteAsync("Insert into Package (guid, packagename, major, minor, build, revision) " +
+                                                    "values (:packageName, :major, :minor, :build, :revision)",
+                                                    new
+                                                    {
+                                                        guid,
+                                                        packageName,
+                                                        version.Major,
+                                                        version.Minor,
+                                                        version.Build,
+                                                        version.Revision
+                                                    }));
             return affectedRows == 1;
         }
     }

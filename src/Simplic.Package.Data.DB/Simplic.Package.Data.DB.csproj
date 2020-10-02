@@ -50,8 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InitializePackageSystemRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlRepository.cs" />
     <Compile Include="PackageTrackingRepository.cs" />
   </ItemGroup>
   <ItemGroup>

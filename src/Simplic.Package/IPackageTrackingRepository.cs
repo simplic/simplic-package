@@ -27,8 +27,9 @@ namespace Simplic.Package
         /// Adds the version of a given package to the database
         /// </summary>
         /// <param name="packageName">The name of the package</param>
+        /// <param name="guid">The guid of the package</param>
         /// <param name="version">The version of the package</param>
         /// <returns>Whether adding the version worked</returns>
-        Task<bool> AddPackgageVersion(string packageName, Version version);
+        Task<bool> AddPackgageVersion(string packageName, Guid guid, Version version);
     }
 }

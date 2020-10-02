@@ -1,11 +1,12 @@
 ﻿using iAnywhere.Data.SQLAnywhere;
 using NDesk.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Simplic.Framework.DAL;
 using Simplic.Package.Data.DB;
 using Simplic.Package.Service;
 using Simplic.Package.Service.Install;
-using Simplic.Package.Service.Unpack;
+using Simplic.Package.Sql;
 using Simplic.Sql;
 using Simplic.Sql.SqlAnywhere.Service;
 using System;
@@ -32,6 +33,7 @@ namespace Simplic.Package.CLI
             var name = "";
 
             var pack = false;
+            var initialize = false;
 
             var install = false;
             var forceInstall = false; // TODO
@@ -42,6 +44,7 @@ namespace Simplic.Package.CLI
             {
                 { "m|mkconfig=", "Creates a package.json file with given Name.", v =>  {create = true; name = v; } },
                 { "p|pack", "Creats a package archive from the package.json in the  current working directory.", v => pack = true },
+                { "init|initialize", "Initializes the PackageSystem by adding needed tables to database", v => initialize = true },
                 { "i|install=", "Installs a package from the given path.", v => {install = true; path = v; } },
                 { "c|connection=", "The database connection string.", v =>  {connectionString = v; } },
                 { "h|help",  "Shows help", v => showHelp = true },
@@ -87,6 +90,8 @@ namespace Simplic.Package.CLI
             container.RegisterType<IFileService, FileService>();
             container.RegisterType<ICheckDependencyService, CheckDependencyService>();
             container.RegisterType<IPackageTrackingRepository, PackageTrackingRepository>();
+            container.RegisterType<IInitializePackageSystemService, InitializePackageSystemService>();
+            container.RegisterType<IInitializePackageSystemRepository, InitializePackageSystemRepository>();
 
             container.RegisterType<IInstallObjectService, InstallSqlService>("sql");
             container.RegisterType<IObjectRepository, SqlRepository>("sql");
@@ -103,39 +108,59 @@ namespace Simplic.Package.CLI
             logService.MessageAdded += (sender, e) =>
             {
                 if ((int)e.LogLevel <= (int)verbosity)
-                    MyWriteLine(e.Message, e.LogLevel);
+                    MyWriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}][{e.LogLevel}]: {e.Message}", e.LogLevel);
             };
 
             if (create)
             {
                 var packageConfiguration = new PackageConfiguration
                 {
-                    PackageFormatVersion = new Version(1, 0, 0, 0),
+                    PackageFormatVersion = Version.Parse(PackageFormatVersion.Version),
+                    Guid = new Guid(),
                     Name = name,
                     Version = new Version(1, 0, 0, 0),
                     Dependencies = new List<Dependency>(),
                     Objects = new Dictionary<string, IList<ObjectListItem>>()
                 };
 
-                var json = JsonConvert.SerializeObject(packageConfiguration);
+                var jsonSerializerSettings = new JsonSerializerSettings
+                {
+                    Converters = new List<JsonConverter> {
+                        new VersionConverter()
+                    }
+                };
+
+                var json = JsonConvert.SerializeObject(packageConfiguration, jsonSerializerSettings);
                 File.WriteAllText("package.json", json);
                 Console.WriteLine($"Succesfully created a new package.json!");
             }
 
             if (pack)
             {
-                var packageConfig = Directory.GetFiles(".", "package.json", SearchOption.TopDirectoryOnly).FirstOrDefault();
 
-                if (packageConfig == null)
+                if (!File.Exists("package.json"))
                 {
                     Console.WriteLine($"Couldent find a package.json file in {Path.GetFullPath(".")}");
                     return 1;
                 }
 
-                var fullPath = Path.GetFullPath($"./{packageConfig}");
+                var fullPath = Path.GetFullPath($"./package.json");
                 var packService = container.Resolve<IPackService>();
                 await packService.Pack(File.ReadAllText(fullPath));
                 Console.WriteLine($"Succesfully packed {fullPath}!");
+            }
+
+            if (initialize)
+            {
+                Console.WriteLine("Check database connection ...");
+                using (var connection = ConnectionManager.GetOpenPoolConnection<SAConnection>(connectionString))
+                {
+                    Console.WriteLine("Connected!"); // TODO: Does this fail if conn string is wrong?
+                }
+
+                var initializePackageSystemService = container.Resolve<InitializePackageSystemService>();
+                await initializePackageSystemService.Initialize();
+                return 0;
             }
 
             if (install)
@@ -162,7 +187,7 @@ namespace Simplic.Package.CLI
                 Console.WriteLine($"Succesfully installed {unpackedPackage.Name}!");
                 return 0;
             }
-            return 0;
+            return 1;
         }
 
         private static void MyWriteLine(string message, LogLevel logLevel)
