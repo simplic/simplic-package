@@ -25,7 +25,7 @@ namespace Simplic.Package.Data.DB
             {
                 await sqlService.OpenConnection(async (connection) =>
                 {
-                    await connection.ExecuteAsync("create table Package ( " +
+                    await connection.ExecuteAsync("create table if not exists Package ( " +
                                                     "Guid uniqueidentifier primary key, " +
                                                     "PackageName varchar(200) not null, " +
                                                     "Major integer not null, " +
@@ -47,7 +47,8 @@ namespace Simplic.Package.Data.DB
 
                 await sqlService.OpenConnection(async (connection) =>
                 {
-                    await connection.ExecuteAsync("create table Package_Object ( " +
+                    // TODO: Switch to package-guid and add foreign key
+                    await connection.ExecuteAsync("create table if not exists Package_Object ( " +
                                                     "Guid uniqueidentifier primary key, " +
                                                     "ObjectType varchar(200) not null, " +
                                                     "Target varchar(400) not null, " +
