@@ -67,6 +67,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stack", "stack", "{C774C1BC
 		..\sample\stack\stack_sample.json = ..\sample\stack\stack_sample.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stack_autoconnector", "stack_autoconnector", "{D7E61EA6-DA9B-46A2-B34E-A77D606634F7}"
+	ProjectSection(SolutionItems) = preProject
+		..\sample\stack_autoconnector\stack_autoconnector_sample.json = ..\sample\stack_autoconnector\stack_autoconnector_sample.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stack_fulltext", "stack_fulltext", "{2D311E58-45C8-449C-8D9E-6C1A43B68D3D}"
+	ProjectSection(SolutionItems) = preProject
+		..\sample\stack_fulltext\stack_fulltext_sample.json = ..\sample\stack_fulltext\stack_fulltext_sample.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stack_register", "stack_register", "{634164BE-B793-4733-A732-D900CB42C8F0}"
+	ProjectSection(SolutionItems) = preProject
+		..\sample\stack_register\stack_register_sample.json = ..\sample\stack_register\stack_register_sample.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +138,9 @@ Global
 		{A69038B0-BC4B-4116-AEBA-11224E8EBE6C} = {C51AFD5C-DE94-4A50-8B0B-9953C3B35D8F}
 		{C51AFD5C-DE94-4A50-8B0B-9953C3B35D8F} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
 		{C774C1BC-D315-497C-9E7F-242B9E892E6F} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
+		{D7E61EA6-DA9B-46A2-B34E-A77D606634F7} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
+		{2D311E58-45C8-449C-8D9E-6C1A43B68D3D} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
+		{634164BE-B793-4733-A732-D900CB42C8F0} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4EA82266-D86E-4D97-B0C6-41D6E7D8A584}

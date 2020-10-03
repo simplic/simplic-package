@@ -8,33 +8,9 @@
   "stackName": "STACK_<name>",
   "headerSql": "<header-statement>",
   "trackChanges": false,
-  "register": [
-    {
-      "id": "<unique-id>",
-      "name": "<name>",
-      "isActive": true,
-      "type": "sql", // At the moment only SQL is supported
-      "configuration": {
-        "sql": "<sql-statement>"
-      }
-    }
-  ],
   "fullText": {
     "useFulltextIndex": true,
     "improveOCRText": true,
-    "useDCE": true,
-    "configurations": [
-      {
-        "id": "<unique-guid>",
-        "statement": "fulltext-sql"
-      }
-    ]
-  },
-  "autoConnector": [
-    {
-      "name": "<name>",
-      "target": "<target-stack-name>",
-      "xmlConfiguration": "<configuration-text>"
-    }
-  ]
+    "useDCE": true
+  }
 }
