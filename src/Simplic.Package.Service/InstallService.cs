@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Unity;
 
@@ -22,68 +20,64 @@ namespace Simplic.Package.Service
         /// <summary>
         /// Installs a package
         /// </summary>
-        /// <param name="unpackedPackage">The package to install</param>
-        public async Task Install(Package unpackedPackage)
+        /// <param name="package">The package to install</param>
+        public async Task Install(Package package)
         {
             // Debugger.Launch();
-            // Check for dependencies
+
+            // Check dependencies
             var checkDependencyService = container.Resolve<ICheckDependencyService>();
 
-            var checkDependencyResults = new List<CheckDependencyResult>();
-            foreach (var dependency in unpackedPackage.Dependencies)
-                checkDependencyResults.Add(await checkDependencyService.Check(dependency));
-
-            var missingDependencyResults = checkDependencyResults.Where(x => !x.Exists); // Give these as output
-
-            var first = missingDependencyResults.FirstOrDefault();
-            if (first != null)
-                throw new MissingDependencyException($"{first.Dependency.PackageName} with Version {first.Dependency.Version} doesnt exist. Latest found Version: {first.LatestExistingVersion}");
+            var checkDependenciesResult = await checkDependencyService.CheckAllDependencies(package.Dependencies);
+            if (checkDependenciesResult.LogLevel != LogLevel.Error)
+                await logService.WriteAsync(checkDependenciesResult.Message, checkDependenciesResult.LogLevel);
+            else
+                throw new MissingDependencyException(checkDependenciesResult.Message);
 
             // Check if package already exists and act accordingly
-            var existingPackageVersion = await packageTrackingRepository.GetLatestPackageVersion(unpackedPackage.Name);
-            if (unpackedPackage?.Version == existingPackageVersion)
+            var existingPackageVersion = await packageTrackingRepository.GetPackageVersion(package.Guid);
+            if (package.Version == existingPackageVersion)
+                throw new ExistingPackageException($"The version {existingPackageVersion} of this package is already installed.");
+            else if (package.Version < existingPackageVersion)
             {
-                await logService.WriteAsync($"Version {existingPackageVersion} of {unpackedPackage.Name} is already installed.", LogLevel.Error);
-                // throw new ExistingPackageException($"The version {existingPackageVersion} of this package is already installed.");
+                // await logService.WriteAsync($"A later version ({existingPackageVersion}) of {package.Name} is already installed.", LogLevel.Info);
+                throw new ExistingPackageException($"A later version ({existingPackageVersion}) of this package is already installed.");
             }
-            else if (unpackedPackage?.Version < existingPackageVersion)
-            {
-                await logService.WriteAsync($"A later version ({existingPackageVersion}) of {unpackedPackage.Name} is already installed.", LogLevel.Info);
-                // throw new ExistingPackageException($"A later version ({existingPackageVersion}) of the package is already installed.");
-            }
+            await logService.WriteAsync($"Found installation of version {existingPackageVersion} of this package. Proceeding to install package.", LogLevel.Info);
 
             // Install the objects
-            foreach (var item in unpackedPackage.UnpackedObjects)
+            foreach (var item in package.UnpackedObjects)
             {
-                var installService = container.Resolve<IInstallObjectService>(item.Key); // TODO: Exception handeling
+                var installObjectService = container.Resolve<IInstallObjectService>(item.Key); // TODO: Exception handeling ?
 
                 foreach (var installableObject in item.Value)
                 {
                     var install = installableObject.Mode == InstallMode.Deploy;
                     if (installableObject.Mode == InstallMode.Migrate)
                     {
-                        var checkMigrationResult = await installService.CheckMigration(installableObject);
+                        var checkMigrationResult = await installObjectService.CheckMigration(installableObject);
                         install = checkMigrationResult.CanMigrate;
-                        await logService.WriteAsync(checkMigrationResult.LogMessage, checkMigrationResult.LogLevel);
+                        await logService.WriteAsync(checkMigrationResult.Message, checkMigrationResult.LogLevel);
                     }
 
                     if (install)
                     {
-                        var installObjectResult = await installService.InstallObject(installableObject);
-                        await logService.WriteAsync(installObjectResult.LogMessage, installObjectResult.LogLevel);
+                        var installObjectResult = await installObjectService.InstallObject(installableObject);
 
-                        if (!installObjectResult.Success)
-                            throw new InvalidObjectException(installObjectResult.LogMessage, installObjectResult.Exception);
+                        if (installObjectResult.LogLevel == LogLevel.Error)
+                            throw new InvalidObjectException(installObjectResult.Message, installObjectResult.Exception);
+                        else
+                            await logService.WriteAsync(installObjectResult.Message, installObjectResult.LogLevel);
                     }
                 }
             }
 
             // Add to InstalledPackages in database
-            var success = await packageTrackingRepository.AddPackgageVersion(unpackedPackage.Name, unpackedPackage.Guid, unpackedPackage.Version);
+            var success = await packageTrackingRepository.AddPackgageVersion(package);
             if (success)
-                await logService.WriteAsync($"Wrote package with name {unpackedPackage.Name} and version {unpackedPackage.Version} to installed packages table", LogLevel.Info);
+                await logService.WriteAsync($"Wrote package with name {package.Name} and version {package.Version} to installed packages table", LogLevel.Info);
             else
-                await logService.WriteAsync($"Failed to write package with name {unpackedPackage.Name} and version {unpackedPackage.Version} to installed packages table.", LogLevel.Error);
+                await logService.WriteAsync($"Failed to write package with name {package.Name} and version {package.Version} to installed packages table.", LogLevel.Error);
         }
 
         public async Task Uninstall(Package unpackedPackage)

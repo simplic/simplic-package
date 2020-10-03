@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Simplic.Package
@@ -7,21 +6,29 @@ namespace Simplic.Package
     /// <summary>
     /// Service to check and add package versions in the database
     /// </summary>
+    /// TODO: Have ResultObjects here also?
     public interface IPackageTrackingRepository
     {
         /// <summary>
-        /// Gets all installed versions of a given package from the database
+        /// Gets the installed version of a given package
         /// </summary>
-        /// <param name="packageName">The name of the package</param>
-        /// <returns>An Enumerable of the installed versions</returns>
-        Task<IEnumerable<Version>> GetPackageVersions(string packageName);
+        /// <param name="guid">The guid of the package</param>
+        /// <returns>The version or null if no version exists</returns>
+        Task<Version> GetPackageVersion(Guid guid);
 
         /// <summary>
-        /// Gets the latest installed version of a given package
+        /// Gets the installed version of a given package
         /// </summary>
         /// <param name="packageName">The name of the package</param>
-        /// <returns>The latest version or null if no version exists</returns>
-        Task<Version> GetLatestPackageVersion(string packageName);
+        /// <returns>The version or null if no version exists</returns>
+        Task<Version> GetPackageVersion(string packageName);
+
+        /// <summary>
+        /// Adds the version of a given package to the database
+        /// </summary>
+        /// <param name="package">The package whos version is to add</param>
+        /// <returns>Whether adding the version worked</returns>
+        Task<bool> AddPackgageVersion(Package package);
 
         /// <summary>
         /// Adds the version of a given package to the database

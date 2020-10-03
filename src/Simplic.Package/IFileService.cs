@@ -36,10 +36,15 @@ namespace Simplic.Package
         /// <returns>The read text as a string</returns
         Task<string> ReadAllTextAsync(Stream stream);
 
+        bool FileExists(string path);
+
         // TODO:
         Task WriteAllBytesAsync(byte[] bytes, string path);
+
         Task WriteAllBytesAsync(Stream stream, string path);
+
         Task WriteAllTextAsync(string text, string path);
+
         Task WriteAllTextAsync(Stream stream, string path);
     }
 }

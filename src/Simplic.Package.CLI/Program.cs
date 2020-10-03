@@ -137,7 +137,6 @@ namespace Simplic.Package.CLI
 
             if (pack)
             {
-
                 if (!File.Exists("package.json"))
                 {
                     Console.WriteLine($"Couldent find a package.json file in {Path.GetFullPath(".")}");

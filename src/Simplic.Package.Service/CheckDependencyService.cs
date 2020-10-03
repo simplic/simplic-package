@@ -1,50 +1,62 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Service.Install
 {
     public class CheckDependencyService : ICheckDependencyService
     {
-        private readonly IPackageTrackingRepository versionService;
+        private readonly IPackageTrackingRepository repository;
 
-        public CheckDependencyService(IPackageTrackingRepository versionService)
+        public CheckDependencyService(IPackageTrackingRepository repository)
         {
-            this.versionService = versionService;
+            this.repository = repository;
+        }
+
+        public async Task<CheckDependenciesResult> CheckAllDependencies(IList<Dependency> dependencies)
+        {
+            var result = new CheckDependenciesResult
+            {
+                MissingDependencies = new List<Dependency>()
+            };
+
+            foreach (var dependency in dependencies)
+            {
+                var isSatisfied = await Check(dependency);
+
+                if (!isSatisfied)
+                    result.MissingDependencies.Add(dependency);
+            }
+
+            if (result.MissingDependencies.Any())
+            {
+                result.LogLevel = LogLevel.Warning;
+
+                result.Message = "Missing one or more dependencies. Missing: ";
+                foreach (var dependency in result.MissingDependencies)
+                    result.Message += $"{dependency.PackageName}, Version {dependency.Version}; ";
+            }
+            else
+            {
+                result.LogLevel = LogLevel.Info;
+                result.Message = "All dependencies are satisfied.";
+            }
+
+            return result;
         }
 
         /// <summary>
         /// Checks if a given dependecy is satisfied or not
         /// </summary>
         /// <param name="dependency">The dependency to check</param>
-        /// <returns>A CheckDependecyResult object</returns>
-        public async Task<CheckDependencyResult> Check(Dependency dependency)
+        /// <returns>Whether the dependencies is satisfied</returns>
+        public async Task<bool> Check(Dependency dependency)
         {
-            var result = new CheckDependencyResult
-            {
-                Dependency = dependency
-            };
+            var version = await repository.GetPackageVersion(dependency.PackageName);
 
-            var versions = await versionService.GetPackageVersions(dependency.PackageName);
-            var versionsList = versions.ToList();
-            versionsList.Sort((x, y) => x.CompareTo(y));
-
-            if (versions.Contains(dependency.Version) || (dependency.GreaterAllowed && versions.Where(x => x >= dependency.Version).Any()))
-            {
-                result.Exists = true;
-                result.LatestExistingVersion = versionsList.Last();
-            }
-            else if (versions.Any())
-            {
-                result.Exists = false;
-                result.LatestExistingVersion = versionsList.Last();
-            }
-            else
-            {
-                result.Exists = false;
-                result.LatestExistingVersion = null;
-            }
-
-            return result;
+            if ((version == dependency.Version) || (version > dependency.Version && dependency.GreaterAllowed))
+                return true;
+            return false;
         }
     }
 }

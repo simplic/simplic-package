@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
@@ -8,10 +9,17 @@ namespace Simplic.Package
     public interface ICheckDependencyService
     {
         /// <summary>
+        /// Checks is all dependencies are satisfied
+        /// </summary>
+        /// <param name="dependencies">A list of the dependecies to check</param>
+        /// <returns>A CheckDependenciesResult object</returns>
+        Task<CheckDependenciesResult> CheckAllDependencies(IList<Dependency> dependencies);
+
+        /// <summary>
         /// Checks if a given dependecy is satisfied or not
         /// </summary>
         /// <param name="dependency">The dependency to check</param>
-        /// <returns>A CheckDependecyResult object</returns>
-        Task<CheckDependencyResult> Check(Dependency dependency);
+        /// <returns>Whether the dependency is satisfied</returns>
+        Task<bool> Check(Dependency dependency);
     }
 }

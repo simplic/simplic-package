@@ -13,7 +13,7 @@ namespace Simplic.Package.Service
         private readonly IUnityContainer container;
         private readonly IFileService fileService;
         private readonly ILogService logService;
-        IValidatePackageConfigurationService validatePackageConfigurationService;
+        private IValidatePackageConfigurationService validatePackageConfigurationService;
 
         public UnpackService(IUnityContainer container, IFileService fileService, ILogService logService, IValidatePackageConfigurationService validatePackageConfigurationService)
         {
@@ -45,35 +45,30 @@ namespace Simplic.Package.Service
             {
                 using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read))
                 {
-                    ZipArchiveEntry configurationFile = null;
                     PackageConfiguration packageConfiguration = null;
 
-                    configurationFile = archive.Entries.Where(x => x.Name == "package.json").FirstOrDefault();
-
+                    var configurationFile = archive.Entries.Where(x => x.Name == "package.json").FirstOrDefault();
                     if (configurationFile == null)
-                    {
-                        await logService.WriteAsync($"Package doesnt contain a correctly named configuration file", LogLevel.Error);
-                        throw new InvalidPackageException("Package doesnt contain a correctly named configuration file");
-                    }
+                        throw new InvalidPackageException("Package doesnt contain package.json file.");
 
-                    var json = await fileService.ReadAllTextAsync(configurationFile.Open());
+                    var fileContent = await fileService.ReadAllTextAsync(configurationFile.Open());
                     try
                     {
-                        packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(json, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error });
+                        packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(fileContent, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error });
                     }
                     catch (JsonSerializationException jse)
                     {
-                        await logService.WriteAsync($"Couldent deserialize the package.json file", LogLevel.Error);
-                        throw new PackageConfigurationException("Couldent deserialize the package.json file", jse);
+                        throw new PackageConfigurationException("Couldent deserialize the package.json file.", jse);
                     }
 
+                    // Validate the PackageConfiguration object
                     var validatePackageConfigurationResult = await validatePackageConfigurationService.Validate(packageConfiguration);
-                    await logService.WriteAsync(validatePackageConfigurationResult.LogMessage, validatePackageConfigurationResult.LogLevel);
+                    if (validatePackageConfigurationResult.LogLevel == LogLevel.Error)
+                        throw new PackageConfigurationException(validatePackageConfigurationResult.Message);
+                    else
+                        await logService.WriteAsync(validatePackageConfigurationResult.Message, validatePackageConfigurationResult.LogLevel);
 
-                    if (!validatePackageConfigurationResult.IsValid)
-                        throw new PackageConfigurationException(validatePackageConfigurationResult.LogMessage);
-
-                    // Create the package
+                    // Create the package object
                     var unpackedPackage = new Package
                     {
                         Name = packageConfiguration.Name,
@@ -83,25 +78,19 @@ namespace Simplic.Package.Service
                     };
 
                     // Unpack all the packages content
-                    var unpackedObjects = new Dictionary<string, IList<InstallableObject>>();
                     foreach (var item in packageConfiguration.Objects)
                     {
-                        var unpackObjectService = container.Resolve<IUnpackObjectService>(item.Key); // Exception handeling for not beeing able to resolve
+                        var unpackObjectService = container.Resolve<IUnpackObjectService>(item.Key);
 
                         var contents = new List<InstallableObject>();
                         foreach (var objectListItem in item.Value)
                         {
                             var archiveEntry = archive.GetEntry(objectListItem.Target);
-
                             if (archiveEntry == null)
-                            {
-                                await logService.WriteAsync($"There was no archive entry found at {objectListItem.Target}", LogLevel.Error);
-                                throw new MissingObjectException($"There was no archive entry found at {objectListItem.Target}");
-                            }
+                                throw new MissingObjectException($"There was no archive entry found at the location specified: {objectListItem.Target}");
 
                             // Read the archive entry content
                             var archiveEntryContent = await fileService.ReadAllBytesAsync(archiveEntry.Open());
-
                             var extractArchiveEntryResult = new ExtractArchiveEntryResult
                             {
                                 Data = archiveEntryContent,
@@ -111,23 +100,19 @@ namespace Simplic.Package.Service
 
                             // Unpack the Object (make installable)
                             var unpackObjectResult = await unpackObjectService.UnpackObject(extractArchiveEntryResult);
-                            await logService.WriteAsync(unpackObjectResult.LogMessage, unpackObjectResult.LogLevel);
-
-                            if (unpackObjectResult.InstallableObject != null)
+                            if (unpackObjectResult.LogLevel == LogLevel.Error)
+                                throw new InvalidObjectException(unpackObjectResult.Message, unpackObjectResult.Exception);
+                            else if (unpackObjectResult.InstallableObject != null)
                             {
+                                await logService.WriteAsync(unpackObjectResult.Message, unpackObjectResult.LogLevel);
+
                                 unpackObjectResult.InstallableObject.Guid = objectListItem.Guid;
                                 unpackObjectResult.InstallableObject.PackageName = unpackedPackage.Name;
                                 unpackObjectResult.InstallableObject.PackageVersion = unpackedPackage.Version;
                             }
-                            else
-                            {
-                                throw new InvalidObjectException(unpackObjectResult.LogMessage, unpackObjectResult.Exception);
-                            }
                         }
-                        unpackedObjects[item.Key] = contents;
+                        unpackedPackage.UnpackedObjects[item.Key] = contents;
                     }
-                    unpackedPackage.UnpackedObjects = unpackedObjects;
-
                     return unpackedPackage;
                 }
             }

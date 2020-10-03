@@ -79,5 +79,10 @@ namespace Simplic.Package.Service
         {
             throw new System.NotImplementedException();
         }
+
+        public bool FileExists(string path)
+        {
+            return File.Exists(path);
+        }
     }
 }

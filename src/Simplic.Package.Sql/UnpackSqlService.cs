@@ -23,12 +23,12 @@ namespace Simplic.Package.Sql
                     Target = extractArchiveEntryResult.Location, // TODO:
                     Mode = extractArchiveEntryResult.Mode
                 };
-                unpackObjectResult.LogMessage = $"Succesfully unpacked sql file at {extractArchiveEntryResult.Location}";
+                unpackObjectResult.Message = $"Succesfully unpacked sql file at {extractArchiveEntryResult.Location}";
                 unpackObjectResult.LogLevel = LogLevel.Info;
             }
             catch (Exception ex)
             {
-                unpackObjectResult.LogMessage = $"Couldent unpack sql file at {extractArchiveEntryResult.Location}";
+                unpackObjectResult.Message = $"Couldent unpack sql file at {extractArchiveEntryResult.Location}";
                 unpackObjectResult.LogLevel = LogLevel.Error;
                 unpackObjectResult.Exception = ex;
             }

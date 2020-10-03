@@ -22,12 +22,12 @@ namespace Simplic.Package.Grid
                     Target = extractArchiveEntryResult.Location, // TODO: What to put here? this could be useful
                     Mode = extractArchiveEntryResult.Mode
                 };
-                unpackObjectResult.LogMessage = $"Succesfully deserialiazed the grid at {extractArchiveEntryResult.Location}";
+                unpackObjectResult.Message = $"Succesfully deserialiazed the grid at {extractArchiveEntryResult.Location}";
                 unpackObjectResult.LogLevel = LogLevel.Info;
             }
             catch (JsonSerializationException jse)
             {
-                unpackObjectResult.LogMessage = $"Failed to serialize the grid at {extractArchiveEntryResult.Location}";
+                unpackObjectResult.Message = $"Failed to serialize the grid at {extractArchiveEntryResult.Location}";
                 unpackObjectResult.LogLevel = LogLevel.Error;
                 unpackObjectResult.Exception = jse;
             }

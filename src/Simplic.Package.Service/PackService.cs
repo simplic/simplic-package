@@ -14,12 +14,14 @@ namespace Simplic.Package.Service
         private readonly IUnityContainer container;
         private readonly ILogService logService;
         private readonly IValidatePackageConfigurationService validatePackageConfigurationService;
+        private readonly IFileService fileService;
 
-        public PackService(IUnityContainer container, ILogService logService, IValidatePackageConfigurationService validatePackageConfigurationService)
+        public PackService(IUnityContainer container, ILogService logService, IValidatePackageConfigurationService validatePackageConfigurationService, IFileService fileService)
         {
             this.container = container;
             this.logService = logService;
             this.validatePackageConfigurationService = validatePackageConfigurationService;
+            this.fileService = fileService;
         }
 
         /// <summary>
@@ -36,7 +38,6 @@ namespace Simplic.Package.Service
             }
             catch (JsonSerializationException jse)
             {
-                await logService.WriteAsync("Couldent deserialize the package configuration.", LogLevel.Error);
                 throw new PackageConfigurationException("Couldent deserialize the package configuration.", jse);
             }
         }
@@ -48,17 +49,18 @@ namespace Simplic.Package.Service
         /// <returns>The written archive in bytes</returns>
         public async Task<byte[]> Pack(PackageConfiguration packageConfiguration)
         {
+            // Validate the PackageConfiguration object
             var validatePackageConfigurationResult = await validatePackageConfigurationService.Validate(packageConfiguration);
-            await logService.WriteAsync(validatePackageConfigurationResult.LogMessage, validatePackageConfigurationResult.LogLevel);
-            
-            if (!validatePackageConfigurationResult.IsValid)
-                throw new PackageConfigurationException(validatePackageConfigurationResult.LogMessage);
+            if (validatePackageConfigurationResult.LogLevel == LogLevel.Error)
+                throw new PackageConfigurationException(validatePackageConfigurationResult.Message);
+            else
+                await logService.WriteAsync(validatePackageConfigurationResult.Message, validatePackageConfigurationResult.LogLevel);
 
+            // Create the package archive
             using (var stream = new MemoryStream())
             {
                 using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
                 {
-                    // Create entry for package.json
                     var configurationEntry = archive.CreateEntry("package.json");
 
                     var jsonSerializerSettings = new JsonSerializerSettings
@@ -73,6 +75,7 @@ namespace Simplic.Package.Service
 
                     await WriteToEntry(configurationEntry, jsonBytes);
 
+                    // Add all the objects to the archive
                     foreach (var item in packageConfiguration.Objects)
                     {
                         var packObjectService = container.Resolve<IPackObjectService>(item.Key);
@@ -87,29 +90,36 @@ namespace Simplic.Package.Service
                             {
                                 var validateObjectService = container.Resolve<IValidateObjectService>(item.Key);
                                 validateObjectResult = await validateObjectService.Validate(packObjectResult);
-                                await logService.WriteAsync(validateObjectResult.LogMessage, validateObjectResult.LogLevel);
 
-                                if (!validateObjectResult.IsOkay)
-                                    throw new InvalidObjectException(validateObjectResult.LogMessage, validateObjectResult.Exception);
+                                if (validateObjectResult.LogLevel == LogLevel.Error)
+                                    throw new InvalidObjectException(validateObjectResult.Message, validateObjectResult.Exception);
+                                else
+                                    await logService.WriteAsync(validateObjectResult.Message, validateObjectResult.LogLevel);
                             }
                             catch (ResolutionFailedException)
                             {
                                 await logService.WriteAsync($"Skipped Validation on {objectListItem.Source} due to no inability to resolve validation service for {item.Key}", LogLevel.Info);
                             }
-                            finally // Write the object to the archive
+
+                            // Write the object to the archive
+                            if (validateObjectResult == null || validateObjectResult.IsOkay)
                             {
-                                if (validateObjectResult == null || validateObjectResult.IsOkay)
-                                {
-                                    var entry = archive.CreateEntry(packObjectResult.Location);
-                                    await WriteToEntry(entry, packObjectResult.File);
-                                }
+                                var entry = archive.CreateEntry(packObjectResult.Location);
+                                await WriteToEntry(entry, packObjectResult.File);
                             }
                         }
                     }
                 }
-                if (File.Exists($"{packageConfiguration.Name}_v{packageConfiguration.Version}.zip"))
+
+                string archiveName = $"{packageConfiguration.Name}_v{packageConfiguration.Version}.zip";
+                if (fileService.FileExists(archiveName))
                     await logService.WriteAsync($"[TODO: Decide what to do here] A Package with name {packageConfiguration.Name}_v{packageConfiguration.Version} already exists in working directory", LogLevel.Warning);
-                File.WriteAllBytes($"{packageConfiguration.Name}_v{packageConfiguration.Version}.zip", stream.ToArray());
+                else
+                {
+                    await fileService.WriteAllBytesAsync(stream, archiveName);
+                    await logService.WriteAsync($"Succesfully created package.", LogLevel.Info);
+                }
+
                 return stream.ToArray();
             }
         }
@@ -118,9 +128,8 @@ namespace Simplic.Package.Service
         /// Copies content to a ZipArchiveEntry
         /// </summary>
         /// <param name="entry">A ZipArchiveEntry</param>
-        /// <param name="content">The content to copy as an array of bytes</param>
-        /// <returns></returns>
-        public async Task WriteToEntry(ZipArchiveEntry entry, byte[] content) // TODO: Make private or put into seperate Helper Class
+        /// <param name="content">The content to write to the entry</param>
+        private async Task WriteToEntry(ZipArchiveEntry entry, byte[] content)
         {
             using (var stream = new MemoryStream(content))
             {

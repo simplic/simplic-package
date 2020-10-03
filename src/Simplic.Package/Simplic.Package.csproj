@@ -67,7 +67,7 @@
     <Compile Include="Exception\MissingDependencyException.cs" />
     <Compile Include="IObjectRepository.cs" />
     <Compile Include="IPackageTrackingRepository.cs" />
-    <Compile Include="Model\CheckDependencyResult.cs" />
+    <Compile Include="Model\CheckDependenciesResult.cs" />
     <Compile Include="Exception\InvalidObjectException.cs" />
     <Compile Include="Exception\InvalidPackageException.cs" />
     <Compile Include="ICheckDependencyService.cs" />

@@ -26,13 +26,13 @@ namespace Simplic.Package.Sql
                 if (row != null)
                 {
                     result.CanMigrate = false;
-                    result.LogMessage = $"The sql script @ {installableObject.Target} wont be migrated as it was already executed.";
+                    result.Message = $"The sql script @ {installableObject.Target} wont be migrated as it was already executed.";
                     result.LogLevel = LogLevel.Info;
                 }
                 else
                 {
                     result.CanMigrate = true;
-                    result.LogMessage = $"The sql script @ {installableObject.Target} will be migrated";
+                    result.Message = $"The sql script @ {installableObject.Target} will be migrated";
                     result.LogLevel = LogLevel.Info;
                 }
                 return result;
@@ -51,14 +51,14 @@ namespace Simplic.Package.Sql
                     try
                     {
                         await c.ExecuteAsync(sqlContent.Data);
-                        result.LogMessage = $"Succesfully executed {installableObject.Content}!";
+                        result.Message = $"Succesfully executed {installableObject.Content}!";
                         result.LogLevel = LogLevel.Info;
                     }
                     catch (Exception ex)
                     {
                         result.Success = false;
                         result.Exception = ex;
-                        result.LogMessage = $"Failed to execute {installableObject.Content}!";
+                        result.Message = $"Failed to execute {installableObject.Content}!";
                         result.LogLevel = LogLevel.Error;
                     }
 
@@ -78,14 +78,14 @@ namespace Simplic.Package.Sql
                                                     installableObject.PackageVersion.Build,
                                                     installableObject.PackageVersion.Revision
                                                 });
-                            result.LogMessage = $"Succesfully executed and added to Package_Object table! Target:{installableObject.Target}, content:{installableObject.Content}!";
+                            result.Message = $"Succesfully executed and added to Package_Object table! Target:{installableObject.Target}, content:{installableObject.Content}!";
                             result.LogLevel = LogLevel.Info;
                         }
                         catch (Exception ex)
                         {
                             result.Success = false;
                             result.Exception = ex;
-                            result.LogMessage = $"Executed but failed to add to Package_Object table! Target:{installableObject.Target}, content:{installableObject.Content}!";
+                            result.Message = $"Executed but failed to add to Package_Object table! Target:{installableObject.Target}, content:{installableObject.Content}!";
                             result.LogLevel = LogLevel.Error;
                         }
                     }

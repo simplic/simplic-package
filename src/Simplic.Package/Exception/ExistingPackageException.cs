@@ -2,9 +2,6 @@
 
 namespace Simplic.Package
 {
-    /// <summary>
-    /// TODO: Is this needed?
-    /// </summary>
     public class ExistingPackageException : Exception
     {
         public ExistingPackageException()

@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Simplic.Package.Service.Validate
 {
     public class ValidatePackageConfigurationService : IValidatePackageConfigurationService
     {
+        // TODO: Validate more
         public async Task<ValidatePackageConfigurationResult> Validate(PackageConfiguration packageConfiguration)
         {
             var validatePackageConfigurationResult = new ValidatePackageConfigurationResult
             {
                 IsValid = true,
                 LogLevel = LogLevel.Info,
-                LogMessage = "Package configuration is valid."
+                Message = "Package configuration is valid."
             };
 
             foreach (var item in packageConfiguration.Objects)
@@ -25,12 +22,12 @@ namespace Simplic.Package.Service.Validate
                     {
                         validatePackageConfigurationResult.IsValid = false;
                         validatePackageConfigurationResult.LogLevel = LogLevel.Error;
-                        validatePackageConfigurationResult.LogMessage = $"Objectlistitem with target {objectListItem.Target} is invalid, due to its InstallMode being Migrate and not having a Guid!";
+                        validatePackageConfigurationResult.Message = $"Objectlistitem with target {objectListItem.Target} is invalid, due to its InstallMode being Migrate and not having a Guid!";
+
                         return validatePackageConfigurationResult;
                     }
                 }
             }
-
             return validatePackageConfigurationResult;
         }
     }
