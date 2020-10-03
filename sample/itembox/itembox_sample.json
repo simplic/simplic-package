@@ -1,0 +1,16 @@
+{
+  "id": "<unique-id>",
+  "name": "<internal-name>",
+  "title": "<localized-name/title>",
+  "description": "<localized-description>",
+  "profiles": [
+    {
+      "displayName": "<localized-profile-name>",
+      "type": "grid",
+      "grid": "<grid-name>",
+      "isActive": true,
+      "defaultSearchString": "%",
+      "regex": null
+    }
+  ]
+}

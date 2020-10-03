@@ -1,0 +1,10 @@
+{
+  "internalName": "<internal-name>",
+  "description": "<description>",
+  "items": [
+    {
+      "name": "<entry-name>",
+      "value": "<entry-value>"
+    }
+  ]
+}

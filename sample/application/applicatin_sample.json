@@ -1,0 +1,9 @@
+{
+  "id": "<guid>",
+  "name": "<localization-key>",
+  "type": "<type>", // grid, grid_structure, browser, python, clr
+  // Depending of the type, we have different settings
+  "settings": {
+
+  }
+}

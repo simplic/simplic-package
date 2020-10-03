@@ -1,0 +1,7 @@
+{
+  "name": "<internal-name>",
+  "sqlStatement": "<select-statement>",
+  "selectColumn": "<column-name>",
+  "selectColumnBackground": "<column-name>",
+  "fsControlName": "<format_list>"
+}
