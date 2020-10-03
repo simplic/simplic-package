@@ -1,0 +1,40 @@
+// We will create a new service in simplic-framework for this. This service will be used in the package-system than
+{
+  "displayName": "<localized-name>",
+  "stackGridName": "<Grid-Name>",
+  "isActive": true,
+  "connectWithArchiv": false,
+  "tableName": "<table-name>",
+  "stackName": "STACK_<name>",
+  "headerSql": "<header-statement>",
+  "trackChanges": false,
+  "register": [
+    {
+      "id": "<unique-id>",
+      "name": "<name>",
+      "isActive": true,
+      "type": "sql", // At the moment only SQL is supported
+      "configuration": {
+        "sql": "<sql-statement>"
+      }
+    }
+  ],
+  "fullText": {
+    "useFulltextIndex": true,
+    "improveOCRText": true,
+    "useDCE": true,
+    "configurations": [
+      {
+        "id": "<unique-guid>",
+        "statement": "fulltext-sql"
+      }
+    ]
+  },
+  "autoConnector": [
+    {
+      "name": "<name>",
+      "target": "<target-stack-name>",
+      "xmlConfiguration": "<configuration-text>"
+    }
+  ]
+}

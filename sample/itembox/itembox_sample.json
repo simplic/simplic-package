@@ -1,3 +1,4 @@
+// Target-Tables: ESS_MS_Controls_ItemBox, ESS_MS_Controls_ItemBox_Profiles
 {
   "id": "<unique-id>",
   "name": "<internal-name>",
