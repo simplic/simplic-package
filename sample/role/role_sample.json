@@ -1,0 +1,6 @@
+{
+  "id": "<unique-id>",
+  "displayName": "<localized-name>",
+  "internalName": "<intenral-name>",
+  "description": "<localized-description>"
+}

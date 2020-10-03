@@ -82,6 +82,36 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stack_register", "stack_reg
 		..\sample\stack_register\stack_register_sample.json = ..\sample\stack_register\stack_register_sample.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "role", "role", "{F8E6853D-DF63-4D50-9127-902B3BD4B388}"
+	ProjectSection(SolutionItems) = preProject
+		..\sample\role\role_sample.json = ..\sample\role\role_sample.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sequence", "sequence", "{B7C99C70-35A1-46EB-AD19-CC12F9ECEDD6}"
+	ProjectSection(SolutionItems) = preProject
+		..\sample\sequence\sequence_sample.json = ..\sample\sequence\sequence_sample.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "epl_report", "epl_report", "{9C2440B3-BD90-434A-A0DF-C3261BE95065}"
+	ProjectSection(SolutionItems) = preProject
+		..\sample\epl_report\epl_report.json = ..\sample\epl_report\epl_report.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "epl_report_design", "epl_report_design", "{7BAFACF6-7C61-4C84-A043-30A572C18F22}"
+	ProjectSection(SolutionItems) = preProject
+		..\sample\epl_report_design\epl_report_design.json = ..\sample\epl_report_design\epl_report_design.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "report", "report", "{2C1492AA-3891-4B71-BBA3-4380E40A9A8E}"
+	ProjectSection(SolutionItems) = preProject
+		..\sample\report\report_sample.json = ..\sample\report\report_sample.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stack_context_area", "stack_context_area", "{694EC2CB-4973-4BFB-B45C-74CAB326EDEF}"
+	ProjectSection(SolutionItems) = preProject
+		..\sample\stack_context_area\stack_context_area.json = ..\sample\stack_context_area\stack_context_area.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +171,12 @@ Global
 		{D7E61EA6-DA9B-46A2-B34E-A77D606634F7} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
 		{2D311E58-45C8-449C-8D9E-6C1A43B68D3D} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
 		{634164BE-B793-4733-A732-D900CB42C8F0} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
+		{F8E6853D-DF63-4D50-9127-902B3BD4B388} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
+		{B7C99C70-35A1-46EB-AD19-CC12F9ECEDD6} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
+		{9C2440B3-BD90-434A-A0DF-C3261BE95065} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
+		{7BAFACF6-7C61-4C84-A043-30A572C18F22} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
+		{2C1492AA-3891-4B71-BBA3-4380E40A9A8E} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
+		{694EC2CB-4973-4BFB-B45C-74CAB326EDEF} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4EA82266-D86E-4D97-B0C6-41D6E7D8A584}

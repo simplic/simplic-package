@@ -1,0 +1,19 @@
+{
+  "id": "<unique-id>",
+  "internalName": "<unique-internal-name>",
+  "displayName": "<display-name>",
+  "format": "NR{Number}",
+  "counter": [
+    {
+      "id": "<unique-id>",
+      "validFrom": "<valid-from-date>",
+      "validTo": "<valid-to-date>",
+      "min": 0,
+      "max": 9999999,
+      "step": 1,
+      "fixedLength": 13,
+      "optionalFormat": "",
+      "tenantId": null
+    }
+  ]
+}
