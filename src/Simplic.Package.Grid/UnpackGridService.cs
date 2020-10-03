@@ -10,10 +10,9 @@ namespace Simplic.Package.Grid
         {
             var unpackObjectResult = new UnpackObjectResult();
 
-            var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
-
             try
             {
+                var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
                 var content = JsonConvert.DeserializeObject<DeserializedGrid>(json, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error }); // TODO: try catch
 
                 unpackObjectResult.InstallableObject = new InstallableObject

@@ -21,7 +21,7 @@ namespace Simplic.Package.Grid
             catch (Exception ex)
             {
                 result.IsOkay = false;
-                result.Message = $"Validation for {packObjectResult.Location} failed with Exception {ex}";
+                result.Message = $"Validation for {packObjectResult.Location} failed.";
                 result.LogLevel = LogLevel.Error;
                 result.Exception = ex;
             }
