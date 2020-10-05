@@ -63,7 +63,7 @@ namespace Simplic.Package.Service
 
                     // Validate the PackageConfiguration object
                     var validatePackageConfigurationResult = await validatePackageConfigurationService.Validate(packageConfiguration);
-                    if (validatePackageConfigurationResult.LogLevel == LogLevel.Error)
+                    if (!validatePackageConfigurationResult.IsValid)
                         throw new PackageConfigurationException(validatePackageConfigurationResult.Message);
                     else
                         await logService.WriteAsync(validatePackageConfigurationResult.Message, validatePackageConfigurationResult.LogLevel);
@@ -100,9 +100,9 @@ namespace Simplic.Package.Service
 
                             // Unpack the Object (make installable)
                             var unpackObjectResult = await unpackObjectService.UnpackObject(extractArchiveEntryResult);
-                            if (unpackObjectResult.LogLevel == LogLevel.Error)
+                            if (unpackObjectResult.InstallableObject == null)
                                 throw new InvalidObjectException(unpackObjectResult.Message, unpackObjectResult.Exception);
-                            else if (unpackObjectResult.InstallableObject != null)
+                            else
                             {
                                 await logService.WriteAsync(unpackObjectResult.Message, unpackObjectResult.LogLevel);
 

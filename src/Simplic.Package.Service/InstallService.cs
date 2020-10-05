@@ -64,7 +64,7 @@ namespace Simplic.Package.Service
                     {
                         var installObjectResult = await installObjectService.InstallObject(installableObject);
 
-                        if (installObjectResult.LogLevel == LogLevel.Error)
+                        if (!installObjectResult.Success)
                             throw new InvalidObjectException(installObjectResult.Message, installObjectResult.Exception);
                         else
                             await logService.WriteAsync(installObjectResult.Message, installObjectResult.LogLevel);

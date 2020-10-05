@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,11 +26,11 @@ namespace Simplic.Package.ItemBox
                 result.LogLevel = LogLevel.Info;
                 result.Message = $"Unpacked ItemBox at {extractArchiveEntryResult.Location}.";
             }
-            catch (JsonSerializationException jse)
+            catch (Exception ex)
             {
                 result.LogLevel = LogLevel.Error;
                 result.Message = $"Failed to deserialize ItemBox at {extractArchiveEntryResult}.";
-                result.Exception = jse;
+                result.Exception = ex;
             }
 
             return result;

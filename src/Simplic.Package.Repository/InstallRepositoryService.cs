@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Unity;
 
 namespace Simplic.Package.Repository
 {
     public class InstallRepositoryService : IInstallObjectService
     {
         private readonly IObjectRepository repository;
-        
-        public InstallRepositoryService(IObjectRepository repository)
+
+        public InstallRepositoryService([Dependency("repository")] IObjectRepository repository)
         {
             this.repository = repository;
         }

@@ -19,7 +19,7 @@ namespace Simplic.Package.Data.DB
             {
                 var updatedRows = await connection.ExecuteAsync("create table if not exists Package ( " +
                                                                 "Guid uniqueidentifier primary key, " +
-                                                                "PackageName varchar(200) not null, " +
+                                                                "PackageName varchar(200) unique not null, " +
                                                                 "Major integer not null, " +
                                                                 "Minor integer not null, " +
                                                                 "Build integer not null, " +

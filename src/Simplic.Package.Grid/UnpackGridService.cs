@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,11 +25,11 @@ namespace Simplic.Package.Grid
                 unpackObjectResult.Message = $"Succesfully deserialiazed the grid at {extractArchiveEntryResult.Location}";
                 unpackObjectResult.LogLevel = LogLevel.Info;
             }
-            catch (JsonSerializationException jse)
+            catch (Exception ex)
             {
                 unpackObjectResult.Message = $"Failed to serialize the grid at {extractArchiveEntryResult.Location}";
                 unpackObjectResult.LogLevel = LogLevel.Error;
-                unpackObjectResult.Exception = jse;
+                unpackObjectResult.Exception = ex;
             }
 
             return unpackObjectResult;

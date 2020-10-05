@@ -51,7 +51,7 @@ namespace Simplic.Package.Service
         {
             // Validate the PackageConfiguration object
             var validatePackageConfigurationResult = await validatePackageConfigurationService.Validate(packageConfiguration);
-            if (validatePackageConfigurationResult.LogLevel == LogLevel.Error)
+            if (!validatePackageConfigurationResult.IsValid)
                 throw new PackageConfigurationException(validatePackageConfigurationResult.Message);
             else
                 await logService.WriteAsync(validatePackageConfigurationResult.Message, validatePackageConfigurationResult.LogLevel);
@@ -91,7 +91,7 @@ namespace Simplic.Package.Service
                                 var validateObjectService = container.Resolve<IValidateObjectService>(item.Key);
                                 validateObjectResult = await validateObjectService.Validate(packObjectResult);
 
-                                if (validateObjectResult.LogLevel == LogLevel.Error)
+                                if (!validateObjectResult.IsValid)
                                     throw new InvalidObjectException(validateObjectResult.Message, validateObjectResult.Exception);
                                 else
                                     await logService.WriteAsync(validateObjectResult.Message, validateObjectResult.LogLevel);
@@ -102,7 +102,7 @@ namespace Simplic.Package.Service
                             }
 
                             // Write the object to the archive
-                            if (validateObjectResult == null || validateObjectResult.IsOkay)
+                            if (validateObjectResult == null || validateObjectResult.IsValid)
                             {
                                 var entry = archive.CreateEntry(packObjectResult.Location);
                                 await WriteToEntry(entry, packObjectResult.File);

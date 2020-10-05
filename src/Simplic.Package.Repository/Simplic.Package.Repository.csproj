@@ -58,6 +58,9 @@
     <PackageReference Include="Simplic.Framework.Repository">
       <Version>7.2.220.329</Version>
     </PackageReference>
+    <PackageReference Include="Unity.Abstractions">
+      <Version>5.11.6</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

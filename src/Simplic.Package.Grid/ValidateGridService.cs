@@ -9,7 +9,7 @@ namespace Simplic.Package.Grid
     {
         public async Task<ValidateObjectResult> Validate(PackObjectResult packObjectResult)
         {
-            var result = new ValidateObjectResult { IsOkay = true };
+            var result = new ValidateObjectResult { IsValid = true };
             try
             {
                 var json = Encoding.Default.GetString(packObjectResult.File);
@@ -20,7 +20,7 @@ namespace Simplic.Package.Grid
             }
             catch (Exception ex)
             {
-                result.IsOkay = false;
+                result.IsValid = false;
                 result.Message = $"Validation for {packObjectResult.Location} failed.";
                 result.LogLevel = LogLevel.Error;
                 result.Exception = ex;

@@ -41,13 +41,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="IconRepository.cs" />
+    <Compile Include="InstallIconService.cs" />
+    <Compile Include="Model\DeserializedIcon.cs" />
+    <Compile Include="PackIconService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnpackIconService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
+    </PackageReference>
     <PackageReference Include="Simplic.Framework.Repository">
       <Version>7.2.220.329</Version>
     </PackageReference>
+    <PackageReference Include="Simplic.Icon">
+      <Version>6.0.18.620</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Icon.Service">
+      <Version>1.0.100.1</Version>
+    </PackageReference>
+    <PackageReference Include="Unity.Abstractions">
+      <Version>5.11.6</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simplic.Package\Simplic.Package.csproj">
+      <Project>{0aca9764-a25d-4517-b64e-95645674666b}</Project>
+      <Name>Simplic.Package</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

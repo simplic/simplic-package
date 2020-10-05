@@ -1,8 +1,5 @@
 ﻿using Simplic.Framework.Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Repository
@@ -11,12 +8,35 @@ namespace Simplic.Package.Repository
     {
         public Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject)
         {
+            throw new NotImplementedException();
         }
 
-        public Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
+        public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            var repositoryManager = RepositoryManager.Singleton;
-            var repositoryFileInfo = new RepositoryFileInfo(); // The content here can only be added via the the full path of the file.
+            if (installableObject.Content is RepositoryContent repositoryContent)
+            {
+                var repositoryManager = RepositoryManager.Singleton;
+                var installObjectResult = new InstallObjectResult
+                {
+                    LogLevel = LogLevel.Info,
+                };
+
+                try
+                {
+                    repositoryManager.WriteAllBytes(installableObject.Target, repositoryContent.Data);
+                    installObjectResult.Success = true;
+                    installObjectResult.Message = $"Installed repository content at {installableObject.Target}.";
+                }
+                catch (Exception ex)
+                {
+                    installObjectResult.Message = $"Failed to install repository content at {installableObject.Target}.";
+                    installObjectResult.LogLevel = LogLevel.Error;
+                    installObjectResult.Exception = ex;
+                }
+
+                return installObjectResult;
+            }
+            throw new InvalidContentException();
         }
     }
 }

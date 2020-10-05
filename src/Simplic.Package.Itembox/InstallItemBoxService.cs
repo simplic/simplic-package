@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Unity;
 
 namespace Simplic.Package.ItemBox
 {
@@ -7,7 +8,7 @@ namespace Simplic.Package.ItemBox
     {
         private readonly IObjectRepository repository;
 
-        public InstallItemBoxService(IObjectRepository repository)
+        public InstallItemBoxService([Dependency("itemBox")] IObjectRepository repository)
         {
             this.repository = repository;
         }

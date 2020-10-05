@@ -2,6 +2,6 @@
 {
     public class ValidateObjectResult : LogResult
     {
-        public bool IsOkay { get; set; }
+        public bool IsValid { get; set; }
     }
 }

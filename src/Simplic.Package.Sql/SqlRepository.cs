@@ -43,56 +43,59 @@ namespace Simplic.Package.Sql
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            var sqlContent = installableObject.Content as SqlContent;
-
-            var installObjectResult = await sqlService.OpenConnection<Task<InstallObjectResult>>(async (c) =>
+            if (installableObject.Content is SqlContent sqlContent)
             {
-                var result = new InstallObjectResult { Success = true };
-                try
+                var installObjectResult = await sqlService.OpenConnection<Task<InstallObjectResult>>(async (c) =>
                 {
-                    await c.ExecuteAsync(sqlContent.Data);
-                    result.Message = $"Succesfully executed {installableObject.Content}!";
-                    result.LogLevel = LogLevel.Info;
-                }
-                catch (Exception ex)
-                {
-                    result.Success = false;
-                    result.Exception = ex;
-                    result.Message = $"Failed to execute {installableObject.Content}!";
-                    result.LogLevel = LogLevel.Error;
-                }
-
-                if (installableObject.Mode == InstallMode.Migrate && result.Success)
-                {
+                    var result = new InstallObjectResult { Success = true };
                     try
                     {
-                        await c.ExecuteAsync("Insert into Package_Object (guid, objecttype, target, package, packageversionmaajor, packageversionminor, packageversionbuild, packageversionrevision ) " +
-                                            "values (:guid, 'sql', :target, :package, :packageversionmajor, :packageversionminor, :packageversionbuild, :packageversionrevision)"
-                                            , new
-                                            {
-                                                installableObject.Guid,
-                                                installableObject.Target,
-                                                installableObject.PackageName,
-                                                installableObject.PackageVersion.Major,
-                                                installableObject.PackageVersion.Minor,
-                                                installableObject.PackageVersion.Build,
-                                                installableObject.PackageVersion.Revision
-                                            });
-                        result.Message = $"Succesfully executed and added to Package_Object table! Target:{installableObject.Target}, content:{installableObject.Content}!";
+                        await c.ExecuteAsync(sqlContent.Data);
+                        result.Message = $"Succesfully executed {installableObject.Content}!";
                         result.LogLevel = LogLevel.Info;
                     }
                     catch (Exception ex)
                     {
                         result.Success = false;
                         result.Exception = ex;
-                        result.Message = $"Executed but failed to add to Package_Object table! Target:{installableObject.Target}, content:{installableObject.Content}!";
+                        result.Message = $"Failed to execute {installableObject.Content}!";
                         result.LogLevel = LogLevel.Error;
                     }
-                }
 
-                return result;
-            });
-            return installObjectResult;
+                    if (installableObject.Mode == InstallMode.Migrate && result.Success)
+                    {
+                        try
+                        {
+                            await c.ExecuteAsync("Insert into Package_Object (guid, objecttype, target, package, packageversionmaajor, packageversionminor, packageversionbuild, packageversionrevision ) " +
+                                                "values (:guid, 'sql', :target, :package, :packageversionmajor, :packageversionminor, :packageversionbuild, :packageversionrevision)"
+                                                , new
+                                                {
+                                                    installableObject.Guid,
+                                                    installableObject.Target,
+                                                    installableObject.PackageName,
+                                                    installableObject.PackageVersion.Major,
+                                                    installableObject.PackageVersion.Minor,
+                                                    installableObject.PackageVersion.Build,
+                                                    installableObject.PackageVersion.Revision
+                                                });
+                            result.Message = $"Succesfully executed and added to Package_Object table! Target:{installableObject.Target}, content:{installableObject.Content}!";
+                            result.LogLevel = LogLevel.Info;
+                        }
+                        catch (Exception ex)
+                        {
+                            result.Success = false;
+                            result.Exception = ex;
+                            result.Message = $"Executed but failed to add to Package_Object table! Target:{installableObject.Target}, content:{installableObject.Content}!";
+                            result.LogLevel = LogLevel.Error;
+                        }
+                    }
+
+                    return result;
+                });
+
+                return installObjectResult;
+            }
+            throw new InvalidContentException("");
         }
     }
 }
