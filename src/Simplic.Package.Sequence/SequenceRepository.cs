@@ -1,6 +1,8 @@
 ﻿using Simplic.Framework.Core;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Sequence
@@ -24,17 +26,17 @@ namespace Simplic.Package.Sequence
                 try
                 {
                     var counters = sequence.Counter.Select(x => new SequenceNumberCounter(new SequenceNumber())
-                    {
-                        Id = x.Id,
-                        ValidFrom = x.ValidFrom,
-                        ValidTo = x.ValidTo,
-                        Minimum = x.Min,
-                        Maximum = x.Max,
-                        Step = x.Step,
-                        FixedLength = x.FixedLength,
-                        Format = x.OptionalFormat,
-                        TenantId = x.TenenatId
-                    });
+                                                                {
+                                                                Id = x.Id,
+                                                                ValidFrom = x.ValidFrom,
+                                                                ValidTo = x.ValidTo,
+                                                                Minimum = x.Min,
+                                                                Maximum = x.Max,
+                                                                Step = x.Step,
+                                                                FixedLength = x.FixedLength,
+                                                                Format = x.OptionalFormat,
+                                                                TenantId = x.TenenatId
+                                                                });
 
                     SequenceNumberManager.Singleton.Save(new SequenceNumber()
                     {
