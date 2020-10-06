@@ -57,6 +57,7 @@
     <Compile Include="Exception\ExistingPackageException.cs" />
     <Compile Include="Exception\InvalidContentException.cs" />
     <Compile Include="IInitializePackageSystemService.cs" />
+    <Compile Include="IGenericJsonValidationService.cs" />
     <Compile Include="ILogService.cs" />
     <Compile Include="IValidatePackageConfigurationService.cs" />
     <Compile Include="Model\InitializePackageSystemResult.cs" />

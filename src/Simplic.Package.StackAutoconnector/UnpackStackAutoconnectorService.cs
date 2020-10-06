@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Simplic.Package.StackAutoconnector.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +21,19 @@ namespace Simplic.Package.StackAutoconnector
             try
             {
                 var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
-                var content = JsonConvert.DeserializeObject<DeserializedStackAutoconnector>(json);
+                var jObject = JObject.Parse(json);
+
+                // Seperate settings and rest of json
+                var settingsJson = jObject["configuration"];
+                jObject.Remove("configuration");
+
+                // Seperately deserialize settings and rest of json
+                var deserializedAutoStackonnector = jObject.ToObject<DeserializedStackAutoconnector>();
+                deserializedAutoStackonnector.Configuration = DeserializedConfiguration(deserializedAutoStackonnector.Type, settingsJson);
 
                 result.InstallableObject = new InstallableObject
                 {
-                    Content = content,
+                    Content = deserializedAutoStackonnector,
                     Target = extractArchiveEntryResult.Location,
                     Mode = extractArchiveEntryResult.Mode
                 };
@@ -36,6 +46,13 @@ namespace Simplic.Package.StackAutoconnector
                 result.Exception = ex;
             }
             return result;
+        }
+
+        private IStackAutoconnectorConfiguration DeserializedConfiguration(string type, JToken settingsJson)
+        {
+            if (type == "xml")
+                return settingsJson.ToObject<XmlConfiguration>();
+            return null;
         }
     }
 }

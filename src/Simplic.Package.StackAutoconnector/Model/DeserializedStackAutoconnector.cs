@@ -12,6 +12,6 @@ namespace Simplic.Package.StackAutoconnector
         public string Type { get; set; }
         public Guid StackId { get; set; }
         public string Target { get; set; }
-        public StackAutoconnectorConfiguration Configuration { get; set; }
+        public IStackAutoconnectorConfiguration Configuration { get; set; }
     }
 }

@@ -41,10 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InstallStackAutoconnectorService.cs" />
     <Compile Include="Model\DeserializedStackAutoconnector.cs" />
+    <Compile Include="Model\XmlConfiguration.cs" />
     <Compile Include="PackStackAutoconnectorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\StackAutoconnectorConfiguration.cs" />
+    <Compile Include="Model\IStackAutoconnectorConfiguration.cs" />
+    <Compile Include="StackAutoconnectorRepository.cs" />
     <Compile Include="UnpackStackAutoconnectorService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +59,9 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Unity.Abstractions">
+      <Version>5.11.6</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

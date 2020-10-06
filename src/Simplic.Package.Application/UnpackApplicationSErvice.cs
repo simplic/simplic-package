@@ -21,12 +21,12 @@ namespace Simplic.Package.Application
                 var jObject = JObject.Parse(json);
 
                 // Seperate settings and rest of json
-                var settingsJson = jObject["settings"].ToString();
-                jObject.Remove("settings");
+                var settingsJson = jObject["configuration"].ToString();
+                jObject.Remove("configuration");
 
                 // Seperately deserialize settings and rest of json
                 var deserializedApplication = jObject.ToObject<DeserializedApplication>();
-                deserializedApplication.Settings = DeseralizeSettings(deserializedApplication.Type, settingsJson);
+                deserializedApplication.Configuration = DeseralizeSettings(deserializedApplication.Type, settingsJson);
 
                 result.InstallableObject = new InstallableObject
                 {
@@ -45,18 +45,18 @@ namespace Simplic.Package.Application
             return result;
         }
 
-        private IApplicationSettings DeseralizeSettings(string type, string settingsJson)
+        private IApplicationConfiguration DeseralizeSettings(string type, string settingsJson)
         {
             if (type == "grid")
-                return JsonConvert.DeserializeObject<GridSettings>(settingsJson);
+                return JsonConvert.DeserializeObject<GridConfiguration>(settingsJson);
             else if (type == "grid_structure")
-                return JsonConvert.DeserializeObject<GridStructureSettings>(settingsJson);
+                return JsonConvert.DeserializeObject<GridStructureConfiguration>(settingsJson);
             else if (type == "browser")
-                return JsonConvert.DeserializeObject<BrowserSettings>(settingsJson);
+                return JsonConvert.DeserializeObject<BrowserConfiguration>(settingsJson);
             else if (type == "python")
-                return JsonConvert.DeserializeObject<PythonSettings>(settingsJson);
+                return JsonConvert.DeserializeObject<PythonConfiguration>(settingsJson);
             else if (type == "clr")
-                return JsonConvert.DeserializeObject<ClrSettings>(settingsJson);
+                return JsonConvert.DeserializeObject<ClrConfiguration>(settingsJson);
             return null;
         }
     }

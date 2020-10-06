@@ -1,6 +1,6 @@
 ﻿namespace Simplic.Package.Application
 {
-    public interface IApplicationSettings
+    public interface IApplicationConfiguration
     {
     }
 }

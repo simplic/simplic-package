@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Report
 {
-    public class ParameterConfiguration : ReportConfiguration
+    public class ParameterConfiguration : IReportConfiguration
     {
-        public IList<ParameterItem> Parameter { get; set; }
+        public string Connection { get; set; }
+        public string Provider { get; set; }
+        public IList<string> Parameter { get; set; }
     }
 }

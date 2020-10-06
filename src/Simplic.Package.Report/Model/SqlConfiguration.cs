@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Report.Model
 {
-    class SqlConfiguration : ReportConfiguration
+    class SqlConfiguration : IReportConfiguration
     {
     }
 }

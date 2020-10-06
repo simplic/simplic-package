@@ -45,11 +45,11 @@
     <Compile Include="Model\DeserializedReport.cs" />
     <Compile Include="Model\KeyValueConfiguration.cs" />
     <Compile Include="Model\ParameterConfiguration.cs" />
-    <Compile Include="Model\ParameterItem.cs" />
+    <Compile Include="Model\KeyValueParameterItem.cs" />
     <Compile Include="Model\SqlConfiguration.cs" />
     <Compile Include="PackReportService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\ReportConfiguration.cs" />
+    <Compile Include="Model\IReportConfiguration.cs" />
     <Compile Include="ReportRepository.cs" />
     <Compile Include="UnpackReportService.cs" />
   </ItemGroup>

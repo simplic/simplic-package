@@ -43,13 +43,15 @@
   <ItemGroup>
     <Compile Include="ApplicationRepository.cs" />
     <Compile Include="InstallApplicationService.cs" />
-    <Compile Include="Model\BrowserSettings.cs" />
-    <Compile Include="Model\ClrSettings.cs" />
+    <Compile Include="Model\BrowserConfiguration.cs" />
+    <Compile Include="Model\ClrConfiguration.cs" />
     <Compile Include="Model\DeserializedApplication.cs" />
-    <Compile Include="Model\GridSettings.cs" />
-    <Compile Include="Model\GridStructureSettings.cs" />
-    <Compile Include="Model\IApplicationSettings.cs" />
-    <Compile Include="Model\PythonSettings.cs" />
+    <Compile Include="Model\GridConfiguration.cs" />
+    <Compile Include="Model\GridStructureConfiguration.cs" />
+    <Compile Include="Model\IApplicationConfiguration.cs" />
+    <Compile Include="Model\PythonConfiguration.cs" />
+    <Compile Include="Model\RegisterItem.cs" />
+    <Compile Include="Model\StackItem.cs" />
     <Compile Include="PackApplicationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnpackApplicationSErvice.cs" />

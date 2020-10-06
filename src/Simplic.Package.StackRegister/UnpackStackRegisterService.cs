@@ -1,16 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
-using Simplic.Package.Report.Model;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simplic.Package.Report
+namespace Simplic.Package.StackRegister
 {
-    public class UnpackReportService : IUnpackObjectService
+    public class UnpackStackRegisterService : IUnpackObjectService
     {
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
@@ -24,37 +21,35 @@ namespace Simplic.Package.Report
                 var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
                 var jObject = JObject.Parse(json);
 
+                // Seperate settings and rest of json
                 var configuration = jObject["configuration"];
                 jObject.Remove("configuration");
 
-                var content = jObject.ToObject<DeserializedReport>();
-                content.Configuration = DeserializeConfiguration(content.Type, configuration);
+                // Seperately deserialize settings and rest of json
+                var deserializedStackRegister = jObject.ToObject<StackRegister>();
+                deserializedStackRegister.Configuration = DeserializedConfiguration(deserializedStackRegister.Type, configuration);
 
                 result.InstallableObject = new InstallableObject
                 {
-                    Content = content,
+                    Content = deserializedStackRegister,
                     Target = extractArchiveEntryResult.Location,
                     Mode = extractArchiveEntryResult.Mode
                 };
-                result.Message = $"Unpacked Report at {extractArchiveEntryResult.Location}.";
+                result.Message = $"Unpacked StackContextArea at {extractArchiveEntryResult.Location}.";
             }
             catch (Exception ex)
             {
-                result.Message = $"Failed to unpack Report at {extractArchiveEntryResult.Location}.";
+                result.Message = $"Failed to unpack StackContextArea at {extractArchiveEntryResult.Location}.";
                 result.LogLevel = LogLevel.Error;
                 result.Exception = ex;
             }
             return result;
         }
 
-        private IReportConfiguration DeserializeConfiguration(string type, JToken configuration)
+        private IStackRegisterConfiguration DeserializedConfiguration(string type, JToken configuration)
         {
             if (type == "sql")
                 return configuration.ToObject<SqlConfiguration>();
-            else if (type == "key-value")
-                return configuration.ToObject<KeyValueConfiguration>();
-            else if (type == "parameter")
-                return configuration.ToObject<ParameterConfiguration>();
             return null;
         }
     }

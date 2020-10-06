@@ -7,6 +7,6 @@ namespace Simplic.Package.Application
         public Guid Id { get; set; }
         public string LocalizationKey { get; set; }
         public string Type { get; set; }
-        public IApplicationSettings Settings { get; set; }
+        public IApplicationConfiguration Configuration { get; set; }
     }
 }

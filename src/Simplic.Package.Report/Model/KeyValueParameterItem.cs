@@ -1,6 +1,6 @@
 ﻿namespace Simplic.Package.Report
 {
-    public class ParameterItem
+    public class KeyValueParameterItem
     {
         public string Name { get; set; }
         public int OrderId { get; set; }

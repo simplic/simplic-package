@@ -9,30 +9,29 @@ namespace Simplic.Package.Grid
     {
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
-            var unpackObjectResult = new UnpackObjectResult();
+            var result = new UnpackObjectResult { LogLevel = LogLevel.Info};
 
             try
             {
                 var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
                 var content = JsonConvert.DeserializeObject<DeserializedGrid>(json, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error }); // TODO: try catch
 
-                unpackObjectResult.InstallableObject = new InstallableObject
+                result.InstallableObject = new InstallableObject
                 {
                     Content = content,
                     Target = extractArchiveEntryResult.Location, // TODO: What to put here? this could be useful
                     Mode = extractArchiveEntryResult.Mode
                 };
-                unpackObjectResult.Message = $"Succesfully deserialiazed the grid at {extractArchiveEntryResult.Location}";
-                unpackObjectResult.LogLevel = LogLevel.Info;
+                result.Message = $"Unpacked grid at {extractArchiveEntryResult.Location}.";
             }
             catch (Exception ex)
             {
-                unpackObjectResult.Message = $"Failed to serialize the grid at {extractArchiveEntryResult.Location}";
-                unpackObjectResult.LogLevel = LogLevel.Error;
-                unpackObjectResult.Exception = ex;
+                result.Message = $"Failed to unpackc grid at {extractArchiveEntryResult.Location}.";
+                result.LogLevel = LogLevel.Error;
+                result.Exception = ex;
             }
 
-            return unpackObjectResult;
+            return result;
         }
     }
 }
