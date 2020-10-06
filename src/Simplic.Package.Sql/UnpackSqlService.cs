@@ -8,32 +8,22 @@ namespace Simplic.Package.Sql
     {
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
-            var unpackObjectResult = new UnpackObjectResult();
-
-            try
+            var installableObject = new InstallableObject
             {
-                var content = new SqlContent
+                Content = new SqlContent
                 {
                     Data = Encoding.Default.GetString(extractArchiveEntryResult.Data)
-                };
+                },
+                Target = extractArchiveEntryResult.Location,
+                Mode = extractArchiveEntryResult.Mode
+            };
 
-                unpackObjectResult.InstallableObject = new InstallableObject
-                {
-                    Content = content,
-                    Target = extractArchiveEntryResult.Location, // TODO:
-                    Mode = extractArchiveEntryResult.Mode
-                };
-                unpackObjectResult.Message = $"Succesfully unpacked sql file at {extractArchiveEntryResult.Location}";
-                unpackObjectResult.LogLevel = LogLevel.Info;
-            }
-            catch (Exception ex)
+            return new UnpackObjectResult
             {
-                unpackObjectResult.Message = $"Couldent unpack sql file at {extractArchiveEntryResult.Location}";
-                unpackObjectResult.LogLevel = LogLevel.Error;
-                unpackObjectResult.Exception = ex;
-            }
-
-            return unpackObjectResult;
+                InstallableObject = installableObject,
+                Message = $"Unpacked sql file at {extractArchiveEntryResult.Location}.",
+                LogLevel = LogLevel.Info
+            };
         }
     }
 }

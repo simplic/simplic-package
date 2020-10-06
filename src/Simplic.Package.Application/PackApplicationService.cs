@@ -2,22 +2,10 @@
 
 namespace Simplic.Package.Application
 {
-    public class PackApplicationService : IPackObjectService
+    public class PackApplicationService : PackObjectServiceBase, IPackObjectService 
     {
-        private readonly IFileService fileService;
-
-        public PackApplicationService(IFileService fileService)
+        public PackApplicationService(IFileService fileService) : base(fileService)
         {
-            this.fileService = fileService;
-        }
-
-        public async Task<PackObjectResult> ReadAsync(ObjectListItem item)
-        {
-            return new PackObjectResult
-            {
-                File = await fileService.ReadAllBytesAsync(item.Source),
-                Location = item.Target
-            };
         }
     }
 }

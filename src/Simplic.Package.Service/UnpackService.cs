@@ -87,15 +87,32 @@ namespace Simplic.Package.Service
                         {
                             var archiveEntry = archive.GetEntry(objectListItem.Target);
                             if (archiveEntry == null)
-                                throw new MissingObjectException($"There was no archive entry found at the location specified: {objectListItem.Target}");
+                                throw new MissingObjectException($"There was no archive entry found at the location specified: {objectListItem.Target}.");
 
-                            // Read the archive entry content
+                            // Extract the main entries content
                             var archiveEntryContent = await fileService.ReadAllBytesAsync(archiveEntry.Open());
+
+                            // Extract the payloads content
+                            var payload = new Dictionary<string, byte[]>();
+                            if (objectListItem.Payload.Any())
+                            {
+                                foreach (var _item in objectListItem.Payload)
+                                {
+                                    var payloadEntry = archive.GetEntry(_item.Target);
+                                    if (payloadEntry == null)
+                                        throw new MissingObjectException($"There was no archive entry found at the location specified: {_item.Target}.");
+
+                                    payload[_item.Target] = await fileService.ReadAllBytesAsync(payloadEntry.Open());
+                                }
+                            }
+
+                            // Set the archive entry content
                             var extractArchiveEntryResult = new ExtractArchiveEntryResult
                             {
                                 Data = archiveEntryContent,
                                 Location = objectListItem.Target,
-                                Mode = objectListItem.Mode
+                                Mode = objectListItem.Mode,
+                                Payload = payload
                             };
 
                             // Unpack the Object (make installable)

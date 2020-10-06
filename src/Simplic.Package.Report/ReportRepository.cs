@@ -1,4 +1,5 @@
-﻿using Simplic.Framework.DocumentProcessing.Reporting;
+﻿using Simplic.Reporting;
+using Simplic.Package.Report.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,9 @@ namespace Simplic.Package.Report
             throw new NotImplementedException();
         }
 
-        public Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
+        public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedReport report)
+            if (installableObject.Content is FullReport report)
             {
                 var result = new InstallObjectResult
                 {
@@ -25,9 +26,20 @@ namespace Simplic.Package.Report
 
                 try
                 {
-                    ReportManager.Singleton.
+                    ReportManager.Singleton.SaveConfiguration(report.Report);
+                    ReportManager.Singleton.SaveReportFile(report.Report.Name, report.ReportData);
+
+                    result.Message = $"Installed Report at {installableObject.Target}.";
                 }
+                catch (Exception ex)
+                {
+                    result.Message = $"Failed to install Report at {installableObject.Target}.";
+                    result.LogLevel = LogLevel.Error;
+                    result.Exception = ex;
+                }
+                return result;
             }
+            throw new InvalidContentException();
         }
     }
 }

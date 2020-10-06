@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Simplic.Package
 {
@@ -8,5 +10,6 @@ namespace Simplic.Package
         public string Target { get; set; }
         public Guid Guid { get; set; }
         public InstallMode Mode { get; set; }
+        public IList<Payload> Payload { get; set; }
     }
 }

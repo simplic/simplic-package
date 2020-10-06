@@ -8,18 +8,18 @@ namespace Simplic.Package.Repository
         {
             var installableObject = new InstallableObject
             {
-                Target = extractArchiveEntryResult.Location, // TODO: This is just the path in the archive
                 Content = new RepositoryContent
                 {
                     Data = extractArchiveEntryResult.Data
                 },
+                Target = extractArchiveEntryResult.Location, // TODO: This is just the path in the archive
                 Mode = extractArchiveEntryResult.Mode
             };
 
             return new UnpackObjectResult
             {
                 InstallableObject = installableObject,
-                Message = $"Unpacked repository object at {extractArchiveEntryResult.Location}",
+                Message = $"Unpacked repository at {extractArchiveEntryResult.Location}",
                 LogLevel = LogLevel.Info
             };
         }

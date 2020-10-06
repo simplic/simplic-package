@@ -10,7 +10,7 @@ namespace Simplic.Package.Report
     {
         public string Connection { get; set; }
         public string Provider { get; set; }
-        public bool IsListBad { get; set; }
+        public bool IsListBased { get; set; }
         public IList<KeyValueParameterItem> Parameter { get; set; }
     }
 }

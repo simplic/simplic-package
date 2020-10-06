@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileService.cs" />
-    <Compile Include="GenericJsonValidationService.cs" />
     <Compile Include="InitializePackageSystemService.cs" />
     <Compile Include="CheckDependencyService.cs" />
     <Compile Include="InstallService.cs" />
@@ -54,10 +53,6 @@
     <Compile Include="ValidatePackageConfigurationService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Simplic.Package.Data.DB\Simplic.Package.Data.DB.csproj">
-      <Project>{061247f8-3f50-4271-852e-4ad4dc8592b0}</Project>
-      <Name>Simplic.Package.Data.DB</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Simplic.Package\Simplic.Package.csproj">
       <Project>{0aca9764-a25d-4517-b64e-95645674666b}</Project>
       <Name>Simplic.Package</Name>

@@ -21,18 +21,26 @@ namespace Simplic.Package.Report
 
             try
             {
+                var fullReport = new FullReport();
+
                 var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
                 var jObject = JObject.Parse(json);
 
                 var configuration = jObject["configuration"];
                 jObject.Remove("configuration");
 
-                var content = jObject.ToObject<DeserializedReport>();
-                content.Configuration = DeserializeConfiguration(content.Type, configuration);
+                var reportConfiguration = jObject.ToObject<DeserializedReport>();
+                reportConfiguration.Configuration = DeserializeConfiguration(reportConfiguration.Type, configuration);
+                
+                fullReport.Report = reportConfiguration;
+
+                if (extractArchiveEntryResult.Payload.Any())
+                    fullReport.ReportData = extractArchiveEntryResult.Payload.First().Value;
+
 
                 result.InstallableObject = new InstallableObject
                 {
-                    Content = content,
+                    Content = fullReport,
                     Target = extractArchiveEntryResult.Location,
                     Mode = extractArchiveEntryResult.Mode
                 };

@@ -6,22 +6,10 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Stack
 {
-    public class PackStackService : IPackObjectService
+    public class PackStackService : PackObjectServiceBase, IPackObjectService
     {
-        private readonly IFileService fileService;
-
-        public PackStackService(IFileService fileService)
+        public PackStackService(IFileService fileService) : base(fileService)
         {
-            this.fileService = fileService;
-        }
-
-        public async Task<PackObjectResult> ReadAsync(ObjectListItem item)
-        {
-            return new PackObjectResult
-            {
-                File = await fileService.ReadAllBytesAsync(item.Source),
-                Location = item.Target
-            };
         }
     }
 }

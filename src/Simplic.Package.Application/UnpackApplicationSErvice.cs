@@ -49,7 +49,7 @@ namespace Simplic.Package.Application
         {
             if (type == "grid")
                 return JsonConvert.DeserializeObject<GridConfiguration>(settingsJson);
-            else if (type == "grid_structure")
+            else if (type == "grid-structure")
                 return JsonConvert.DeserializeObject<GridStructureConfiguration>(settingsJson);
             else if (type == "browser")
                 return JsonConvert.DeserializeObject<BrowserConfiguration>(settingsJson);

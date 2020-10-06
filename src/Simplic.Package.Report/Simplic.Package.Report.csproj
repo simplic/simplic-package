@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="InstallReportService.cs" />
     <Compile Include="Model\DeserializedReport.cs" />
+    <Compile Include="Model\FullReport.cs" />
     <Compile Include="Model\KeyValueConfiguration.cs" />
     <Compile Include="Model\ParameterConfiguration.cs" />
     <Compile Include="Model\KeyValueParameterItem.cs" />
@@ -70,6 +71,9 @@
       <Version>7.2.220.329</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Framework.DocumentProcessing">
+      <Version>7.2.220.329</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Reporting">
       <Version>7.2.220.329</Version>
     </PackageReference>
     <PackageReference Include="Unity.Abstractions">

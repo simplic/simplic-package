@@ -106,6 +106,13 @@ namespace Simplic.Package.Service
                             {
                                 var entry = archive.CreateEntry(packObjectResult.Location);
                                 await WriteToEntry(entry, packObjectResult.File);
+
+                                foreach (var payload in packObjectResult.Payload)
+                                {
+                                    var payloadEntry = archive.CreateEntry(payload.Key);
+                                    await WriteToEntry(payloadEntry, payload.Value);
+                                }
+
                             }
                         }
                     }

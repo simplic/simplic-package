@@ -2,22 +2,10 @@
 
 namespace Simplic.Package.ComboBox
 {
-    public class PackComboBoxService : IPackObjectService
+    public class PackComboBoxService : PackObjectServiceBase, IPackObjectService
     {
-        public readonly IFileService fileService;
-
-        public PackComboBoxService(IFileService fileService)
+        public PackComboBoxService(IFileService fileService) : base(fileService)
         {
-            this.fileService = fileService;
-        }
-
-        public async Task<PackObjectResult> ReadAsync(ObjectListItem item)
-        {
-            return new PackObjectResult
-            {
-                File = await fileService.ReadAllBytesAsync(item.Source),
-                Location = item.Target
-            };
         }
     }
 }

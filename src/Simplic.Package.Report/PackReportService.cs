@@ -6,21 +6,25 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Report
 {
-    public class PackReportService : IPackObjectService
+    public class PackReportService : PackObjectServiceBase, IPackObjectService
     {
-        private readonly IFileService fileService;
-        public PackReportService(IFileService fileService)
+        public PackReportService(IFileService fileService) : base(fileService)
         {
-            this.fileService = fileService;
         }
 
-        public async Task<PackObjectResult> ReadAsync(ObjectListItem item)
+        public override async Task<PackObjectResult> ReadAsync(ObjectListItem item)
         {
-            return new PackObjectResult
+            var result = new PackObjectResult
             {
                 File = await fileService.ReadAllBytesAsync(item.Source),
-                Location = item.Target
+                Location = item.Target,
+                Payload = new Dictionary<string, byte[]>()
             };
+
+            foreach (var payload in item.Payload)
+                result.Payload[payload.Target] = await fileService.ReadAllBytesAsync(payload.Source);
+
+            return result;
         }
     }
 }

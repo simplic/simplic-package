@@ -6,22 +6,10 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.StackAutoconnector
 {
-    class PackStackAutoconnectorService
+    public class PackStackAutoconnectorService : PackObjectServiceBase, IPackObjectService
     {
-        private readonly IFileService fileService;
-
-        public PackStackAutoconnectorService(IFileService fileService)
+        public PackStackAutoconnectorService(IFileService fileService) : base(fileService)
         {
-            this.fileService = fileService;
-        }
-
-        public async Task<PackObjectResult> ReadAsync(ObjectListItem item)
-        {
-            return new PackObjectResult
-            {
-                File = await fileService.ReadAllBytesAsync(item.Source),
-                Location = item.Target
-            };
         }
     }
 }

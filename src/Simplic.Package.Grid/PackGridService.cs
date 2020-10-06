@@ -2,22 +2,10 @@
 
 namespace Simplic.Package.Grid
 {
-    public class PackGridService : IPackObjectService
+    public class PackGridService : PackObjectServiceBase, IPackObjectService
     {
-        private readonly IFileService fileService;
-
-        public PackGridService(IFileService fileService)
+        public PackGridService(IFileService fileService) : base(fileService)
         {
-            this.fileService = fileService;
-        }
-
-        public async Task<PackObjectResult> ReadAsync(ObjectListItem item)
-        {
-            return new PackObjectResult
-            {
-                File = await fileService.ReadAllBytesAsync(item.Source),
-                Location = $"{item.Target}"
-            };
         }
     }
 }

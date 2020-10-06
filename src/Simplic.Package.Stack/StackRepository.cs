@@ -1,6 +1,7 @@
 ﻿using Simplic.Sql;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace Simplic.Package.Stack
 
                 try
                 {
-
+                    throw new NotImplementedException("A service for saving stacks will be created in the framework.");
                 }
             }
             throw new InvalidContentException();
