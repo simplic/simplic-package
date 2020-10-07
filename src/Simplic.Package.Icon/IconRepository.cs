@@ -56,5 +56,10 @@ namespace Simplic.Package.Icon
             }
             throw new InvalidContentException();
         }
+
+        public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

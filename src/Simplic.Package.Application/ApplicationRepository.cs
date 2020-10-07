@@ -1,6 +1,8 @@
-﻿using Simplic.Sql;
+﻿using Dapper;
+using Simplic.Sql;
 using System;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace Simplic.Package.Application
 {
@@ -18,7 +20,7 @@ namespace Simplic.Package.Application
             throw new NotImplementedException();
         }
 
-        public Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
+        public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is DeserializedApplication application)
             {
@@ -29,9 +31,119 @@ namespace Simplic.Package.Application
 
                 try
                 {
-                    dont have table
+                    var success = await sqlService.OpenConnection(async (c) =>
+                    {
+                        todo
+                           var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page (guid, ) on existing update values (:id, )",
+                                                                   new { application.Id });
+                        return affectedRows > 0;
+                    });
+
+                    if (success)
+                    {
+                        if (await SaveConfiguration(application, application.Type))
+                        {
+                            result.Success = true;
+                            result.Message = $"Installed Application at {installableObject.Target}.";
+                        }
+                        else
+                        {
+                            result.Message = $"Installed Application but failed to install ApplicationConfiguration at {installableObject.Target}.";
+                            result.LogLevel = LogLevel.Error;
+                        }
+                    }
+                    else
+                    {
+                        result.Message = $"Failed to install Application at {installableObject.Target}.";
+                        result.LogLevel = LogLevel.Warning;
+                    }
                 }
+                catch (Exception ex)
+                {
+                    result.Message = $"Failed to install Application at {installableObject.Target}.";
+                    result.LogLevel = LogLevel.Error;
+                    result.Exception = ex;
+                }
+                return result;
             }
+            throw new InvalidContentException();
+        }
+
+        private async Task<bool> SaveConfiguration(DeserializedApplication application, string type)
+        {
+            var configuration = application.Configuration;
+            switch (type)
+            {
+                case "clr":
+                    {
+                        if (configuration is ClrConfiguration clrConfig)
+                        {
+                            var success = await sqlService.OpenConnection(async (c) =>
+                            {
+                                var affectedRows = await c.ExecuteAsync("Insert into Application_ClrCall (pageguid, clrnamespace, clrclass, clrmethod) " +
+                                                                        "on existing update values (:applicationid, :clrnamespace, :clrclass, :clrmethod)",
+                                                                        new { application.Id, clrConfig.Namespace, clrConfig.Class, clrConfig.Method });
+                                return affectedRows > 0;
+                            });
+                            return success;
+                        }
+                        throw new InvalidContentException("Type was specified to clr, but configuration was not of type ClrConfiguration");
+                    }
+                case "python":
+                    {
+                        if (configuration is PythonConfiguration pythonConfig)
+                        {
+                            var success = await sqlService.OpenConnection(async (c) =>
+                            {
+                                var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page_Script (pageguid, scriptname, scriptmethod, classname) " +
+                                                                        "on existing update values (:applicationid, :scriptname, :scriptmethod, :scriptclass)",
+                                                                        new { application.Id, pythonConfig.Path, pythonConfig.Method, pythonConfig.Class });
+                                return affectedRows > 0;
+                            });
+                        }
+                        throw new InvalidContentException("Type was specified to python, but configuration was not of type PythonConfiguration");
+                    }
+                case "grid":
+                    {
+                        if (configuration is GridConfiguration gridConfig)
+                        {
+                            Table is missing refresh on select
+                            var success = await sqlService.OpenConnection(async (c) =>
+                            {
+                                var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page_DataGrid  (pageguid, gridname, loadonopen, dataconnectionstring) " +
+                                                                        "on existing update values (:applicationid, :gridname, :loadonopen, :connection)",
+                                                                        new { application.Id, gridConfig.Grid, gridConfig.LoadOnOpen, gridConfig.Connection, });
+                                return affectedRows > 0;
+                            });
+                        }
+                        throw new InvalidContentException("Type was specified to grid, but configuration was not of type GridConfiguration");
+                    }
+                case "browser":
+                    {
+                        throw new NotImplementedException();
+                        if (configuration is BrowserConfiguration browserConfig)
+                        {
+                            var success = await sqlService.OpenConnection(async (c) =>
+                            {
+                                var affectedRows = await c.ExecuteAsync("Insert into DUNNO ",
+                                                                        new { application.Id, browserConfig.Tab, browserConfig.Url });
+                                return affectedRows > 0;
+                            });
+                        }
+                        throw new InvalidContentException("Type was specified to python, but configuration was not of type PythonConfiguration");
+                    }
+                case "grid-structure":
+                    {
+                        throw new NotImplementedException();
+                    }
+                default:
+                    throw new Exception($"Got unkown type for inserting configuration into database. Type: {type}.");
+            }
+        }
+
+        public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
+        {
+            throw new NotImplementedException();
         }
     }
 }

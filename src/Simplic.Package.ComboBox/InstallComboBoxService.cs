@@ -28,9 +28,9 @@ namespace Simplic.Package.ComboBox
             throw new NotImplementedException();
         }
 
-        public Task UninstallObject(InstallableObject installableObject)
+        public async Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
-            throw new NotImplementedException();
+            return await repository.UninstallObject(installableObject);
         }
     }
 }

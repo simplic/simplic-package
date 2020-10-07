@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Simplic.Package.Sequence
+﻿namespace Simplic.Package.Sequence
 {
     public class PackSequenceService : PackObjectServiceBase, IPackObjectService
     {

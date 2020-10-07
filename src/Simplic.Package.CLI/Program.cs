@@ -5,7 +5,6 @@ using Newtonsoft.Json.Converters;
 using Simplic.Framework.DAL;
 using Simplic.Package.Data.DB;
 using Simplic.Package.Service;
-using Simplic.Package.Service.Install;
 using Simplic.Package.Sql;
 using Simplic.Sql;
 using Simplic.Sql.SqlAnywhere.Service;
@@ -36,7 +35,6 @@ namespace Simplic.Package.CLI
             var initialize = false;
 
             var install = false;
-            var forceInstall = false; // TODO
             var path = "";
             var connectionString = "dbn=PackageTest;server=PackageTest;uid=admin;pwd=admin";
 
@@ -81,7 +79,9 @@ namespace Simplic.Package.CLI
                 return 0;
             }
 
+
             // Debugger.Launch();
+            #region Register types
             var container = new UnityContainer();
             container.RegisterType<ILogService, LogService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IPackService, PackService>();
@@ -93,22 +93,104 @@ namespace Simplic.Package.CLI
             container.RegisterType<IInitializePackageSystemService, InitializePackageSystemService>();
             container.RegisterType<IInitializePackageSystemRepository, InitializePackageSystemRepository>();
 
+            container.RegisterType<IInstallObjectService, InstallSqlService>("application");
+            container.RegisterType<IObjectRepository, SqlRepository>("application");
+            container.RegisterType<IPackObjectService, PackSqlService>("application");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("application");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("comboBox");
+            container.RegisterType<IObjectRepository, SqlRepository>("comboBox");
+            container.RegisterType<IPackObjectService, PackSqlService>("comboBox");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("comboBox");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("EplReport");
+            container.RegisterType<IObjectRepository, SqlRepository>("EplReport");
+            container.RegisterType<IPackObjectService, PackSqlService>("EplReport");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("EplReport");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("EplReportDesign");
+            container.RegisterType<IObjectRepository, SqlRepository>("EplReportDesign");
+            container.RegisterType<IPackObjectService, PackSqlService>("EplReportDesign");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("EplReportDesign");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("FormatList");
+            container.RegisterType<IObjectRepository, SqlRepository>("FormatList");
+            container.RegisterType<IPackObjectService, PackSqlService>("FormatList");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("FormatList");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("grid");
+            container.RegisterType<IObjectRepository, SqlRepository>("grid");
+            container.RegisterType<IPackObjectService, PackSqlService>("grid");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("grid");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("itemBox");
+            container.RegisterType<IObjectRepository, SqlRepository>("itemBox");
+            container.RegisterType<IPackObjectService, PackSqlService>("itemBox");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("itemBox");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("report");
+            container.RegisterType<IObjectRepository, SqlRepository>("report");
+            container.RegisterType<IPackObjectService, PackSqlService>("report");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("report");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("repository");
+            container.RegisterType<IObjectRepository, SqlRepository>("repository");
+            container.RegisterType<IPackObjectService, PackSqlService>("repository");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("repository");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("role");
+            container.RegisterType<IObjectRepository, SqlRepository>("role");
+            container.RegisterType<IPackObjectService, PackSqlService>("role");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("role");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("sequence");
+            container.RegisterType<IObjectRepository, SqlRepository>("sequence");
+            container.RegisterType<IPackObjectService, PackSqlService>("sequence");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("sequence");
+
             container.RegisterType<IInstallObjectService, InstallSqlService>("sql");
             container.RegisterType<IObjectRepository, SqlRepository>("sql");
             container.RegisterType<IPackObjectService, PackSqlService>("sql");
             container.RegisterType<IUnpackObjectService, UnpackSqlService>("sql");
 
+            container.RegisterType<IInstallObjectService, InstallSqlService>("stack");
+            container.RegisterType<IObjectRepository, SqlRepository>("stack");
+            container.RegisterType<IPackObjectService, PackSqlService>("stack");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("stack");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("stackAutoconnector");
+            container.RegisterType<IObjectRepository, SqlRepository>("stackAutoconnector");
+            container.RegisterType<IPackObjectService, PackSqlService>("stackAutoconnector");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("stackAutoconnector");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("stackContextArea");
+            container.RegisterType<IObjectRepository, SqlRepository>("stackContextArea");
+            container.RegisterType<IPackObjectService, PackSqlService>("stackContextArea");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("stackContextArea");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("stackFulltext");
+            container.RegisterType<IObjectRepository, SqlRepository>("stackFulltext");
+            container.RegisterType<IPackObjectService, PackSqlService>("stackFulltext");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("stackFulltext");
+
+            container.RegisterType<IInstallObjectService, InstallSqlService>("stackRegister");
+            container.RegisterType<IObjectRepository, SqlRepository>("stackRegister");
+            container.RegisterType<IPackObjectService, PackSqlService>("stackRegister");
+            container.RegisterType<IUnpackObjectService, UnpackSqlService>("stackRegister");
+
             container.RegisterType<ISqlService, SqlService>();
             container.RegisterType<ISqlColumnService, SqlColumnService>();
             Framework.DAL.DALManager.Init(connectionString);
             Framework.DAL.ConnectionManager.Init(Thread.CurrentThread);
+            #endregion
+
 
             var logService = container.Resolve<ILogService>();
 
             logService.MessageAdded += (sender, e) =>
             {
                 if ((int)e.LogLevel <= (int)verbosity)
-                    MyWriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}][{e.LogLevel}]: {e.Message}", e.LogLevel);
+                    MyWriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}]{e.LogLevel}: [{e.Message}]", e.LogLevel);
             };
 
             if (create)

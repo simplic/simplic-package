@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Simplic.Package.Repository
+﻿namespace Simplic.Package.Repository
 {
     public class PackRepositoryService : PackObjectServiceBase, IPackObjectService
     {

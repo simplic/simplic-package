@@ -53,5 +53,36 @@ namespace Simplic.Package.FormatList
             }
             throw new InvalidContentException();
         }
+
+        public async Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
+        {
+            if (installableObject.Content is DeserializedFormatList formatList)
+            {
+                var result = new UninstallObjectResult
+                {
+                    LogLevel = LogLevel.Info
+                };
+
+                try
+                {
+                    var deletedRows = await sqlService.OpenConnection(async (x) =>
+                    {
+                        return await x.ExecuteAsync("Delete from ESS_MS_Controls_FormatList");
+                    });
+
+                    result.Success = true;
+                    result.Message = $"Deleted {deletedRows} FormatLists.";
+                }
+                catch (Exception ex)
+                {
+                    result.Message = $"Failed to delete FormatList at {installableObject.Target}.";
+                    result.LogLevel = LogLevel.Error;
+                    result.Exception = ex;
+                }
+
+                return result;
+            }
+            throw new InvalidContentException();
+        }
     }
 }

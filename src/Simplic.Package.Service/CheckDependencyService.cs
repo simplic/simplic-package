@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Simplic.Package.Service.Install
+namespace Simplic.Package.Service
 {
     public class CheckDependencyService : ICheckDependencyService
     {

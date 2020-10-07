@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Unity;
 
@@ -10,6 +7,7 @@ namespace Simplic.Package.StackRegister
     public class InstallStackRegisterService
     {
         private readonly IObjectRepository repository;
+
         public InstallStackRegisterService([Dependency("stackRegister")] IObjectRepository repository)
         {
             this.repository = repository;

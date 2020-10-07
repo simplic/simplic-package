@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
-    // TODO: Use this somehow
     public abstract class ValidateObjectServiceJsonBase<T> : IValidateObjectService where T : class, IContent
     {
         public async Task<ValidateObjectResult> Validate(PackObjectResult packObjectResult)

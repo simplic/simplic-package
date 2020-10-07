@@ -1,20 +1,25 @@
-﻿using Simplic.Framework.Reporting;
+﻿using Dapper;
+using Simplic.Sql;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.EplReport
 {
     public class EplReportRepository : IObjectRepository
     {
+        private readonly ISqlService sqlService;
+
+        public EplReportRepository(ISqlService sqlService)
+        {
+            this.sqlService = sqlService;
+        }
+
         public Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject)
         {
             throw new NotImplementedException();
         }
 
-        public Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
+        public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is DeserializedEplReport eplReport)
             {
@@ -25,16 +30,44 @@ namespace Simplic.Package.EplReport
 
                 try
                 {
-                    EPLReportManager.Singleton.Save(new EPLReport
+                    result.Success = await sqlService.OpenConnection(async (c) =>
                     {
-                        Id = eplReport.Id,
-                        PrinterName = eplReport.Printer,
-                        IsContextlessPrintable = eplReport.IsContextlessPrintable,
-                        DataSourceType = eplReport.Type,
-                    })
+                        var affectedRows = await c.ExecuteAsync("Insert into EPL_Report (id, reportid, internname, printername, iscontextlessprintable) " + // sequenceid, ...
+                                                            "update on existing values (id, reportdesignid, internalname, printer, iscontextlessprintable)",
+                                                            new
+                                                            {
+                                                                eplReport.Id,
+                                                                eplReport.ReportDesignId,
+                                                                eplReport.InternalName,
+                                                                eplReport.Printer,
+                                                                eplReport.IsContextlessPrintable
+                                                            });
+                        return affectedRows > 0;
+                    });
+
+                    if (result.Success)
+                        then also save sequence ?
+                        result.Message = $"Installed EplReport at {installableObject.Target}.";
+                    else
+                    {
+                        result.LogLevel = LogLevel.Warning;
+                        result.Message = $"Failed to install EplReport at {installableObject.Target}.";
+                    }
                 }
+                catch (Exception ex)
+                {
+                    result.LogLevel = LogLevel.Error;
+                    result.Message = $"Failed to install EplReport at {installableObject.Target}.";
+                    result.Exception = ex;
+                }
+                return result;
             }
             throw new InvalidContentException();
+        }
+
+        public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
+        {
+            throw new NotImplementedException();
         }
     }
 }

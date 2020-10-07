@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Unity;
 
@@ -15,6 +12,7 @@ namespace Simplic.Package.Report
         {
             this.repository = repository;
         }
+
         public Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject)
         {
             throw new NotImplementedException();
@@ -30,7 +28,7 @@ namespace Simplic.Package.Report
             throw new NotImplementedException();
         }
 
-        public Task UninstallObject(InstallableObject installableObject)
+        public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();
         }

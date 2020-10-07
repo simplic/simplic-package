@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Simplic.Package.Report.Model;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,12 +28,11 @@ namespace Simplic.Package.Report
 
                 var reportConfiguration = jObject.ToObject<DeserializedReport>();
                 reportConfiguration.Configuration = DeserializeConfiguration(reportConfiguration.Type, configuration);
-                
+
                 fullReport.Report = reportConfiguration;
 
                 if (extractArchiveEntryResult.Payload.Any())
                     fullReport.ReportData = extractArchiveEntryResult.Payload.First().Value;
-
 
                 result.InstallableObject = new InstallableObject
                 {

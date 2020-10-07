@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simplic.Package.StackAutoconnector.Model
 {
-    class XmlConfiguration : IStackAutoconnectorConfiguration
+    internal class XmlConfiguration : IStackAutoconnectorConfiguration
     {
-        public string Xml { get; set; }
+        public Guid Id { get; set; }
+        public string Xml { get; set; } // Should this even be here?
     }
 }

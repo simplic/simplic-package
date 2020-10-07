@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Simplic.Package.Service.Validate
+namespace Simplic.Package.Service
 {
     public class ValidatePackageConfigurationService : IValidatePackageConfigurationService
     {

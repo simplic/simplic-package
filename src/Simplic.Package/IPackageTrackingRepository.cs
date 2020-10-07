@@ -6,7 +6,6 @@ namespace Simplic.Package
     /// <summary>
     /// Service to check and add package versions in the database
     /// </summary>
-    /// TODO: Have ResultObjects here also?
     public interface IPackageTrackingRepository
     {
         /// <summary>

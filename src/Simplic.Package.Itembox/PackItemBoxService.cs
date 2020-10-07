@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Simplic.Package.ItemBox
+﻿namespace Simplic.Package.ItemBox
 {
     public class PackItemBoxService : PackObjectServiceBase, IPackObjectService
     {

@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Simplic.Package.Role
+﻿namespace Simplic.Package.Role
 {
     public class PackRoleService : PackObjectServiceBase, IPackObjectService
     {

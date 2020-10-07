@@ -21,7 +21,6 @@ namespace Simplic.Package.Service
         /// <returns></returns>
         public async Task WriteAsync(string message, LogLevel logLevel, Exception exception = null)
         {
-            // TODO: exception are only caught exceptions
             // TODO: Potentially add the time here already if its needed in the log
             MessageAdded?.Invoke(this, new LogMessageEventArgs { Message = message, LogLevel = logLevel, Exception = exception });
 

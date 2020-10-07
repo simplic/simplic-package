@@ -65,5 +65,36 @@ namespace Simplic.Package.ComboBox
             }
             throw new InvalidContentException();
         }
+
+        public async Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
+        {
+            if (installableObject.Content is DeserializedComboBox comboBox)
+            {
+                var result = new UninstallObjectResult
+                {
+                    LogLevel = LogLevel.Info
+                };
+
+                try
+                {
+                    var deletedRows = await sqlService.OpenConnection(async (x) =>
+                    {
+                        return await x.ExecuteAsync("Delete from ESS_MS_Controls_DropDownBox");
+                    });
+
+                    result.Success = true;
+                    result.Message = $"Deleted {deletedRows} ComboBoxes.";
+                }
+                catch (Exception ex)
+                {
+                    result.Message = $"Failed to delete ComboBox at {installableObject.Target}.";
+                    result.LogLevel = LogLevel.Error;
+                    result.Exception = ex;
+                }
+
+                return result;
+            }
+            throw new InvalidContentException();
+        }
     }
 }

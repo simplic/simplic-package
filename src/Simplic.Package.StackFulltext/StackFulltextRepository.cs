@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.StackFulltext
@@ -24,10 +21,14 @@ namespace Simplic.Package.StackFulltext
 
                 try
                 {
-
                 }
             }
             throw new InvalidContentException();
+        }
+
+        public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
+        {
+            throw new NotImplementedException();
         }
     }
 }

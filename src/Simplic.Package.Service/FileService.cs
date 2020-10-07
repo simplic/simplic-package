@@ -60,24 +60,38 @@ namespace Simplic.Package.Service
             return Encoding.Default.GetString(byteArray);
         }
 
-        public Task WriteAllBytesAsync(byte[] bytes, string path)
+        public async Task WriteAllBytesAsync(byte[] bytes, string path)
         {
+            using (var stream = new FileStream(path, FileMode.OpenOrCreate))
+            {
+                stream.Seek(0, SeekOrigin.End);
+                await stream.WriteAsync(bytes, 0, bytes.Length);
+            }
+        }
+
+        public async Task WriteAllBytesAsync(Stream stream, string path)
+        {
+            using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await stream.CopyToAsync(memoryStream);
+                    fileStream.Seek(0, SeekOrigin.End);
+                    await fileStream.WriteAsync(memoryStream.ToArray(), 0, memoryStream.ToArray().Length);
+                }
+            }
             throw new System.NotImplementedException();
         }
 
-        public Task WriteAllBytesAsync(Stream stream, string path)
+        public async Task WriteAllTextAsync(string text, string path)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public Task WriteAllTextAsync(string text, string path)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task WriteAllTextAsync(Stream stream, string path)
-        {
-            throw new System.NotImplementedException();
+            using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
+            {
+                using (var writer = new StreamWriter(fileStream))
+                {
+                    await writer.WriteAsync(text);
+                }
+            }
         }
 
         public bool FileExists(string path)

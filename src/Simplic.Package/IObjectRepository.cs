@@ -15,10 +15,18 @@ namespace Simplic.Package
         Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject);
 
         /// <summary>
-        /// Installs a given object to the database
+        /// Inserts a given object into the database
         /// </summary>
-        /// <param name="installableObject">The object to install</param>
+        /// <param name="installableObject">The object to insert</param>
         /// <returns>A InstallObjectResult object</returns>
         Task<InstallObjectResult> InstallObject(InstallableObject installableObject);
+
+        /// <summary>
+        /// Remoes a given object from the database
+        /// </summary>
+        /// <param name="installableObject">The object to remove</param>
+        /// <returns>A UninstallObjectResult object</returns>
+        Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject);
+
     }
 }

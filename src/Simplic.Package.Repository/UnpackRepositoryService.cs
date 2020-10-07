@@ -12,7 +12,7 @@ namespace Simplic.Package.Repository
                 {
                     Data = extractArchiveEntryResult.Data
                 },
-                Target = extractArchiveEntryResult.Location, // TODO: This is just the path in the archive
+                Target = extractArchiveEntryResult.Location,
                 Mode = extractArchiveEntryResult.Mode
             };
 

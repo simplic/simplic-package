@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simplic.Package.Stack
 {
@@ -12,7 +8,7 @@ namespace Simplic.Package.Stack
         public string DisplayName { get; set; }
         public string StackGridName { get; set; }
         public bool IsActive { get; set; }
-        public bool ConnectWithArchive { get;set; }
+        public bool ConnectWithArchive { get; set; }
         public string TableName { get; set; }
         public string StackName { get; set; }
         public string HeaderSql { get; set; }

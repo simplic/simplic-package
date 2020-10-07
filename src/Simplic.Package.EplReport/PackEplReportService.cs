@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Simplic.Package.EplReport
+﻿namespace Simplic.Package.EplReport
 {
     public class PackEplReportService : PackObjectServiceBase, IPackObjectService
     {

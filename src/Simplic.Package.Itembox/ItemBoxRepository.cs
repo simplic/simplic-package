@@ -53,5 +53,10 @@ namespace Simplic.Package.ItemBox
             }
             throw new InvalidContentException();
         }
+
+        public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

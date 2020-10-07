@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Simplic.Package.FormatList
+﻿namespace Simplic.Package.FormatList
 {
     public class PackFormatListService : PackObjectServiceBase, IPackObjectService
     {

@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Simplic.Package.Sql
+﻿namespace Simplic.Package.Sql
 {
     public class PackSqlService : PackObjectServiceBase, IPackObjectService
     {

@@ -38,5 +38,10 @@ namespace Simplic.Package.Repository
             }
             throw new InvalidContentException();
         }
+
+        public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

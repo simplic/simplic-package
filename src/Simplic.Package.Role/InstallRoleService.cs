@@ -27,7 +27,7 @@ namespace Simplic.Package.Role
             throw new NotImplementedException();
         }
 
-        public Task UninstallObject(InstallableObject installableObject)
+        public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();
         }

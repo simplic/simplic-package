@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Simplic.Package.Grid
+﻿namespace Simplic.Package.Grid
 {
     public class PackGridService : PackObjectServiceBase, IPackObjectService
     {

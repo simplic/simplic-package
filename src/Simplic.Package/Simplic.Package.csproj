@@ -61,6 +61,7 @@
     <Compile Include="IValidatePackageConfigurationService.cs" />
     <Compile Include="Model\InitializePackageSystemResult.cs" />
     <Compile Include="IInitializePackageSystemRepository.cs" />
+    <Compile Include="Model\UninstallObjectResult.cs" />
     <Compile Include="Model\InstallObjectResult.cs" />
     <Compile Include="Model\LogMessageEventArgs.cs" />
     <Compile Include="Model\CheckMigrationResult.cs" />

@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Simplic.Package.Icon
+﻿namespace Simplic.Package.Icon
 {
     internal class PackIconService : PackObjectServiceBase, IPackObjectService
     {

@@ -1,9 +1,5 @@
 ﻿using Simplic.Reporting;
-using Simplic.Package.Report.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Report
@@ -40,6 +36,11 @@ namespace Simplic.Package.Report
                 return result;
             }
             throw new InvalidContentException();
+        }
+
+        public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
+        {
+            throw new NotImplementedException();
         }
     }
 }

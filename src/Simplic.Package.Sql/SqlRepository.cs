@@ -20,22 +20,28 @@ namespace Simplic.Package.Sql
             {
                 var result = new CheckMigrationResult();
 
-                // TODO: try catch to tell user that he must initialize first
-                var row = await c.QueryFirstOrDefaultAsync("Select * from Package_Object where guid = :guid", new { installableObject.Guid });
+                try
+                {
+                    var row = await c.QueryFirstOrDefaultAsync("Select * from Package_Object where guid = :guid", new { installableObject.Guid });
 
-                if (row != null)
-                {
-                    result.CanMigrate = false;
-                    result.Message = $"The sql script @ {installableObject.Target} wont be migrated as it was already executed.";
-                    result.LogLevel = LogLevel.Info;
+                    if (row != null)
+                    {
+                        result.CanMigrate = false;
+                        result.Message = $"The sql script @ {installableObject.Target} wont be migrated as it was already executed.";
+                        result.LogLevel = LogLevel.Info;
+                    }
+                    else
+                    {
+                        result.CanMigrate = true;
+                        result.Message = $"The sql script @ {installableObject.Target} will be migrated";
+                        result.LogLevel = LogLevel.Info;
+                    }
+                    return result;
                 }
-                else
+                catch (Exception ex)
                 {
-                    result.CanMigrate = true;
-                    result.Message = $"The sql script @ {installableObject.Target} will be migrated";
-                    result.LogLevel = LogLevel.Info;
+                    throw new Exception("Missing package system table Package_Object. Install package system first.", ex);
                 }
-                return result;
             });
 
             return checkMigrationResult;
@@ -96,6 +102,11 @@ namespace Simplic.Package.Sql
                 return installObjectResult;
             }
             throw new InvalidContentException("");
+        }
+
+        public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
+        {
+            throw new NotImplementedException();
         }
     }
 }
