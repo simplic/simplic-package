@@ -1,4 +1,5 @@
-﻿using Simplic.Reporting;
+﻿using AutoMapper;
+using Simplic.Reporting;
 using System;
 using System.Threading.Tasks;
 
@@ -22,7 +23,13 @@ namespace Simplic.Package.Report
 
                 try
                 {
-                    ReportManager.Singleton.SaveConfiguration(report.Report);
+                    var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<FullReport, Simplic.Reporting.IReportConfiguration>());
+
+                    var mapper = new Mapper(mapConfig);
+
+                    var iReportConfiguration = mapper.Map<Simplic.Reporting.IReportConfiguration>(report);
+                    todo
+                    ReportManager.Singleton.SaveConfiguration(iReportConfiguration);
                     ReportManager.Singleton.SaveReportFile(report.Report.Name, report.ReportData);
 
                     result.Message = $"Installed Report at {installableObject.Target}.";

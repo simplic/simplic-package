@@ -8,9 +8,9 @@ namespace Simplic.Package
     {
         public string Target { get; set; }
         public IContent Content { get; set; }
-        public Guid Guid { get; set; }
+        public Guid? Guid { get; set; }
         public InstallMode Mode { get; set; }
-        public string PackageName { get; set; }
+        public Guid PackageGuid { get; set; }
         public Version PackageVersion { get; set; }
     }
 }

@@ -1,16 +1,25 @@
-﻿using System;
+﻿using Dapper;
+using Simplic.Sql;
+using System;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.StackFulltext
 {
     public class StackFulltextRepository : IObjectRepository
     {
+        private readonly ISqlService sqlService;
+
+        public StackFulltextRepository(ISqlService sqlService)
+        {
+            this.sqlService = sqlService;
+        }
+
         public Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject)
         {
             throw new NotImplementedException();
         }
 
-        public Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
+        public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is StackFulltext stackFulltext)
             {
@@ -21,6 +30,30 @@ namespace Simplic.Package.StackFulltext
 
                 try
                 {
+                    var sqlStatement = "";
+                    if (stackFulltext.Configuration is SqlConfiguration sqlConfiguration)
+                        sqlStatement = sqlConfiguration.Statement;
+
+                    result.Success = await sqlService.OpenConnection(async (c) =>
+                    {
+                        var affectedRows = await c.ExecuteAsync("Insert into Stack_ContentExtractionSql (guid, stackguid, sql) on existing update values (:id, :stackid, :sqlstatement)",
+                                                            new { stackFulltext.Id, stackFulltext.StackId, sqlStatement });
+                        return affectedRows > 0;
+                    });
+
+                    if (result.Success)
+                        result.Message = $"Installed StackFulltext at {installableObject.Target}.";
+                    else
+                    {
+                        result.Message = $"Failed to install StackFulltext at {installableObject.Target}.";
+                        result.LogLevel = LogLevel.Error;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result.Message = $"Failed to install StackFulltext at {installableObject.Target}.";
+                    result.LogLevel = LogLevel.Error;
+                    result.Exception = ex;
                 }
             }
             throw new InvalidContentException();

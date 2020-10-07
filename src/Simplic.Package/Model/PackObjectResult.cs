@@ -7,6 +7,6 @@ namespace Simplic.Package
     {
         public byte[] File { get; set; }
         public string Location { get; set; }
-        public IDictionary<string, byte[]> Payload { get; set; }
+        public IDictionary<string, byte[]> Payload { get; set; } = new Dictionary<string, byte[]>();
     }
 }

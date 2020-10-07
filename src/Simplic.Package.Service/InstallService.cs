@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Unity;
 
@@ -23,7 +24,7 @@ namespace Simplic.Package.Service
         /// <param name="package">The package to install</param>
         public async Task Install(Package package)
         {
-            // Debugger.Launch();
+            Debugger.Launch();
 
             // Check dependencies
             var checkDependencyService = container.Resolve<ICheckDependencyService>();
@@ -36,14 +37,14 @@ namespace Simplic.Package.Service
 
             // Check if package already exists and act accordingly
             var existingPackageVersion = await packageTrackingRepository.GetPackageVersion(package.Guid);
-            if (package.Version == existingPackageVersion)
-                throw new ExistingPackageException($"The version {existingPackageVersion} of this package is already installed.");
+            if (package.Version == existingPackageVersion) { }
+            //throw new ExistingPackageException($"The version {existingPackageVersion} of this package is already installed.");
             else if (package.Version < existingPackageVersion)
             {
                 // await logService.WriteAsync($"A later version ({existingPackageVersion}) of {package.Name} is already installed.", LogLevel.Info);
                 throw new ExistingPackageException($"A later version ({existingPackageVersion}) of this package is already installed.");
             }
-            await logService.WriteAsync($"Found installation of version {existingPackageVersion} of this package. Proceeding to install package.", LogLevel.Info);
+            await logService.WriteAsync($"Found no installation of version {package.Version} of this package. Proceeding to install package.", LogLevel.Info);
 
             // Install the objects
             foreach (var item in package.UnpackedObjects)

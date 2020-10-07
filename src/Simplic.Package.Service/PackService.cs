@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -49,6 +50,7 @@ namespace Simplic.Package.Service
         /// <returns>The written archive in bytes</returns>
         public async Task<byte[]> Pack(PackageConfiguration packageConfiguration)
         {
+            Debugger.Launch();
             // Validate the PackageConfiguration object
             var validatePackageConfigurationResult = await validatePackageConfigurationService.Validate(packageConfiguration);
             if (!validatePackageConfigurationResult.IsValid)
@@ -59,7 +61,7 @@ namespace Simplic.Package.Service
             // Create the package archive
             using (var stream = new MemoryStream())
             {
-                using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
+                using (var archive = new ZipArchive(stream, ZipArchiveMode.Create, true))
                 {
                     var configurationEntry = archive.CreateEntry("package.json");
 
@@ -117,13 +119,12 @@ namespace Simplic.Package.Service
                         }
                     }
                 }
-
                 string archiveName = $"{packageConfiguration.Name}_v{packageConfiguration.Version}.zip";
                 if (fileService.FileExists(archiveName))
                     await logService.WriteAsync($"[TODO: Decide what to do here] A Package with name {packageConfiguration.Name}_v{packageConfiguration.Version} already exists in working directory", LogLevel.Warning);
                 else
                 {
-                    await fileService.WriteAllBytesAsync(stream, archiveName);
+                    await fileService.WriteAllBytesAsync(stream.ToArray(), archiveName);
                     await logService.WriteAsync($"Succesfully created package.", LogLevel.Info);
                 }
 

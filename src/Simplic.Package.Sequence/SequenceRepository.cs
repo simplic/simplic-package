@@ -23,7 +23,7 @@ namespace Simplic.Package.Sequence
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedSequence sequence)
+            if (installableObject.Content is DeserializedSequence deserializedSequence)
             {
                 var result = new InstallObjectResult
                 {
@@ -32,48 +32,32 @@ namespace Simplic.Package.Sequence
 
                 try
                 {
-                    var counters = sequence.Counter.Select(x => new SequenceNumberCounter(new SequenceNumber())
+                    var sequence = new SequenceNumber
                     {
-                        Id = x.Id,
-                        ValidFrom = x.ValidFrom,
-                        ValidTo = x.ValidTo,
-                        Minimum = x.Min,
-                        Maximum = x.Max,
-                        Step = x.Step,
-                        FixedLength = x.FixedLength,
-                        Format = x.OptionalFormat,
-                        TenantId = x.TenenatId
-                    });
+                        Id = deserializedSequence.Id,
+                        InternName = deserializedSequence.InternalName,
+                        DisplayName = deserializedSequence.DisplayName,
+                        Format = deserializedSequence.Format
+                    };
 
-                    var success = await sqlService.OpenConnection(async (c) =>
+                    foreach (var counter in deserializedSequence.Counter)
                     {
-                        var affectedRows = await c.ExecuteAsync("Insert into SequenceNumber (id, internname, displayname, format) " +
-                                                            "on existing values (:id, :internalname, :displayname, :format)",
-                                                            new { sequence.Id, sequence.InternalName, sequence.DisplayName, sequence.Format });
-                        return affectedRows > 0;
-                    });
-
-                    if (success)
-                    {
-                        var insertedCounters = 0;
-                        foreach (var counter in sequence.Counter)
-                        {
-                            allot of the counter information is missing in the table
-                            insertedCounters += await sqlService.OpenConnection(async (c) =>
+                        sequence.Counters.Add(
+                            new SequenceNumberCounter(sequence)
                             {
-                                return await c.ExecuteAsync("Insert into SequenceNumber_Counter (id, validfrom, validto, fixedlength, optionalformat, dbsequencename, sequenceid, currentposition, tenantid)" +
-                                                                                " on existing update values (",
-                                                                                new { counter.Id, counter.ValidFrom, counter.ValidTo, counter.FixedLength, counter.OptionalFormat, sequence.Id, });
+                                Id = counter.Id,
+                                ValidFrom = counter.ValidFrom,
+                                ValidTo = counter.ValidTo,
+                                Minimum = counter.Min,
+                                Maximum = counter.Max,
+                                Step = counter.Step,
+                                FixedLength = counter.FixedLength,
+                                Format = counter.OptionalFormat,
+                                TenantId = counter.TenenatId
                             });
-                        }
                     }
 
-                    SequenceNumberManager.Singleton.Save(new SequenceNumber()
-                    {
-                        Counters = counters,
-                    });
-
-                    SequenceNumberManager.Singleton.Save(counters)
+                    SequenceNumberManager.Singleton.Save(sequence);
 
                     result.Message = $"Installed Sequence at {installableObject.Target}.";
                     result.Success = true;

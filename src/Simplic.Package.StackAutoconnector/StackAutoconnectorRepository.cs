@@ -31,32 +31,47 @@ namespace Simplic.Package.StackAutoconnector
 
                 try
                 {
-                    var xmlText = "";
                     Guid? xmlId = null;
+                    var xmlText = "";
                     if (stackAutoconnector.Configuration is XmlConfiguration xmlConfiguration)
                     {
                         xmlText = xmlConfiguration.Xml;
                         xmlId = xmlConfiguration.Id;
                     }
 
-                    var success = await sqlService.OpenConnection(async (c) =>
+                    var xmlSuccess = await sqlService.OpenConnection(async (c) =>
                     {
-                        var affectedRows = await c.ExecuteAsync("Insert into ESS_DCC_Stack_AutoConnect (sourcestackguid, name, tostackguid, xmlguid) " +
-                                                                "update on existing values (:stackid, :name, :target, :xmlid)",
-                                                                new { stackAutoconnector.StackId, stackAutoconnector.Name, stackAutoconnector.Target, xmlId });
+                        var affectedRows = await c.ExecuteAsync("Insert into ESS_DCC_SqlText (guid, sqltext) update on existing values (:xmlId, :xmlText)",
+                                                                new { xmlId, xmlText });
                         return affectedRows > 0;
                     });
 
-                    if (success)
+                    if (xmlSuccess)
                     {
-                        and if xmlText and then insert into some xml table
-                        result.Success = true;
-                        result.Message = $"Installed StackRegister at {installableObject.Target}.";
+
+                        var success = await sqlService.OpenConnection(async (c) =>
+                                    {
+                                        var affectedRows = await c.ExecuteAsync("Insert into ESS_DCC_Stack_AutoConnect (sourcestackguid, name, tostackguid, xmlguid) " +
+                                                                                "update on existing values (:stackid, :name, :target, :xmlid)",
+                                                                                new { stackAutoconnector.StackId, stackAutoconnector.Name, stackAutoconnector.Target, xmlId });
+                                        return affectedRows > 0;
+                                    });
+
+                        if (success)
+                        {
+                            result.Success = true;
+                            result.Message = $"Installed StackRegister at {installableObject.Target}.";
+                        }
+                        else
+                        {
+                            result.Message = $"Installed xml to ESS_DCC_SqlText but failed to install StackRegister at {installableObject.Target}.";
+                            result.LogLevel = LogLevel.Error;
+                        }
                     }
                     else
                     {
                         result.Message = $"Failed to install StackRegister at {installableObject.Target}.";
-                        result.LogLevel = LogLevel.Warning;
+                        result.LogLevel = LogLevel.Error;
                     }
                 }
                 catch (Exception ex)

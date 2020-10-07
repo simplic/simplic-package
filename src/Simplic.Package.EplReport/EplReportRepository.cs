@@ -1,6 +1,9 @@
 ﻿using Dapper;
+using Simplic.Framework.DBUI.Sql;
 using Simplic.Sql;
 using System;
+using System.Reflection.Emit;
+using System.Security.Authentication.ExtendedProtection;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.EplReport
@@ -30,23 +33,42 @@ namespace Simplic.Package.EplReport
 
                 try
                 {
+                    var param = new StatementHelper
+                    {
+                        Id = eplReport.Id,
+                        InternalName = eplReport.InternalName,
+                        IsContextlessPrintable = eplReport.IsContextlessPrintable,
+                        Printer = eplReport.Printer,
+                        ReportDesignId = eplReport.ReportDesignId
+                    };
+                    var statement = "Insert into EPL_Report (id, reportid, internname, printername, iscontextlessprintable) " +
+                                    "update on existing values (:Id, :ReportDesignId, :InternalName, :Printer, :IsContextlessPrintable)";
+
+
+                    if (eplReport.Configuration is SqlConfiguration sqlConfiguration)
+                    {
+                        statement = "Insert into EPL_Report (id, reportid, internname, printername, iscontextlessprintable, sqldatasourcecode) " +
+                                    "update on existing values (:Id, :ReportDesignId, :InternalName, :Printer, :IsContextlessPrintable, :SqlDataSourceCode)";
+                        param.SqlDataSourceCode = sqlConfiguration.SqlDataSourceCode;
+                    }
+                    else if (eplReport.Configuration is SequenceConfiguration sequenceConfiguration)
+                    {
+                        statement = "Insert into EPL_Report (id, reportid, internname, printername, iscontextlessprintable, sequenceid) " +
+                                    "update on existing values (:Id, :ReportDesignId, :InternalName, :Printer, :IsContextlessPrintable, :SequenceId)";
+                        param.SequenceId = sequenceConfiguration.SequenceId;
+                    }
+                    else if (eplReport.Configuration is GridConfiguration gridConfiguration)
+                    {
+                        throw new NotImplementedException();
+                    }
+
                     result.Success = await sqlService.OpenConnection(async (c) =>
                     {
-                        var affectedRows = await c.ExecuteAsync("Insert into EPL_Report (id, reportid, internname, printername, iscontextlessprintable) " + // sequenceid, ...
-                                                            "update on existing values (id, reportdesignid, internalname, printer, iscontextlessprintable)",
-                                                            new
-                                                            {
-                                                                eplReport.Id,
-                                                                eplReport.ReportDesignId,
-                                                                eplReport.InternalName,
-                                                                eplReport.Printer,
-                                                                eplReport.IsContextlessPrintable
-                                                            });
+                        var affectedRows = await c.ExecuteAsync(statement, param);
                         return affectedRows > 0;
                     });
 
                     if (result.Success)
-                        then also save sequence ?
                         result.Message = $"Installed EplReport at {installableObject.Target}.";
                     else
                     {

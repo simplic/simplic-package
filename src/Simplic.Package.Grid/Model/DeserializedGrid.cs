@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -6,7 +7,7 @@ namespace Simplic.Package.Grid
 {
     public class DeserializedGrid : IContent
     {
-        public Guid ExportId { get; set; }
+        [JsonProperty(Required = Required.Always)]
         public Guid Id { get; set; }
         public IList<GridMenuConfiguration> MenuFunctions { get; set; }
         public string Name { get; set; }

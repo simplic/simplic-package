@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Simplic.Framework.DBUI.Sql;
 using Simplic.Sql;
 using System;
 using System.Threading.Tasks;
@@ -31,11 +32,11 @@ namespace Simplic.Package.Application
 
                 try
                 {
+                    var contentTypeGuid = GetContentTypeId(application.Type);
                     var success = await sqlService.OpenConnection(async (c) =>
                     {
-                        todo
-                           var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page (guid, ) on existing update values (:id, )",
-                                                                   new { application.Id });
+                        var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page (guid, iconguid, contenttype) on existing update values (:id, :iconguid, :contenttype)",
+                                                                   new { application.Id, application.IconId, contentTypeGuid });
                         return affectedRows > 0;
                     });
 
@@ -67,6 +68,35 @@ namespace Simplic.Package.Application
                 return result;
             }
             throw new InvalidContentException();
+        }
+
+        private async Task<Guid> GetContentTypeId(string type)
+        {
+            var pageName = "";
+            switch (type)
+            {
+                case "clr":
+                    pageName = "Clr-Methode aufrufen";
+                    break;
+                case "python":
+                    pageName = "Skriptübersicht";
+                    break;
+                case "grid":
+                    pageName = "Einfache Auswahlliste";
+                    break;
+                case "grid-structure":
+                    throw new NotImplementedException();
+                case "browser":
+                    pageName = "Browser";
+                    break;
+                default:
+                    throw new Exception($"Invalid type {type} entered when trying to get ContentType from ESS_MS_Intern_Page_Content.");
+            }
+
+            return await sqlService.OpenConnection(async (c) =>
+            {
+                return await c.QueryFirstAsync<Guid>("Select * from ESS_MS_Intern_Page_Content where pagename = :pageName", new { pageName });
+            });
         }
 
         private async Task<bool> SaveConfiguration(DeserializedApplication application, string type)

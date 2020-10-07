@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -77,6 +78,8 @@ namespace Simplic.Package.Service
                         Dependencies = packageConfiguration.Dependencies
                     };
 
+                    Debugger.Launch();
+
                     // Unpack all the packages content
                     foreach (var item in packageConfiguration.Objects)
                     {
@@ -124,8 +127,10 @@ namespace Simplic.Package.Service
                                 await logService.WriteAsync(unpackObjectResult.Message, unpackObjectResult.LogLevel);
 
                                 unpackObjectResult.InstallableObject.Guid = objectListItem.Guid;
-                                unpackObjectResult.InstallableObject.PackageName = unpackedPackage.Name;
+                                unpackObjectResult.InstallableObject.PackageGuid = unpackedPackage.Guid;
                                 unpackObjectResult.InstallableObject.PackageVersion = unpackedPackage.Version;
+
+                                contents.Add(unpackObjectResult.InstallableObject);
                             }
                         }
                         unpackedPackage.UnpackedObjects[item.Key] = contents;

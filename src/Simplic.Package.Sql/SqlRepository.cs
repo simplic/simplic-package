@@ -72,26 +72,27 @@ namespace Simplic.Package.Sql
                     {
                         try
                         {
-                            await c.ExecuteAsync("Insert into Package_Object (guid, objecttype, target, package, packageversionmaajor, packageversionminor, packageversionbuild, packageversionrevision ) " +
-                                                "values (:guid, 'sql', :target, :package, :packageversionmajor, :packageversionminor, :packageversionbuild, :packageversionrevision)"
+                            await c.ExecuteAsync("Insert into Package_Object (guid, objecttype, target, packageguid, packageversionmajor, packageversionminor, packageversionbuild, packageversionrevision) " +
+                                                "values (:guid, :type, :target, :packageguid, :packageversionmajor, :packageversionminor, :packageversionbuild, :packageversionrevision)"
                                                 , new
                                                 {
-                                                    installableObject.Guid,
-                                                    installableObject.Target,
-                                                    installableObject.PackageName,
-                                                    installableObject.PackageVersion.Major,
-                                                    installableObject.PackageVersion.Minor,
-                                                    installableObject.PackageVersion.Build,
-                                                    installableObject.PackageVersion.Revision
+                                                    guid = installableObject.Guid,
+                                                    type = "sql",
+                                                    target = installableObject.Target,
+                                                    packageguid = installableObject.PackageGuid,
+                                                    packageversionmajor = installableObject.PackageVersion.Major,
+                                                    packageversionminor = installableObject.PackageVersion.Minor,
+                                                    packageversionbuild = installableObject.PackageVersion.Build,
+                                                    packageversionrevision = installableObject.PackageVersion.Revision
                                                 });
-                            result.Message = $"Succesfully executed and added to Package_Object table! Target:{installableObject.Target}, content:{installableObject.Content}!";
+                            result.Message = $"Succesfully executed sql script and added to Package_Object table at {installableObject.Target}.";
                             result.LogLevel = LogLevel.Info;
                         }
                         catch (Exception ex)
                         {
                             result.Success = false;
                             result.Exception = ex;
-                            result.Message = $"Executed but failed to add to Package_Object table! Target:{installableObject.Target}, content:{installableObject.Content}!";
+                            result.Message = $"Executed sql script but failed to add it to Package_Object table at {installableObject.Target}.";
                             result.LogLevel = LogLevel.Error;
                         }
                     }

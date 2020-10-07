@@ -73,7 +73,7 @@ namespace Simplic.Package.Data.DB
         {
             var affectedRows = await sqlService.OpenConnection(
                 async (c) => await c.ExecuteAsync("Insert into Package (guid, packagename, major, minor, build, revision) " +
-                                                    "on existing update values (:packageName, :major, :minor, :build, :revision)",
+                                                    "on existing update values (:guid, :packageName, :major, :minor, :build, :revision)",
                                                     new
                                                     {
                                                         guid,

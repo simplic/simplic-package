@@ -46,7 +46,6 @@ namespace Simplic.Package.CLI
                 { "i|install=", "Installs a package from the given path.", v => {install = true; path = v; } },
                 { "c|connection=", "The database connection string.", v =>  {connectionString = v; } },
                 { "h|help",  "Shows help", v => showHelp = true },
-                { "f|force", "Set to force the install. TODO: DOES NOTHING!", v => forceInstall = true },
                 { "v|verbosity=", "Sets the Loglevel.\n Error: 0, Warning: 1, Info: 2, Debug: 3. Default: 0", v => verbosity = (LogLevel)Int32.Parse(v) },
             };
 
@@ -92,6 +91,7 @@ namespace Simplic.Package.CLI
             container.RegisterType<IPackageTrackingRepository, PackageTrackingRepository>();
             container.RegisterType<IInitializePackageSystemService, InitializePackageSystemService>();
             container.RegisterType<IInitializePackageSystemRepository, InitializePackageSystemRepository>();
+            container.RegisterType<IValidatePackageConfigurationService, ValidatePackageConfigurationService>();
 
             container.RegisterType<IInstallObjectService, InstallSqlService>("application");
             container.RegisterType<IObjectRepository, SqlRepository>("application");
@@ -187,11 +187,13 @@ namespace Simplic.Package.CLI
 
             var logService = container.Resolve<ILogService>();
 
-            logService.MessageAdded += (sender, e) =>
+            //WriteLogMessage;
+            logService.MessageAdded += (o, e) =>
             {
                 if ((int)e.LogLevel <= (int)verbosity)
                     MyWriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}]{e.LogLevel}: [{e.Message}]", e.LogLevel);
             };
+
 
             if (create)
             {
@@ -239,7 +241,7 @@ namespace Simplic.Package.CLI
                     Console.WriteLine("Connected!"); // TODO: Does this fail if conn string is wrong?
                 }
 
-                var initializePackageSystemService = container.Resolve<InitializePackageSystemService>();
+                var initializePackageSystemService = container.Resolve<IInitializePackageSystemService>();
                 await initializePackageSystemService.Initialize();
                 return 0;
             }
@@ -269,6 +271,12 @@ namespace Simplic.Package.CLI
                 return 0;
             }
             return 1;
+        }
+
+        private void WriteLogMessage(object o, LogMessageEventArgs e)
+        {
+            //if ((int)e.LogLevel <= (int)verbosity)
+             //   MyWriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}]{e.LogLevel}: [{e.Message}]", e.LogLevel);
         }
 
         private static void MyWriteLine(string message, LogLevel logLevel)

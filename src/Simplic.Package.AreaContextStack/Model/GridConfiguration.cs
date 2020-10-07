@@ -7,6 +7,5 @@ namespace Simplic.Package.StackContextArea
         public string Grid { get; set; }
         public bool StackBased { get; set; }
         public bool ConnectWithArchive { get; set; }
-        public IList<ContextOfStackItem> ContextOfStack { get; set; }
     }
 }

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Simplic.Package.EplReportDesign
 {
     public class DeserializedEplReportDesign : IContent
     {
+        [JsonProperty(Required = Required.Always)]
         public Guid Id { get; set; }
         public string InternalName { get; set; }
         public string DisplayName { get; set; }
