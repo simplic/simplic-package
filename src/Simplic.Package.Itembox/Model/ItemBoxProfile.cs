@@ -8,5 +8,6 @@
         public bool IsActive { get; set; }
         public string DefaultSearchString { get; set; }
         public string Regex { get; set; }
+        public string SelectStatement { get; set; }
     }
 }

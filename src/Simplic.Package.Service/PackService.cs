@@ -50,7 +50,7 @@ namespace Simplic.Package.Service
         /// <returns>The written archive in bytes</returns>
         public async Task<byte[]> Pack(PackageConfiguration packageConfiguration)
         {
-            Debugger.Launch();
+            // Debugger.Launch();
             // Validate the PackageConfiguration object
             var validatePackageConfigurationResult = await validatePackageConfigurationService.Validate(packageConfiguration);
             if (!validatePackageConfigurationResult.IsValid)

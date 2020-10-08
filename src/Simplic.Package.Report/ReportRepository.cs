@@ -23,13 +23,13 @@ namespace Simplic.Package.Report
 
                 try
                 {
-                    var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<FullReport, Simplic.Reporting.IReportConfiguration>());
-
+                    var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<DeserializedReport, Simplic.Reporting.IReportConfiguration>()
+                                                            .ForMember(x => x.Type, opt => opt.MapFrom<EnumResolver>()));
+                    mapConfig.AssertConfigurationIsValid();
                     var mapper = new Mapper(mapConfig);
 
-                    var iReportConfiguration = mapper.Map<Simplic.Reporting.IReportConfiguration>(report);
-                    todo
-                    ReportManager.Singleton.SaveConfiguration(iReportConfiguration);
+                    var mappedReportConfiguration = mapper.Map<DeserializedReport, Simplic.Reporting.IReportConfiguration>(report.Report);
+                    ReportManager.Singleton.SaveConfiguration(mappedReportConfiguration);
                     ReportManager.Singleton.SaveReportFile(report.Report.Name, report.ReportData);
 
                     result.Message = $"Installed Report at {installableObject.Target}.";
@@ -43,6 +43,11 @@ namespace Simplic.Package.Report
                 return result;
             }
             throw new InvalidContentException();
+        }
+
+        private static Simplic.Reporting.ReportType ResolveEnum(string type)
+        {
+            return ReportType.None;
         }
 
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)

@@ -41,7 +41,7 @@ namespace Simplic.Package.StackAutoconnector
 
                     var xmlSuccess = await sqlService.OpenConnection(async (c) =>
                     {
-                        var affectedRows = await c.ExecuteAsync("Insert into ESS_DCC_SqlText (guid, sqltext) update on existing values (:xmlId, :xmlText)",
+                        var affectedRows = await c.ExecuteAsync("Insert into ESS_DCC_SqlText (guid, sqltext) on existing update values (:xmlId, :xmlText)",
                                                                 new { xmlId, xmlText });
                         return affectedRows > 0;
                     });
@@ -52,7 +52,7 @@ namespace Simplic.Package.StackAutoconnector
                         var success = await sqlService.OpenConnection(async (c) =>
                                     {
                                         var affectedRows = await c.ExecuteAsync("Insert into ESS_DCC_Stack_AutoConnect (sourcestackguid, name, tostackguid, xmlguid) " +
-                                                                                "update on existing values (:stackid, :name, :target, :xmlid)",
+                                                                                "on existing update values (:stackid, :name, :target, :xmlid)",
                                                                                 new { stackAutoconnector.StackId, stackAutoconnector.Name, stackAutoconnector.Target, xmlId });
                                         return affectedRows > 0;
                                     });

@@ -33,7 +33,7 @@ namespace Simplic.Package.EplReportDesign
                     result.Success = await sqlService.OpenConnection(async (c) =>
                     {
                         var affectedRows = await c.ExecuteAsync("Insert into EPL_ReportDesign (id, internname, displayname, reportcontent, printerheadwidth) " +
-                                                            "update on existing values (id, internalname, displayname, reportcontent, printerheadwidth)",
+                                                            "on existing update values (:id, :internalname, :displayname, :reportcontent, :printerheadwidth)",
                                                             new
                                                             {
                                                                 eplReportDesign.Id,

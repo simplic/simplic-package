@@ -35,9 +35,9 @@ namespace Simplic.Package.FormatList
                     {
                         updatedRows += await sqlService.OpenConnection(async (c) =>
                         {
-                            return await c.ExecuteAsync("Insert into ESS_MS_Controls_FormatList (displayname, internalname, description, entryname, entryvalue) values " +
-                                                        "(:displayname, :internalname, :description, :entryname, :entryvalue);"
-                                                        , new { formatList.DisplayName, formatList.InternalName, formatList.Description, entry.Name, entry.Value });
+                            return await c.ExecuteAsync("Insert into ESS_MS_Controls_FormatList (displayname, internname, descriptiontext, entryvalue) values " +
+                                                        "(:displayname, :internalname, :description, :value);"
+                                                        , new { entry.DisplayName, formatList.InternalName, formatList.Description, entry.Value });
                         });
                     }
                     result.Message = $"Installed FormatList at {installableObject.Target}.";

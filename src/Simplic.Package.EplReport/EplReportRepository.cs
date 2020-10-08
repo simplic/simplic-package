@@ -42,19 +42,19 @@ namespace Simplic.Package.EplReport
                         ReportDesignId = eplReport.ReportDesignId
                     };
                     var statement = "Insert into EPL_Report (id, reportid, internname, printername, iscontextlessprintable) " +
-                                    "update on existing values (:Id, :ReportDesignId, :InternalName, :Printer, :IsContextlessPrintable)";
+                                    "on existing update values (:Id, :ReportDesignId, :InternalName, :Printer, :IsContextlessPrintable)";
 
 
                     if (eplReport.Configuration is SqlConfiguration sqlConfiguration)
                     {
                         statement = "Insert into EPL_Report (id, reportid, internname, printername, iscontextlessprintable, sqldatasourcecode) " +
-                                    "update on existing values (:Id, :ReportDesignId, :InternalName, :Printer, :IsContextlessPrintable, :SqlDataSourceCode)";
+                                    "on existing update values (:Id, :ReportDesignId, :InternalName, :Printer, :IsContextlessPrintable, :SqlDataSourceCode)";
                         param.SqlDataSourceCode = sqlConfiguration.SqlDataSourceCode;
                     }
                     else if (eplReport.Configuration is SequenceConfiguration sequenceConfiguration)
                     {
                         statement = "Insert into EPL_Report (id, reportid, internname, printername, iscontextlessprintable, sequenceid) " +
-                                    "update on existing values (:Id, :ReportDesignId, :InternalName, :Printer, :IsContextlessPrintable, :SequenceId)";
+                                    "on existing update values (:Id, :ReportDesignId, :InternalName, :Printer, :IsContextlessPrintable, :SequenceId)";
                         param.SequenceId = sequenceConfiguration.SequenceId;
                     }
                     else if (eplReport.Configuration is GridConfiguration gridConfiguration)

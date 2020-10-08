@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.StackContextArea
 {
-    internal class UnpackStackContextAreaService
+    public class UnpackStackContextAreaService : IUnpackObjectService
     {
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {

@@ -32,7 +32,7 @@ namespace Simplic.Package.ComboBox
                 {
                     var exists = await sqlService.OpenConnection(async (c) =>
                     {
-                        var first = await c.QueryFirstOrDefaultAsync("Select * from ESS_MS_Controls_DropDownBox where sqlstatement = :sqlstatement and boxname = :boxname;",
+                        var first = await c.QueryFirstOrDefaultAsync("Select * from ESS_MS_Controls_DropDownBox where sqlstatement = :sqlstatement and boxname = :name;",
                                                                      new { comboBox.SqlStatement, comboBox.Name });
                         return first != null;
                     });
@@ -42,7 +42,7 @@ namespace Simplic.Package.ComboBox
                         var affectedRows = await sqlService.OpenConnection(async (c) =>
                         {
                             return await c.ExecuteAsync("Insert into ESS_MS_Controls_DropDownBox (sqlstatement, boxname, selectcolumn, selectcolumnbackground, fscontrolname) values " +
-                                                        "(:sqlstatement, :boxname, :selectcolumn, :selectcolumnbackground, :fscontrolname)",
+                                                        "(:sqlstatement, :name, :selectcolumn, :selectcolumnbackground, :fscontrolname)",
                                                         new { comboBox.SqlStatement, comboBox.Name, comboBox.SelectColumn, comboBox.SelectColumnBackground, comboBox.FsControlName });
                         });
                         result.Success = true;

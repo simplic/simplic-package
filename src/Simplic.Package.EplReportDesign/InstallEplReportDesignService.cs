@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Unity;
 
 namespace Simplic.Package.EplReportDesign
 {
@@ -7,7 +8,7 @@ namespace Simplic.Package.EplReportDesign
     {
         private readonly IObjectRepository repository;
 
-        public InstallEplReportDesignService(IObjectRepository repository)
+        public InstallEplReportDesignService([Dependency("eplReportDesign")] IObjectRepository repository)
         {
             this.repository = repository;
         }

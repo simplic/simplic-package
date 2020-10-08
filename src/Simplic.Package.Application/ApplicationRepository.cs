@@ -1,9 +1,7 @@
 ﻿using Dapper;
-using Simplic.Framework.DBUI.Sql;
 using Simplic.Sql;
 using System;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 
 namespace Simplic.Package.Application
 {
@@ -32,11 +30,13 @@ namespace Simplic.Package.Application
 
                 try
                 {
-                    var contentTypeGuid = GetContentTypeId(application.Type);
+                    var contentTypeGuid = await GetContentTypeId(application.Type);
                     var success = await sqlService.OpenConnection(async (c) =>
                     {
-                        var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page (guid, iconguid, contenttype) on existing update values (:id, :iconguid, :contenttype)",
-                                                                   new { application.Id, application.IconId, contentTypeGuid });
+                        var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page (guid, iconguid, contenttype, menutext, directjump, ribbongroupguid)" +
+                                                                " on existing update values (:Id, :IconId, :contentTypeGuid, :Name, :ShortCut, :RibbonGroupId)",
+                                                                   new { application.Id, application.IconId, contentTypeGuid, application.Name,
+                                                                        application.Shortcut, application.RibbonGroupId });
                         return affectedRows > 0;
                     });
 
@@ -111,7 +111,7 @@ namespace Simplic.Package.Application
                             var success = await sqlService.OpenConnection(async (c) =>
                             {
                                 var affectedRows = await c.ExecuteAsync("Insert into Application_ClrCall (pageguid, clrnamespace, clrclass, clrmethod) " +
-                                                                        "on existing update values (:applicationid, :clrnamespace, :clrclass, :clrmethod)",
+                                                                        "on existing update values (:id, :namespace, :class, :method)",
                                                                         new { application.Id, clrConfig.Namespace, clrConfig.Class, clrConfig.Method });
                                 return affectedRows > 0;
                             });
@@ -126,10 +126,11 @@ namespace Simplic.Package.Application
                             var success = await sqlService.OpenConnection(async (c) =>
                             {
                                 var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page_Script (pageguid, scriptname, scriptmethod, classname) " +
-                                                                        "on existing update values (:applicationid, :scriptname, :scriptmethod, :scriptclass)",
+                                                                        "on existing update values (:id, :path, :method, :class)",
                                                                         new { application.Id, pythonConfig.Path, pythonConfig.Method, pythonConfig.Class });
                                 return affectedRows > 0;
                             });
+                            return success;
                         }
                         throw new InvalidContentException("Type was specified to python, but configuration was not of type PythonConfiguration");
                     }
@@ -137,14 +138,14 @@ namespace Simplic.Package.Application
                     {
                         if (configuration is GridConfiguration gridConfig)
                         {
-                            Table is missing refresh on select
                             var success = await sqlService.OpenConnection(async (c) =>
                             {
                                 var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page_DataGrid  (pageguid, gridname, loadonopen, dataconnectionstring) " +
-                                                                        "on existing update values (:applicationid, :gridname, :loadonopen, :connection)",
+                                                                        "on existing update values (:id, :grid, :loadonopen, :connection)",
                                                                         new { application.Id, gridConfig.Grid, gridConfig.LoadOnOpen, gridConfig.Connection, });
                                 return affectedRows > 0;
                             });
+                            return success;
                         }
                         throw new InvalidContentException("Type was specified to grid, but configuration was not of type GridConfiguration");
                     }
@@ -159,12 +160,54 @@ namespace Simplic.Package.Application
                                                                         new { application.Id, browserConfig.Tab, browserConfig.Url });
                                 return affectedRows > 0;
                             });
+                            return success;
                         }
                         throw new InvalidContentException("Type was specified to python, but configuration was not of type PythonConfiguration");
                     }
                 case "grid-structure":
                     {
-                        throw new NotImplementedException();
+                        if (configuration is GridStructureConfiguration config)
+                        {
+                            var stackAdded = 0;
+                            foreach (var stack in config.Stacks)
+                            {
+                                stackAdded += await sqlService.OpenConnection(async (c) =>
+                                {
+                                    return await c.ExecuteAsync("Insert into ESS_DCC_Structure_Stack (guid, parentguid, stackguid, showstacknode, difgridname, difdisplayname, ordernr)" +
+                                                                           " on existing update values (:id, :applicationid, :stackid, :isvisible, :grid, :displayname, :orderid)",
+                                                                           new
+                                                                           {
+                                                                               stack.Id,
+                                                                               applicationid = application.Id,
+                                                                               stack.StackId,
+                                                                               stack.IsVisible,
+                                                                               stack.Grid,
+                                                                               stack.DisplayName,
+                                                                               stack.OrderId
+                                                                           });
+                                });
+
+                                foreach (var register in stack.Registers)
+                                {
+                                    await sqlService.OpenConnection(async (c) =>
+                                    {
+                                        return await c.ExecuteAsync("Insert into ESS_DCC_Structure_Stack_Register (guid, parentguid, registerguid, difgridname, difdisplayname, ordernr)" +
+                                                                               " on existing update values (:id, :stackid, :registerid, :grid, :displayname, :orderid)",
+                                                                               new
+                                                                               {
+                                                                                   register.Id,
+                                                                                   stack.StackId,
+                                                                                   register.RegisterId,
+                                                                                   register.Grid,
+                                                                                   register.DisplayName,
+                                                                                   register.OrderId
+                                                                               });
+                                    });
+                                }
+                            }
+                            return stackAdded == config.Stacks.Count;
+                        }
+                        throw new InvalidContentException("Type was specified to grid-structure, but configuration was not of type GridStructureConfiguration");
                     }
                 default:
                     throw new Exception($"Got unkown type for inserting configuration into database. Type: {type}.");

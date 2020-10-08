@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Unity;
 
 namespace Simplic.Package.Role
 {
@@ -7,7 +8,7 @@ namespace Simplic.Package.Role
     {
         private readonly IObjectRepository repository;
 
-        public InstallRoleService(IObjectRepository repository)
+        public InstallRoleService([Dependency("role")] IObjectRepository repository)
         {
             this.repository = repository;
         }

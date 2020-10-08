@@ -30,7 +30,7 @@ namespace Simplic.Package.StackContextArea
 
                 try
                 {
-                    var statement = $"Insert into IDContext (guid, displayname, stackguid) update on existing values (:Id, :DisplayName, :StackId)";
+                    var statement = $"Insert into IDContext (guid, displayname, stackguid) on existing update values (:Id, :DisplayName, :StackId)";
                     var param = new StatementHelper
                     {
                         Id = stackContextArea.Id,
@@ -41,7 +41,7 @@ namespace Simplic.Package.StackContextArea
                     if (stackContextArea.Configuration is GridConfiguration gridConfiguration)
                     {
                         statement = $"Insert into IDContext (guid, displayname, stackguid, gridname, isstackbased, usearchive) " +
-                                    $"update on existing values (:Id, :DisplayName, :StackId, :GridName, :StackBased, ConnectWithArchive)";
+                                    $"on existing update values (:Id, :DisplayName, :StackId, :GridName, :StackBased, :ConnectWithArchive)";
                         param.ConnectWithArchive = gridConfiguration.ConnectWithArchive;
                         param.StackBased = gridConfiguration.StackBased;
                         param.GridName = gridConfiguration.Grid;

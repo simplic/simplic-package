@@ -54,9 +54,61 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Simplic.Package.Application\Simplic.Package.Application.csproj">
+      <Project>{567f7319-ee09-4b97-bf3a-443638c518b8}</Project>
+      <Name>Simplic.Package.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.AreaContextStack\Simplic.Package.StackContextArea.csproj">
+      <Project>{2e847e37-088e-41ec-a0f7-dfeb508cd570}</Project>
+      <Name>Simplic.Package.StackContextArea</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.ComboBox\Simplic.Package.ComboBox.csproj">
+      <Project>{83a3b926-8e9f-4875-b6fb-0b439e7792b5}</Project>
+      <Name>Simplic.Package.ComboBox</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Package.Data.DB\Simplic.Package.Data.DB.csproj">
       <Project>{061247F8-3F50-4271-852E-4AD4DC8592B0}</Project>
       <Name>Simplic.Package.Data.DB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.EplReportDesign\Simplic.Package.EplReportDesign.csproj">
+      <Project>{cfd6ed80-f1d7-4b2e-b094-3b710c8785ee}</Project>
+      <Name>Simplic.Package.EplReportDesign</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.EplReport\Simplic.Package.EplReport.csproj">
+      <Project>{9e8328da-f910-428e-9189-ceb2b8712283}</Project>
+      <Name>Simplic.Package.EplReport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.FormatList\Simplic.Package.FormatList.csproj">
+      <Project>{a43937b7-be55-428e-ab6a-94993be3150d}</Project>
+      <Name>Simplic.Package.FormatList</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.Grid\Simplic.Package.Grid.csproj">
+      <Project>{0b4d1189-8a3f-4436-8de4-9378cf5e5761}</Project>
+      <Name>Simplic.Package.Grid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.Icon\Simplic.Package.Icon.csproj">
+      <Project>{efbf2689-c964-48a0-ad3e-bf7373e3ce3e}</Project>
+      <Name>Simplic.Package.Icon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.Itembox\Simplic.Package.ItemBox.csproj">
+      <Project>{4eae3b26-1813-42cd-86a5-6df5e2c1048d}</Project>
+      <Name>Simplic.Package.ItemBox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.Report\Simplic.Package.Report.csproj">
+      <Project>{d2aba7da-ddb3-4d7e-8d3c-b0d6b7817b38}</Project>
+      <Name>Simplic.Package.Report</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.Repository\Simplic.Package.Repository.csproj">
+      <Project>{1366426d-40ce-4e6f-9990-a5ac7d67b9a6}</Project>
+      <Name>Simplic.Package.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.Role\Simplic.Package.Role.csproj">
+      <Project>{52b5de4c-00af-44c3-a74e-0be285790baa}</Project>
+      <Name>Simplic.Package.Role</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.Sequence\Simplic.Package.Sequence.csproj">
+      <Project>{0e87f09e-df05-4948-9700-151caa6f4ea8}</Project>
+      <Name>Simplic.Package.Sequence</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Package.Service\Simplic.Package.Service.csproj">
       <Project>{2568b37d-7937-4368-a6e3-2ade2ad7196b}</Project>
@@ -66,6 +118,22 @@
       <Project>{49767089-50D5-48B6-A07A-DA54FEB493A3}</Project>
       <Name>Simplic.Package.Sql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.StackAutoconnector\Simplic.Package.StackAutoconnector.csproj">
+      <Project>{8d4979b2-57ed-43ef-8826-9ceccefd48a6}</Project>
+      <Name>Simplic.Package.StackAutoconnector</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.StackFulltext\Simplic.Package.StackFulltext.csproj">
+      <Project>{ff7b5fa2-450f-4f42-9bdc-38279d5d8ac0}</Project>
+      <Name>Simplic.Package.StackFulltext</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.StackRegister\Simplic.Package.StackRegister.csproj">
+      <Project>{04d1ae0d-e377-417c-b163-c04a02d71ce5}</Project>
+      <Name>Simplic.Package.StackRegister</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.Stack\Simplic.Package.Stack.csproj">
+      <Project>{f7b0e8ed-6344-4dda-b37f-b1f760a533b3}</Project>
+      <Name>Simplic.Package.Stack</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Package\Simplic.Package.csproj">
       <Project>{0aca9764-a25d-4517-b64e-95645674666b}</Project>
       <Name>Simplic.Package</Name>
@@ -74,6 +142,9 @@
   <ItemGroup>
     <PackageReference Include="Colorful.Console">
       <Version>1.2.11</Version>
+    </PackageReference>
+    <PackageReference Include="CommonServiceLocator">
+      <Version>2.0.5</Version>
     </PackageReference>
     <PackageReference Include="EntityFramework">
       <Version>6.4.0</Version>
@@ -86,6 +157,9 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Authorization">
+      <Version>6.3.20.322</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Data">
       <Version>1.6.120.322</Version>
@@ -101,6 +175,9 @@
     </PackageReference>
     <PackageReference Include="Simplic.Sql.SqlAnywhere.Service">
       <Version>5.95.318.101</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Tracking">
+      <Version>6.1.20.322</Version>
     </PackageReference>
     <PackageReference Include="Unity.Container">
       <Version>5.11.8</Version>

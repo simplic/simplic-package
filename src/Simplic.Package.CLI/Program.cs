@@ -18,6 +18,22 @@ using System.Threading.Tasks;
 using Unity;
 using Unity.Lifetime;
 using Console = Colorful.Console;
+using Simplic.Package.ComboBox;
+using Simplic.Package.ItemBox;
+using Simplic.Package.EplReportDesign;
+using Simplic.Package.EplReport;
+using Simplic.Package.FormatList;
+using Simplic.Package.Grid;
+using Simplic.Package.Report;
+using Simplic.Package.Repository;
+using Simplic.Package.Role;
+using Simplic.Package.Sequence;
+using Simplic.Package.Stack;
+using Simplic.Package.StackAutoconnector;
+using Simplic.Package.StackContextArea;
+using Simplic.Package.StackFulltext;
+using Simplic.Package.StackRegister;
+using Simplic.Package.Application;
 
 namespace Simplic.Package.CLI
 {
@@ -26,7 +42,7 @@ namespace Simplic.Package.CLI
         public static async Task<int> Main(string[] args)
         {
             var showHelp = false;
-            var verbosity = LogLevel.Error;
+            var verbosity = LogLevel.Debug;
 
             var create = false;
             var name = "";
@@ -93,90 +109,90 @@ namespace Simplic.Package.CLI
             container.RegisterType<IInitializePackageSystemRepository, InitializePackageSystemRepository>();
             container.RegisterType<IValidatePackageConfigurationService, ValidatePackageConfigurationService>();
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("application");
-            container.RegisterType<IObjectRepository, SqlRepository>("application");
-            container.RegisterType<IPackObjectService, PackSqlService>("application");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("application");
+            container.RegisterType<IInstallObjectService, InstallApplicationService>("application");
+            container.RegisterType<IObjectRepository, ApplicationRepository>("application");
+            container.RegisterType<IPackObjectService, PackApplicationService>("application");
+            container.RegisterType<IUnpackObjectService, UnpackApplicationService>("application");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("comboBox");
-            container.RegisterType<IObjectRepository, SqlRepository>("comboBox");
-            container.RegisterType<IPackObjectService, PackSqlService>("comboBox");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("comboBox");
+            container.RegisterType<IInstallObjectService, InstallComboBoxService>("comboBox");
+            container.RegisterType<IObjectRepository, ComboBoxRepository>("comboBox");
+            container.RegisterType<IPackObjectService, PackComboBoxService>("comboBox");
+            container.RegisterType<IUnpackObjectService, UnpackComboBoxService>("comboBox");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("EplReport");
-            container.RegisterType<IObjectRepository, SqlRepository>("EplReport");
-            container.RegisterType<IPackObjectService, PackSqlService>("EplReport");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("EplReport");
+            container.RegisterType<IInstallObjectService, InstallEplReportService>("eplReport");
+            container.RegisterType<IObjectRepository, EplReportRepository>("eplReport");
+            container.RegisterType<IPackObjectService, PackEplReportService>("eplReport");
+            container.RegisterType<IUnpackObjectService, UnpackEplReportService>("eplReport");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("EplReportDesign");
-            container.RegisterType<IObjectRepository, SqlRepository>("EplReportDesign");
-            container.RegisterType<IPackObjectService, PackSqlService>("EplReportDesign");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("EplReportDesign");
+            container.RegisterType<IInstallObjectService, InstallEplReportDesignService>("eplReportDesign");
+            container.RegisterType<IObjectRepository, EplReportDesignRepository>("eplReportDesign");
+            container.RegisterType<IPackObjectService, PackEplReportDesignService>("eplReportDesign");
+            container.RegisterType<IUnpackObjectService, UnpackEplReportDesignService>("eplReportDesign");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("FormatList");
-            container.RegisterType<IObjectRepository, SqlRepository>("FormatList");
-            container.RegisterType<IPackObjectService, PackSqlService>("FormatList");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("FormatList");
+            container.RegisterType<IInstallObjectService, InstallFormatListService>("formatList");
+            container.RegisterType<IObjectRepository, FormatListRepository>("formatList");
+            container.RegisterType<IPackObjectService, PackFormatListService>("formatList");
+            container.RegisterType<IUnpackObjectService, UnpackFormatListService>("formatList");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("grid");
-            container.RegisterType<IObjectRepository, SqlRepository>("grid");
-            container.RegisterType<IPackObjectService, PackSqlService>("grid");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("grid");
+            container.RegisterType<IInstallObjectService, InstallGridService>("grid");
+            // container.RegisterType<IObjectRepository, SqlRepository>("grid");
+            container.RegisterType<IPackObjectService, PackGridService>("grid");
+            container.RegisterType<IUnpackObjectService, UnpackGridService>("grid");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("itemBox");
-            container.RegisterType<IObjectRepository, SqlRepository>("itemBox");
-            container.RegisterType<IPackObjectService, PackSqlService>("itemBox");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("itemBox");
+            container.RegisterType<IInstallObjectService, InstallItemBoxService>("itemBox");
+            container.RegisterType<IObjectRepository, ItemBoxRepository>("itemBox");
+            container.RegisterType<IPackObjectService, PackItemBoxService>("itemBox");
+            container.RegisterType<IUnpackObjectService, UnpackItemBoxService>("itemBox");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("report");
-            container.RegisterType<IObjectRepository, SqlRepository>("report");
-            container.RegisterType<IPackObjectService, PackSqlService>("report");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("report");
+            container.RegisterType<IInstallObjectService, InstallReportService>("report");
+            container.RegisterType<IObjectRepository, ReportRepository>("report");
+            container.RegisterType<IPackObjectService, PackReportService>("report");
+            container.RegisterType<IUnpackObjectService, UnpackReportService>("report");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("repository");
-            container.RegisterType<IObjectRepository, SqlRepository>("repository");
-            container.RegisterType<IPackObjectService, PackSqlService>("repository");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("repository");
+            container.RegisterType<IInstallObjectService, InstallRepositoryService>("repository");
+            container.RegisterType<IObjectRepository, RepositoryRepository>("repository");
+            container.RegisterType<IPackObjectService, PackRepositoryService>("repository");
+            container.RegisterType<IUnpackObjectService, UnpackRepositoryService>("repository");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("role");
-            container.RegisterType<IObjectRepository, SqlRepository>("role");
-            container.RegisterType<IPackObjectService, PackSqlService>("role");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("role");
+            container.RegisterType<IInstallObjectService, InstallRoleService>("role");
+            container.RegisterType<IObjectRepository, RoleRepository>("role");
+            container.RegisterType<IPackObjectService, PackRoleService>("role");
+            container.RegisterType<IUnpackObjectService, UnpackRoleService>("role");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("sequence");
-            container.RegisterType<IObjectRepository, SqlRepository>("sequence");
-            container.RegisterType<IPackObjectService, PackSqlService>("sequence");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("sequence");
+            container.RegisterType<IInstallObjectService, InstallSequenceService>("sequence");
+            container.RegisterType<IObjectRepository, SequenceRepository>("sequence");
+            container.RegisterType<IPackObjectService, PackSequenceService>("sequence");
+            container.RegisterType<IUnpackObjectService, UnpackSequenceService>("sequence");
 
             container.RegisterType<IInstallObjectService, InstallSqlService>("sql");
             container.RegisterType<IObjectRepository, SqlRepository>("sql");
             container.RegisterType<IPackObjectService, PackSqlService>("sql");
             container.RegisterType<IUnpackObjectService, UnpackSqlService>("sql");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("stack");
-            container.RegisterType<IObjectRepository, SqlRepository>("stack");
-            container.RegisterType<IPackObjectService, PackSqlService>("stack");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("stack");
+            container.RegisterType<IInstallObjectService, InstallStackService>("stack");
+            container.RegisterType<IObjectRepository, StackRepository>("stack");
+            container.RegisterType<IPackObjectService, PackStackService>("stack");
+            container.RegisterType<IUnpackObjectService, UnpackStackService>("stack");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("stackAutoconnector");
-            container.RegisterType<IObjectRepository, SqlRepository>("stackAutoconnector");
-            container.RegisterType<IPackObjectService, PackSqlService>("stackAutoconnector");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("stackAutoconnector");
+            container.RegisterType<IInstallObjectService, InstallStackAutoconnectorService>("stackAutoconnector");
+            container.RegisterType<IObjectRepository, StackAutoconnectorRepository>("stackAutoconnector");
+            container.RegisterType<IPackObjectService, PackStackAutoconnectorService>("stackAutoconnector");
+            container.RegisterType<IUnpackObjectService, UnpackStackAutoconnectorService>("stackAutoconnector");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("stackContextArea");
-            container.RegisterType<IObjectRepository, SqlRepository>("stackContextArea");
-            container.RegisterType<IPackObjectService, PackSqlService>("stackContextArea");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("stackContextArea");
+            container.RegisterType<IInstallObjectService, InstallStackContextAreaService>("stackContextArea");
+            container.RegisterType<IObjectRepository, StackContextAreaRepository>("stackContextArea");
+            container.RegisterType<IPackObjectService, PackStackContextAreaService>("stackContextArea");
+            container.RegisterType<IUnpackObjectService, UnpackStackContextAreaService>("stackContextArea");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("stackFulltext");
-            container.RegisterType<IObjectRepository, SqlRepository>("stackFulltext");
-            container.RegisterType<IPackObjectService, PackSqlService>("stackFulltext");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("stackFulltext");
+            container.RegisterType<IInstallObjectService, InstallStackFulltextService>("stackFulltext");
+            container.RegisterType<IObjectRepository, StackFulltextRepository>("stackFulltext");
+            container.RegisterType<IPackObjectService, PackStackFulltextService>("stackFulltext");
+            container.RegisterType<IUnpackObjectService, UnpackStackFulltextService>("stackFulltext");
 
-            container.RegisterType<IInstallObjectService, InstallSqlService>("stackRegister");
-            container.RegisterType<IObjectRepository, SqlRepository>("stackRegister");
-            container.RegisterType<IPackObjectService, PackSqlService>("stackRegister");
-            container.RegisterType<IUnpackObjectService, UnpackSqlService>("stackRegister");
+            container.RegisterType<IInstallObjectService, InstallStackRegisterService>("stackRegister");
+            container.RegisterType<IObjectRepository, StackRegisterRepository>("stackRegister");
+            container.RegisterType<IPackObjectService, PackStackRegisterService>("stackRegister");
+            container.RegisterType<IUnpackObjectService, UnpackStackRegisterService>("stackRegister");
 
             container.RegisterType<ISqlService, SqlService>();
             container.RegisterType<ISqlColumnService, SqlColumnService>();
@@ -238,7 +254,7 @@ namespace Simplic.Package.CLI
                 Console.WriteLine("Check database connection ...");
                 using (var connection = ConnectionManager.GetOpenPoolConnection<SAConnection>(connectionString))
                 {
-                    Console.WriteLine("Connected!"); // TODO: Does this fail if conn string is wrong?
+                    Console.WriteLine("Connected!");
                 }
 
                 var initializePackageSystemService = container.Resolve<IInitializePackageSystemService>();

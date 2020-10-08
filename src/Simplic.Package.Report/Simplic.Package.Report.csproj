@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumResolver.cs" />
     <Compile Include="InstallReportService.cs" />
     <Compile Include="Model\DeserializedReport.cs" />
     <Compile Include="Model\FullReport.cs" />

@@ -37,7 +37,7 @@ namespace Simplic.Package.StackRegister
                     var success = await sqlService.OpenConnection(async (c) =>
                     {
                         var affectedRows = await c.ExecuteAsync("Insert into ESS_DCC_StackRegister (registerguid, registername, stackguid, isactive, assignsql) " +
-                                                                "update on existing values (:id, :name, :stackid, :isactive, :sqlstatement)",
+                                                                "on existing update values (:id, :name, :stackid, :isactive, :sqlstatement)",
                                                                 new { stackRegister.Id, stackRegister.Name, stackRegister.StackId, stackRegister.IsActive, sqlStatement });
                         return affectedRows > 0;
                     });

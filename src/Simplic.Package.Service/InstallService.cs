@@ -34,7 +34,7 @@ namespace Simplic.Package.Service
                 await logService.WriteAsync(checkDependenciesResult.Message, checkDependenciesResult.LogLevel);
             else
                 throw new MissingDependencyException(checkDependenciesResult.Message);
-
+            
             // Check if package already exists and act accordingly
             var existingPackageVersion = await packageTrackingRepository.GetPackageVersion(package.Guid);
             if (package.Version == existingPackageVersion) { }

@@ -21,5 +21,8 @@ namespace Simplic.Package
         /// <param name="exception">The Exception that was caught</param>
         /// <returns></returns>
         Task WriteAsync(string message, LogLevel logLevel, Exception exception = null);
+
+        Task WriteAsyncSuccess(string objectName, string target, LogLevel logLevel);
+        Task WriteAsyncFailed(string objectName, string target, LogLevel logLevel);
     }
 }

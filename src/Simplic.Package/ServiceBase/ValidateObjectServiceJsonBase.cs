@@ -16,7 +16,12 @@ namespace Simplic.Package
             var result = new ValidateObjectResult { LogLevel = LogLevel.Info };
             try
             {
-                var deserializedObject = JsonConvert.DeserializeObject<T>(json);
+                var serializerSettings = new JsonSerializerSettings
+                {
+                    MissingMemberHandling = MissingMemberHandling.Error
+                };
+
+                var deserializedObject = JsonConvert.DeserializeObject<T>(json, serializerSettings);
                 JsonConvert.SerializeObject(deserializedObject);
                 result.IsValid = true;
                 result.Message = $"Succesfully validated {ElementName} at {packObjectResult.Location}.";

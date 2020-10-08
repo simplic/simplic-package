@@ -33,5 +33,15 @@ namespace Simplic.Package.Service
             else if (logLevel == LogLevel.Debug)
                 Protocol.Debug.Add(message);
         }
+
+        public async Task WriteAsyncSuccess(string objectName, string target, LogLevel logLevel)
+        {
+            await WriteAsync($"Installed {objectName} at {target}.", logLevel);
+        }
+
+        public async Task WriteAsyncFailed(string objectName, string target, LogLevel logLevel)
+        {
+            await WriteAsync($"Failed to install {objectName} at {target}.", logLevel);
+        }
     }
 }
