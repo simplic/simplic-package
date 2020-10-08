@@ -33,7 +33,7 @@ namespace Simplic.Package.Stack
                     result.Success = await sqlService.OpenConnection(async (c) =>
                     {
                         var affectedRows = await c.ExecuteAsync(
-                            "Insert into ESS_DCC_Stack (guid, displayname, stackgridname, isactive, connectwitharchive, tablename, stackname," +
+                            "Insert into ESS_DCC_Stack (guid, displayname, stackgridname, isactive, connectwitharchiv, tablename, stackname," +
                                                         " headersql, trackchanges, usefulltextindex, improveocrtext, usedce)" +
                             "on existing update values (:id, :displayname, :stackgridname, :isactive, :connectwitharchive, :tablename, :stackname," +
                                                         " :headersql, :trackchanges, :usefulltextindex, :improveocrtext, :usedce)",

@@ -55,6 +55,7 @@ namespace Simplic.Package.StackFulltext
                     result.LogLevel = LogLevel.Error;
                     result.Exception = ex;
                 }
+                return result;
             }
             throw new InvalidContentException();
         }

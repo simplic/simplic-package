@@ -24,7 +24,7 @@ namespace Simplic.Package.Service
         /// <param name="package">The package to install</param>
         public async Task Install(Package package)
         {
-            Debugger.Launch();
+            //Debugger.Launch();
 
             // Check dependencies
             var checkDependencyService = container.Resolve<ICheckDependencyService>();

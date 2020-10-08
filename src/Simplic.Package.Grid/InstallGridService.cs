@@ -20,7 +20,7 @@ namespace Simplic.Package.Grid
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            // Todo: Automapper und Simplic API
+            // Todo: Automapper and Simplic API
             throw new NotImplementedException();
         }
 

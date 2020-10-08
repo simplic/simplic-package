@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Unity;
 
 namespace Simplic.Package.Stack
 {
@@ -7,7 +8,7 @@ namespace Simplic.Package.Stack
     {
         private readonly IObjectRepository repository;
 
-        public InstallStackService(IObjectRepository repository)
+        public InstallStackService([Dependency("stack")] IObjectRepository repository)
         {
             this.repository = repository;
         }

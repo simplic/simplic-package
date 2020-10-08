@@ -40,7 +40,7 @@ namespace Simplic.Package.StackContextArea
 
                     if (stackContextArea.Configuration is GridConfiguration gridConfiguration)
                     {
-                        statement = $"Insert into IDContext (guid, displayname, stackguid, gridname, isstackbased, usearchive) " +
+                        statement = $"Insert into IDContext (guid, displayname, stackguid, gridname, isstackbased, usearchiv) " +
                                     $"on existing update values (:Id, :DisplayName, :StackId, :GridName, :StackBased, :ConnectWithArchive)";
                         param.ConnectWithArchive = gridConfiguration.ConnectWithArchive;
                         param.StackBased = gridConfiguration.StackBased;
@@ -53,7 +53,7 @@ namespace Simplic.Package.StackContextArea
                         return affectedRows > 0;
                     });
 
-                    // TODO: Also put in IDContext_Assignment
+                    // TODO: What to put in IDContext_Assignment
 
                     if (result.Success)
                         result.Message = $"Installed StackContextArea at {installableObject.Target}.";
@@ -69,6 +69,7 @@ namespace Simplic.Package.StackContextArea
                     result.LogLevel = LogLevel.Error;
                     result.Exception = ex;
                 }
+                return result;
             }
             throw new InvalidContentException();
         }

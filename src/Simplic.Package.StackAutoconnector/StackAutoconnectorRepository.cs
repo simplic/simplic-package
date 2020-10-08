@@ -80,6 +80,7 @@ namespace Simplic.Package.StackAutoconnector
                     result.LogLevel = LogLevel.Error;
                     result.Exception = ex;
                 }
+                return result;
             }
             throw new InvalidContentException();
         }

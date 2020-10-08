@@ -72,6 +72,7 @@ namespace Simplic.Package.Application
 
         private async Task<Guid> GetContentTypeId(string type)
         {
+            // TODO: Which names
             var pageName = "";
             switch (type)
             {
@@ -151,6 +152,7 @@ namespace Simplic.Package.Application
                     }
                 case "browser":
                     {
+                        // TODO: What table
                         throw new NotImplementedException();
                         if (configuration is BrowserConfiguration browserConfig)
                         {

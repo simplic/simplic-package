@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +17,7 @@ namespace Simplic.Package.StackRegister
 
             try
             {
+                Debugger.Launch();
                 var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
                 var jObject = JObject.Parse(json);
 

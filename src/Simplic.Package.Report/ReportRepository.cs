@@ -23,6 +23,8 @@ namespace Simplic.Package.Report
 
                 try
                 {
+                    // TODO: Automapper
+
                     var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<DeserializedReport, Simplic.Reporting.IReportConfiguration>()
                                                             .ForMember(x => x.Type, opt => opt.MapFrom<EnumResolver>()));
                     mapConfig.AssertConfigurationIsValid();

@@ -2,6 +2,6 @@
 {
     internal class SqlConfiguration : IStackRegisterConfiguration
     {
-        public string SqlStatement { get; set; }
+        public string Statement { get; set; }
     }
 }

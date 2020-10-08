@@ -176,6 +176,9 @@
     <PackageReference Include="Simplic.Sql.SqlAnywhere.Service">
       <Version>5.95.318.101</Version>
     </PackageReference>
+    <PackageReference Include="Simplic.TenantSystem">
+      <Version>2.0.320.41</Version>
+    </PackageReference>
     <PackageReference Include="Simplic.Tracking">
       <Version>6.1.20.322</Version>
     </PackageReference>

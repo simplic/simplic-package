@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Unity;
 
 namespace Simplic.Package.Sequence
 {
@@ -7,7 +8,7 @@ namespace Simplic.Package.Sequence
     {
         private readonly IObjectRepository repository;
 
-        public InstallSequenceService(IObjectRepository repository)
+        public InstallSequenceService([Dependency("sequence")] IObjectRepository repository)
         {
             this.repository = repository;
         }

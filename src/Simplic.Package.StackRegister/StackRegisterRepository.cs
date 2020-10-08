@@ -30,15 +30,15 @@ namespace Simplic.Package.StackRegister
 
                 try
                 {
-                    var sqlStatement = "";
+                    var statement = "";
                     if (stackRegister.Configuration is SqlConfiguration sqlConfiguration)
-                        sqlStatement = sqlConfiguration.SqlStatement;
+                        statement = sqlConfiguration.Statement;
 
                     var success = await sqlService.OpenConnection(async (c) =>
                     {
                         var affectedRows = await c.ExecuteAsync("Insert into ESS_DCC_StackRegister (registerguid, registername, stackguid, isactive, assignsql) " +
-                                                                "on existing update values (:id, :name, :stackid, :isactive, :sqlstatement)",
-                                                                new { stackRegister.Id, stackRegister.Name, stackRegister.StackId, stackRegister.IsActive, sqlStatement });
+                                                                "on existing update values (:id, :name, :stackid, :isactive, :statement)",
+                                                                new { stackRegister.Id, stackRegister.Name, stackRegister.StackId, stackRegister.IsActive, statement });
                         return affectedRows > 0;
                     });
 
@@ -59,6 +59,7 @@ namespace Simplic.Package.StackRegister
                     result.LogLevel = LogLevel.Error;
                     result.Exception = ex;
                 }
+                return result;
             }
             throw new InvalidContentException();
         }

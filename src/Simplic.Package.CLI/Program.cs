@@ -34,6 +34,7 @@ using Simplic.Package.StackContextArea;
 using Simplic.Package.StackFulltext;
 using Simplic.Package.StackRegister;
 using Simplic.Package.Application;
+using Simplic.Framework.Core;
 
 namespace Simplic.Package.CLI
 {
