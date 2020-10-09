@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using System.Windows.Media;
 
 namespace Simplic.Package.Grid
 {
@@ -7,7 +7,6 @@ namespace Simplic.Package.Grid
     {
         public Guid Id { get; set; }
         public string CompareValue { get; set; }
-        public string CompareColumnName { get; set; }
         public Color BackgroundColor { get; set; }
         public Color ForegroundColor { get; set; }
     }

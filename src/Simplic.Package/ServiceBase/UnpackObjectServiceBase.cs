@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ namespace Simplic.Package
                 LogLevel = LogLevel.Info
             };
 
+            Debugger.Launch();
             try
             {
                 var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);

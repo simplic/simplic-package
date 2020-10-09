@@ -15,7 +15,7 @@ namespace Simplic.Package.Grid
         public bool UseSelectColumn { get; set; }
         public IList<GridColumnConfiguration> ColumnConfiguration { get; set; }
         public Guid Id { get; set; }
-        public string SelectStatements { get; set; }
+        public string SelectStatement { get; set; }
         public bool LoadAllData { get; set; }
         public bool ShouldAutoReload { get; set; }
         public int? AutoReloadInterval { get; set; }
@@ -40,8 +40,7 @@ namespace Simplic.Package.Grid
         public string DropDataService { get; set; }
         public bool RemoveFromDragSrouce { get; set; }
         public bool EnableStickyGroupHeaders { get; set; }
-        public string GroupConfigurationJson { get; set; }
+        public byte[] GroupConfigurationJson { get; set; }
         public IList<GridVirtualGroupConfiguration> VirtualGroups { get; set; }
-        public string SelectStatement { get; set; }
     }
 }

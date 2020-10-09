@@ -35,6 +35,9 @@ using Simplic.Package.StackFulltext;
 using Simplic.Package.StackRegister;
 using Simplic.Package.Application;
 using Simplic.Framework.Core;
+using Unity.ServiceLocation;
+using Simplic.Localization;
+using Simplic.Log.Console;
 
 namespace Simplic.Package.CLI
 {
@@ -199,6 +202,13 @@ namespace Simplic.Package.CLI
             container.RegisterType<ISqlColumnService, SqlColumnService>();
             Framework.DAL.DALManager.Init(connectionString);
             Framework.DAL.ConnectionManager.Init(Thread.CurrentThread);
+
+            container.RegisterType<ILocalizationService, LocalizationService>();
+
+            var serviceLocator = new UnityServiceLocator(container);
+            CommonServiceLocator.ServiceLocator.SetLocatorProvider(() => serviceLocator);
+
+            Log.LogManagerInstance.Instance.OutputProvider.Add(new ConsoleLogOutput());
             #endregion
 
 

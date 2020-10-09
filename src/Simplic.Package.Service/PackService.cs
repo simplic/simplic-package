@@ -100,7 +100,7 @@ namespace Simplic.Package.Service
                             }
                             catch (ResolutionFailedException)
                             {
-                                await logService.WriteAsync($"Skipped Validation on {objectListItem.Source} due to no inability to resolve validation service for {item.Key}", LogLevel.Info);
+                                await logService.WriteAsync($"Skipped Validation on {objectListItem.Source} due to inability to resolve validation service for {item.Key}", LogLevel.Info);
                             }
 
                             // Write the object to the archive
@@ -121,7 +121,12 @@ namespace Simplic.Package.Service
                 }
                 string archiveName = $"{packageConfiguration.Name}_v{packageConfiguration.Version}.zip";
                 if (fileService.FileExists(archiveName))
+                {
                     await logService.WriteAsync($"[TODO: Decide what to do here] A Package with name {packageConfiguration.Name}_v{packageConfiguration.Version} already exists in working directory", LogLevel.Warning);
+                    File.Delete(archiveName);
+                    await fileService.WriteAllBytesAsync(stream.ToArray(), archiveName);
+                    await logService.WriteAsync($"Succesfully created package.", LogLevel.Info);
+                }
                 else
                 {
                     await fileService.WriteAllBytesAsync(stream.ToArray(), archiveName);

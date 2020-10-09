@@ -27,13 +27,13 @@ namespace Simplic.Package.Sql
                     if (row != null)
                     {
                         result.CanMigrate = false;
-                        result.Message = $"The sql script @ {installableObject.Target} wont be migrated as it was already executed.";
+                        result.Message = $"The sql script at {installableObject.Target} wont be migrated as it was already executed.";
                         result.LogLevel = LogLevel.Info;
                     }
                     else
                     {
                         result.CanMigrate = true;
-                        result.Message = $"The sql script @ {installableObject.Target} will be migrated";
+                        result.Message = $"The sql script at {installableObject.Target} will be migrated";
                         result.LogLevel = LogLevel.Info;
                     }
                     return result;
@@ -56,15 +56,19 @@ namespace Simplic.Package.Sql
                     var result = new InstallObjectResult { Success = true };
                     try
                     {
-                        await c.ExecuteAsync(sqlContent.Data);
-                        result.Message = $"Succesfully executed {installableObject.Content}!";
+                        var command = c.CreateCommand();
+                        command.CommandText = sqlContent.Data;
+
+                        command.ExecuteNonQuery();
+
+                        result.Message = $"Succesfully executed sqlscript: {sqlContent.Data}\n at {installableObject.Target}.";
                         result.LogLevel = LogLevel.Info;
                     }
                     catch (Exception ex)
                     {
                         result.Success = false;
                         result.Exception = ex;
-                        result.Message = $"Failed to execute {installableObject.Content}!";
+                        result.Message = $"Failed to execute sqlscript:{sqlContent.Data}\n at {installableObject.Target}.";
                         result.LogLevel = LogLevel.Error;
                     }
 
@@ -85,14 +89,14 @@ namespace Simplic.Package.Sql
                                                     packageversionbuild = installableObject.PackageVersion.Build,
                                                     packageversionrevision = installableObject.PackageVersion.Revision
                                                 });
-                            result.Message = $"Succesfully executed sql script and added to Package_Object table at {installableObject.Target}.";
+                            result.Message = $"Succesfully executed sql script: {sqlContent.Data}\n and added to Package_Object table at {installableObject.Target}.";
                             result.LogLevel = LogLevel.Info;
                         }
                         catch (Exception ex)
                         {
                             result.Success = false;
                             result.Exception = ex;
-                            result.Message = $"Executed sql script but failed to add it to Package_Object table at {installableObject.Target}.";
+                            result.Message = $"Executed sql script: {sqlContent.Data}\n but failed to add it to Package_Object table at {installableObject.Target}.";
                             result.LogLevel = LogLevel.Error;
                         }
                     }
