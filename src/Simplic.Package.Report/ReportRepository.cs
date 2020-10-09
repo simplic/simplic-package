@@ -25,35 +25,40 @@ namespace Simplic.Package.Report
 
                 try
                 {
-                    // TODO: Automapper
+                    var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<DeserializedReport, Simplic.Reporting.IReportConfiguration>());
                     if (report.Report.Configuration is KeyValueConfiguration configuration)
                     {
-                        var parameterMap = new MapperConfiguration(cfg => cfg.CreateMap<KeyValueParameterItem, KeyValueParameterConfigurationModel>(MemberList.Source));
-)
-                        var mappedParameters = new ObservableCollection<KeyValueParameterConfigurationModel>();
-                        foreach (var parameter in configuration.Parameter)
-                            mappedParameters.Add(new Mapper(parameterMap).Map<KeyValueParameterConfigurationModel>(parameter));
-
-                        var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<DeserializedReport, KeyValueConfigurationModel>(MemberList.Source)
+                        mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<DeserializedReport, KeyValueConfigurationModel>(MemberList.Source)
                                                                 .ForMember(dest => dest.ReportName, opt => opt.MapFrom(x => x.ReportFile))
                                                                 .ForMember(dest => dest.Type, opt => opt.MapFrom<EnumResolver>())
-                                                                .ForMember(dest => dest.IsListBased, opt => opt.MapFrom(x => configuration.IsListBased))
-                                                                .ForMember(dest => dest.ConnectionString, opt => opt.MapFrom(x => configuration.Connection))
-                                                                .ForMember(dest => dest.ProviderName, opt => opt.MapFrom(_ => configuration.Provider))
-                                                                .ForMember(dest => dest.Parameter, opt => opt.MapFrom(_ => mappedParameters))
+                                                                .ForMember(dest => dest.IsListBased, opt => opt.MapFrom(_ => configuration.IsListBased))
+                                                                .ForMember(dest => dest.ConnectionString, opt => opt.MapFrom(x => x.Configuration.Connection))
+                                                                .ForMember(dest => dest.ProviderName, opt => opt.MapFrom(x => x.Configuration.Provider))
+                                                                .ForMember(dest => dest.Parameter, opt => opt.MapFrom(_ => configuration.Parameter
+                                                                                                                                .Select(x => new KeyValueParameterConfigurationModel { Name = x.Name, OrderId = x.OrderId })))
                                                                 );
                     }
-                    var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<DeserializedReport, Simplic.Reporting.IReportConfiguration>(MemberList.Source)
-                                                            .ForMember(dest => dest.ReportName, opt => opt.MapFrom(x => x.ReportFile))
-                                                            .ForMember(dest => dest.Type, opt => opt.MapFrom<EnumResolver>())
-                                                            .ForSourceMember(src => src.Configuration, opt => opt.DoNotValidate())
-                                                            );
-                                                            
-                                                            
+                    else if (report.Report.Configuration is ParameterConfiguration parameterConfiguration)
+                    {
+                        mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<DeserializedReport, ParameterConfigurationModel>(MemberList.Source)
+                                                                .ForMember(dest => dest.ReportName, opt => opt.MapFrom(x => x.ReportFile))
+                                                                .ForMember(dest => dest.Type, opt => opt.MapFrom<EnumResolver>())
+                                                                .ForMember(dest => dest.ConnectionString, opt => opt.MapFrom(x => x.Configuration.Connection))
+                                                                .ForMember(dest => dest.ProviderName, opt => opt.MapFrom(x => x.Configuration.Provider))
+                                                                .ForMember(dest => dest.ReportParameter, opt => opt.MapFrom(_ => parameterConfiguration.Parameter))
+                                                                );
+                    }
                     mapConfig.AssertConfigurationIsValid();
                     var mapper = new Mapper(mapConfig);
 
-                    var mappedReportConfiguration = mapper.Map<DeserializedReport, Simplic.Reporting.IReportConfiguration>(report.Report);
+                    Simplic.Reporting.IReportConfiguration mappedReportConfiguration = null;
+                    if (report.Report.Configuration is KeyValueConfiguration)
+                        mappedReportConfiguration = mapper.Map<DeserializedReport, KeyValueConfigurationModel>(report.Report);
+                    else if (report.Report.Configuration is ParameterConfiguration)
+                        mappedReportConfiguration = mapper.Map<DeserializedReport, ParameterConfigurationModel>(report.Report);
+                    else
+                        throw new NotImplementedException();
+
                     ReportManager.Singleton.SaveConfiguration(mappedReportConfiguration);
                     ReportManager.Singleton.SaveReportFile(report.Report.Name, report.ReportData);
 

@@ -2,10 +2,8 @@
 
 namespace Simplic.Package.Report
 {
-    public class ParameterConfiguration : IReportConfiguration
+    public class ParameterConfiguration : ReportConfiguration
     {
-        public string Connection { get; set; }
-        public string Provider { get; set; }
         public IList<string> Parameter { get; set; }
     }
 }

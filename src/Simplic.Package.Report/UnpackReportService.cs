@@ -51,7 +51,7 @@ namespace Simplic.Package.Report
             return result;
         }
 
-        private IReportConfiguration DeserializeConfiguration(string type, JToken configuration)
+        private ReportConfiguration DeserializeConfiguration(string type, JToken configuration)
         {
             if (type == "sql")
                 return configuration.ToObject<SqlConfiguration>();

@@ -152,13 +152,11 @@ namespace Simplic.Package.Application
                     }
                 case "browser":
                     {
-                        // TODO: What table
-                        throw new NotImplementedException();
                         if (configuration is BrowserConfiguration browserConfig)
                         {
                             var success = await sqlService.OpenConnection(async (c) =>
                             {
-                                var affectedRows = await c.ExecuteAsync("Insert into DUNNO ",
+                                var affectedRows = await c.ExecuteAsync("Insert into Browser_Configuration (guid, tab, url) on existing update values (:id, :tag, :url) ",
                                                                         new { application.Id, browserConfig.Tab, browserConfig.Url });
                                 return affectedRows > 0;
                             });

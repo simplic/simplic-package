@@ -1,6 +1,6 @@
 ﻿namespace Simplic.Package.Report.Model
 {
-    internal class SqlConfiguration : IReportConfiguration
+    internal class SqlConfiguration : ReportConfiguration
     {
     }
 }
