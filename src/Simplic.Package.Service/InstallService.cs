@@ -10,12 +10,14 @@ namespace Simplic.Package.Service
         private readonly IUnityContainer container;
         private readonly ILogService logService;
         private readonly IPackageTrackingRepository packageTrackingRepository;
+        private readonly IMigrationService migrationService;
 
-        public InstallService(IUnityContainer container, ILogService logService, IPackageTrackingRepository packageTrackingRepository)
+        public InstallService(IUnityContainer container, ILogService logService, IPackageTrackingRepository packageTrackingRepository, IMigrationService migrationService)
         {
             this.container = container;
             this.logService = logService;
             this.packageTrackingRepository = packageTrackingRepository;
+            this.migrationService = migrationService;
         }
 
         /// <summary>
@@ -34,7 +36,7 @@ namespace Simplic.Package.Service
                 await logService.WriteAsync(checkDependenciesResult.Message, checkDependenciesResult.LogLevel);
             else
                 throw new MissingDependencyException(checkDependenciesResult.Message);
-            
+
             // Check if package already exists and act accordingly
             var existingPackageVersion = await packageTrackingRepository.GetPackageVersion(package.Guid);
             if (package.Version == existingPackageVersion) { }
@@ -56,7 +58,7 @@ namespace Simplic.Package.Service
                     var install = installableObject.Mode == InstallMode.Deploy;
                     if (installableObject.Mode == InstallMode.Migrate)
                     {
-                        var checkMigrationResult = await installObjectService.CheckMigration(installableObject);
+                        var checkMigrationResult = await migrationService.CheckMigration(installableObject);
                         install = checkMigrationResult.CanMigrate;
                         await logService.WriteAsync(checkMigrationResult.Message, checkMigrationResult.LogLevel);
                     }
@@ -68,7 +70,10 @@ namespace Simplic.Package.Service
                         if (!installObjectResult.Success)
                             throw new InvalidObjectException(installObjectResult.Message, installObjectResult.Exception);
                         else
+                        {
                             await logService.WriteAsync(installObjectResult.Message, installObjectResult.LogLevel);
+                            await migrationService.AddMigration(installableObject);
+                        }
                     }
                 }
             }

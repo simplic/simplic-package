@@ -14,11 +14,6 @@ namespace Simplic.Package.ItemBox
             this.sqlService = sqlService;
         }
 
-        public Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject)
-        {
-            throw new NotImplementedException();
-        }
-
         // TODO: Output if this fails?
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {

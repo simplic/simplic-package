@@ -112,6 +112,8 @@ namespace Simplic.Package.CLI
             container.RegisterType<IInitializePackageSystemService, InitializePackageSystemService>();
             container.RegisterType<IInitializePackageSystemRepository, InitializePackageSystemRepository>();
             container.RegisterType<IValidatePackageConfigurationService, ValidatePackageConfigurationService>();
+            container.RegisterType<IMigrationService, MigrationService>();
+            container.RegisterType<IMigrationRepository, MigrationRepository>();
 
             container.RegisterType<IInstallObjectService, InstallApplicationService>("application");
             container.RegisterType<IObjectRepository, ApplicationRepository>("application");
@@ -270,7 +272,6 @@ namespace Simplic.Package.CLI
 
                 var initializePackageSystemService = container.Resolve<IInitializePackageSystemService>();
                 await initializePackageSystemService.Initialize();
-                return 0;
             }
 
             if (install)
@@ -295,9 +296,8 @@ namespace Simplic.Package.CLI
                 // TODO: Force install
                 await installService.Install(unpackedPackage);
                 Console.WriteLine($"Succesfully installed {unpackedPackage.Name}!");
-                return 0;
             }
-            return 1;
+            return 0;
         }
 
         private void WriteLogMessage(object o, LogMessageEventArgs e)

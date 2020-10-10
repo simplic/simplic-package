@@ -58,6 +58,8 @@
     <Compile Include="Exception\InvalidContentException.cs" />
     <Compile Include="IInitializePackageSystemService.cs" />
     <Compile Include="ILogService.cs" />
+    <Compile Include="IMigrationRepository.cs" />
+    <Compile Include="IMigrationService.cs" />
     <Compile Include="IValidatePackageConfigurationService.cs" />
     <Compile Include="Model\InitializePackageSystemResult.cs" />
     <Compile Include="IInitializePackageSystemRepository.cs" />

@@ -13,11 +13,6 @@ namespace Simplic.Package.Sequence
             this.repository = repository;
         }
 
-        public Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             return await repository.InstallObject(installableObject);

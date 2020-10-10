@@ -8,13 +8,6 @@ namespace Simplic.Package
     public interface IObjectRepository
     {
         /// <summary>
-        /// Checks if given object is was already migrated to the database
-        /// </summary>
-        /// <param name="installableObject">The object to check</param>
-        /// <returns>A CheckMigrationResult object</returns>
-        Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject);
-
-        /// <summary>
         /// Inserts a given object into the database
         /// </summary>
         /// <param name="installableObject">The object to insert</param>

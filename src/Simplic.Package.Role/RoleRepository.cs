@@ -7,18 +7,6 @@ namespace Simplic.Package.Role
 {
     public class RoleRepository : IObjectRepository
     {
-        private readonly ISqlService sqlService;
-
-        public RoleRepository(ISqlService sqlService)
-        {
-            this.sqlService = sqlService;
-        }
-
-        public Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is DeserializedRole role)

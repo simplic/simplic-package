@@ -14,11 +14,6 @@ namespace Simplic.Package.Stack
             this.sqlService = sqlService;
         }
 
-        public Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is DeserializedStack stack)

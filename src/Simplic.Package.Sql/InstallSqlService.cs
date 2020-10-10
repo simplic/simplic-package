@@ -13,11 +13,6 @@ namespace Simplic.Package.Sql
             this.repository = repository;
         }
 
-        public async Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject)
-        {
-            return await repository.CheckMigration(installableObject);
-        }
-
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             return await repository.InstallObject(installableObject);
