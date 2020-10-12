@@ -42,7 +42,7 @@ namespace Simplic.Package.Data.DB
         {
             var version = await sqlService.OpenConnection(async (c) =>
             {
-                var row = await c.QueryFirstOrDefaultAsync("Select major, minor, build, revision from Package where guid = :packageName", new { packageName });
+                var row = await c.QueryFirstOrDefaultAsync("Select major, minor, build, revision from Package where packageName = :packageName", new { packageName });
 
                 if (row != null)
                     return new Version(row.major, row.minor, row.build, row.revision);

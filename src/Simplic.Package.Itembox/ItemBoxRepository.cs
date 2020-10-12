@@ -2,16 +2,19 @@
 using Simplic.Sql;
 using System;
 using System.Threading.Tasks;
+using Telerik.Windows.Data;
 
 namespace Simplic.Package.ItemBox
 {
     public class ItemBoxRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
+        private readonly ILogService logService;
 
-        public ItemBoxRepository(ISqlService sqlService)
+        public ItemBoxRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
+            this.logService = logService;
         }
 
         // TODO: Output if this fails?
@@ -26,27 +29,28 @@ namespace Simplic.Package.ItemBox
 
                 try
                 {
-                    var exists = await sqlService.OpenConnection(async (c) =>
-                    {
-                        var query = await c.QueryFirstOrDefaultAsync("Select * from ESS_MS_Controls_ItemBox where name = :name and title = :title and description = :description",
-                                                                        new { itemBox.Name, itemBox.Title, itemBox.Description });
-                        return query != null;
-                    });
-
-                    if (!exists)
-                    {
-                        var totalAffectedRows = await sqlService.OpenConnection(async (c) =>
-                        {
-                            return await c.ExecuteAsync("Insert into ESS_MS_Controls_ItemBox (name, title, description) values " +
-                                                        "(:name, :title, :description); ", new { itemBox.Name, itemBox.Title, itemBox.Description });
-                        });
-                    }
-
                     // Get the ident
                     var ident = await sqlService.OpenConnection(async (c) =>
                     {
-                        return await c.QueryFirstAsync<int>("Select ident from ESS_MS_Controls_ItemBox where name = :name and title = :title and description = :description order by ident desc",
+                        var _ident = await c.QueryFirstOrDefaultAsync<int?>("Select ident from ESS_MS_Controls_ItemBox where name = :name",
                                                             new { itemBox.Name, itemBox.Title, itemBox.Description });
+
+                        if (_ident != null)
+                            await logService.WriteAsync($" ItemBox already exists, update: {itemBox.Name}", LogLevel.Debug);
+                        else
+                        {
+                            await logService.WriteAsync($" ItemBox not found, create new ItemBox: {itemBox.Name}", LogLevel.Debug);
+
+                            _ident = await c.QueryFirstAsync<int>("SELECT GET_IDENTITY('ESS_MS_Controls_ItemBox')");
+                        }
+
+                        return _ident;
+                    });
+
+                    var totalAffectedRows = await sqlService.OpenConnection(async (c) =>
+                    {
+                        return await c.ExecuteAsync("Insert into ESS_MS_Controls_ItemBox (ident, name, title, description) on existing update values " +
+                                                    "(:ident, :name, :title, :description); ", new { ident, itemBox.Name, itemBox.Title, itemBox.Description });
                     });
 
                     foreach (var profile in itemBox.Profiles)
@@ -102,9 +106,10 @@ namespace Simplic.Package.ItemBox
 
         private string GetStatement(string type, string name)
         {
-            if (type == "grid")
+            if (type == "grid" && !name.Contains("grid("))
                 return $"grid({name})";
-            return "";
+
+            return name;
         }
 
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)

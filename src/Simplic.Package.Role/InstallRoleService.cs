@@ -18,8 +18,6 @@ namespace Simplic.Package.Role
 
                 try
                 {
-                    // TODO:  Der Typeninitialisierer für "Simplic.Framework.Core.RoleManager" hat eine Ausnahme verursacht. ---> System.InvalidOperationException:  ServiceLocationProvider must be set.
-
                     RoleManager.Singleton.CreateRole(new Simplic.Framework.EF.Role
                     {
                         RoleId = role.Id,

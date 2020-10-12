@@ -25,6 +25,7 @@ namespace Simplic.Package.FormatList
 
                 try
                 {
+                    // TODO: Internal name  + entry value is unique
                     var updatedRows = 0;
                     foreach (var entry in formatList.Items)
                     {
@@ -46,6 +47,7 @@ namespace Simplic.Package.FormatList
                 }
                 return result;
             }
+
             throw new InvalidContentException();
         }
 
@@ -62,6 +64,7 @@ namespace Simplic.Package.FormatList
                 {
                     var deletedRows = await sqlService.OpenConnection(async (x) =>
                     {
+                        // TODO: Just delete by internal name
                         return await x.ExecuteAsync("Delete from ESS_MS_Controls_FormatList");
                     });
 
@@ -77,6 +80,7 @@ namespace Simplic.Package.FormatList
 
                 return result;
             }
+
             throw new InvalidContentException();
         }
     }

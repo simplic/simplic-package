@@ -54,7 +54,7 @@ namespace Simplic.Package.EplReport
                     }
                     else if (eplReport.Configuration is GridConfiguration gridConfiguration)
                     {
-                        throw new NotImplementedException();
+                        // Grid has no additional properties
                     }
 
                     result.Success = await sqlService.OpenConnection(async (c) =>

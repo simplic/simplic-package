@@ -1,5 +1,6 @@
 ﻿using Simplic.Framework.Repository;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Unity;
 
@@ -19,8 +20,8 @@ namespace Simplic.Package.Repository
 
                 try
                 {
-                    repositoryManager.WriteAllBytes(installableObject.Target, repositoryContent.Data); // TODO: System.IO.FileNotFoundException: Could not find file in repository.
-                    // bei Simplic.Framework.Repository.RepositoryManager.ReadAllBytes(String path)
+                    repositoryManager.WriteAllBytes(installableObject.Target, repositoryContent.Data);
+                    
                     installObjectResult.Success = true;
                     installObjectResult.Message = $"Installed repository content at {installableObject.Target}.";
                 }

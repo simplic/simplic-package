@@ -30,11 +30,11 @@ namespace Simplic.Package.Service
 
             if (result.MissingDependencies.Any())
             {
-                result.LogLevel = LogLevel.Warning;
+                result.LogLevel = LogLevel.Error;
 
                 result.Message = "Missing one or more dependencies. Missing: ";
                 foreach (var dependency in result.MissingDependencies)
-                    result.Message += $"{dependency.PackageName}, Version {dependency.Version}; ";
+                    result.Message += $"{dependency.Package}, Version {dependency.Version}; ";
             }
             else
             {
@@ -52,7 +52,7 @@ namespace Simplic.Package.Service
         /// <returns>Whether the dependencies is satisfied</returns>
         public async Task<bool> Check(Dependency dependency)
         {
-            var version = await repository.GetPackageVersion(dependency.PackageName);
+            var version = await repository.GetPackageVersion(dependency.Package);
 
             if ((version == dependency.Version) || (version > dependency.Version && dependency.GreaterAllowed))
                 return true;

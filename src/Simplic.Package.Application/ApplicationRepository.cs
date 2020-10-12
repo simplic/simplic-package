@@ -127,9 +127,12 @@ namespace Simplic.Package.Application
                         {
                             var success = await sqlService.OpenConnection(async (c) =>
                             {
-                                var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page_DataGrid  (pageguid, gridname, loadonopen, dataconnectionstring, searchname) " +
-                                                                        "on existing update values (:id, :grid, :loadonopen, :connection, :searchname)",
-                                                                        new { application.Id, gridConfig.Grid, gridConfig.LoadOnOpen, gridConfig.Connection, gridConfig.SearchName});
+                                var affectedRows = await c.ExecuteAsync("DELETE FROM ESS_MS_Intern_Page_DataGrid WHERE PageGuid = :id",
+                                                                        new { application.Id });
+
+                                affectedRows += await c.ExecuteAsync(" Insert into ESS_MS_Intern_Page_DataGrid (pageguid, gridname, loadonopen, dataconnectionstring, searchname) " +
+                                                                        " on existing update values (:id, :grid, :loadonopen, :connection, :searchname)",
+                                                                        new { id = application.Id, gridConfig.Grid, gridConfig.LoadOnOpen, gridConfig.Connection, gridConfig.SearchName });
                                 return affectedRows > 0;
                             });
                             return success;
