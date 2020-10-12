@@ -8,6 +8,7 @@ namespace Simplic.Package.Icon
     public class InstallIconService : IInstallObjectService
     {
         private readonly IIconService iconService;
+
         public InstallIconService(IIconService iconService)
         {
             this.iconService = iconService;
@@ -15,7 +16,7 @@ namespace Simplic.Package.Icon
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedIcon icon)
+            if (installableObject.Content is IconContent icon)
             {
                 var result = new InstallObjectResult
                 {
@@ -26,12 +27,19 @@ namespace Simplic.Package.Icon
                 {
                     var simplicIcon = new Simplic.Icon.Icon
                     {
-                        Guid = icon.Id,
                         IconBlob = icon.Blob,
-                        Name = icon.Name,
+                        Name = icon.Name
                     };
 
+                    var guid = GetGuidByName(icon.Name);
+
+                    if (guid != Guid.Empty)
+                        simplicIcon.Guid = guid;
+                    else
+                        simplicIcon.Guid = Guid.NewGuid();
+
                     result.Success = iconService.Save(simplicIcon);
+
                     if (result.Success)
                         result.Message = $"Installed icon at {installableObject.Target}.";
                     else
@@ -50,6 +58,16 @@ namespace Simplic.Package.Icon
                 return result;
             }
             throw new InvalidContentException();
+        }
+
+        public Guid GetGuidByName(string Name)
+        {
+            foreach (var icon in iconService.GetAll())
+            {
+                if (icon.Name == Name)
+                    return icon.Guid;
+            }
+            return Guid.Empty;
         }
 
         public Task OverwriteObject(InstallableObject installableObject)

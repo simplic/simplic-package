@@ -6,8 +6,18 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
+    /// <summary>
+    /// Base UnpackObjectService implementation
+    /// Unpacks a Json Object by deserializing it into a given Type
+    /// </summary>
+    /// <typeparam name="T">The type</typeparam>
     public abstract class UnpackObjectServiceBase<T> : IUnpackObjectService where T : class, IContent
     {
+        /// <summary>
+        /// Unpacks a Json Object by deserializing
+        /// </summary>
+        /// <param name="extractArchiveEntryResult">The archive entry that holds the json file</param>
+        /// <returns></returns>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var result = new UnpackObjectResult

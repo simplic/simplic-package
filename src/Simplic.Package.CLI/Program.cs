@@ -43,6 +43,9 @@ using Simplic.Framework.Reporting;
 using Simplic.Package.Icon;
 using Simplic.Tracking;
 using Simplic.TenantSystem;
+using Simplic.Authorization;
+using Simplic.Icon;
+using Simplic.Icon.Service;
 
 namespace Simplic.Package.CLI
 {
@@ -146,7 +149,6 @@ namespace Simplic.Package.CLI
             container.RegisterType<IUnpackObjectService, UnpackFormatListService>("formatList");
 
             container.RegisterType<IInstallObjectService, InstallGridService>("grid");
-            // container.RegisterType<IObjectRepository, SqlRepository>("grid");
             container.RegisterType<IPackObjectService, PackGridService>("grid");
             container.RegisterType<IUnpackObjectService, UnpackGridService>("grid");
 
@@ -207,12 +209,26 @@ namespace Simplic.Package.CLI
 
             container.RegisterType<ISqlService, SqlService>();
             container.RegisterType<ISqlColumnService, SqlColumnService>();
-            Framework.DAL.DALManager.Init(connectionString);
-            Framework.DAL.ConnectionManager.Init(Thread.CurrentThread);
 
             container.RegisterType<ILocalizationService, LocalizationService>();
-            container.RegisterType<ITrackingService, TrackingService>(); // TODO: Implement for Roleservice
-            container.RegisterType<IOrganizationService, OrganizationService>(); // TODO: Implement for SequenceService
+
+            // For InstallRoleService
+            container.RegisterType<IAuthorizationService, Simplic.Authorization.Service.AuthorizationService>();
+            container.RegisterType<ITrackingRepository, Simplic.Tracking.Data.DB.TrackingRepository>();
+            container.RegisterType<ITrackingService, Simplic.Tracking.Service.TrackingService>();
+
+            // For InstallSequenceService
+            container.RegisterType<IOrganizationRepository, Simplic.TenantSystem.Data.DB.OrganizationRepository>();
+            container.RegisterType<Simplic.Configuration.IConfigurationRepository, Simplic.Configuration.Data.ConfigurationRepository>();
+            container.RegisterType<Simplic.Configuration.IConfigurationService, Simplic.Configuration.Service.ConfigurationService>();
+            container.RegisterType<Simplic.Session.ISessionService, Simplic.Session.Service.SessionService>();
+            container.RegisterType<Simplic.Cache.ICacheService, Simplic.Cache.Service.CacheService>();
+            container.RegisterType<IOrganizationService, Simplic.TenantSystem.Service.OrganizationService>(); // TODO: Implement for SequenceService
+
+            container.RegisterType<IIconService, IconService>();
+
+            Framework.DAL.DALManager.Init(connectionString);
+            Framework.DAL.ConnectionManager.Init(Thread.CurrentThread);
 
             var serviceLocator = new UnityServiceLocator(container);
             CommonServiceLocator.ServiceLocator.SetLocatorProvider(() => serviceLocator);

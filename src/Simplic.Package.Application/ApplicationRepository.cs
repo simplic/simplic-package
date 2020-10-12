@@ -74,16 +74,16 @@ namespace Simplic.Package.Application
                 case "clr":
                     pageName = "Clr-Methode aufrufen";
                     break;
-                case "python":
+                case "python":  // Skript Application
                     pageName = "Skriptübersicht";
                     break;
-                case "grid":
-                    pageName = "Einfache Auswahlliste";
+                case "grid": // ?
+                    pageName = "Einfache Auswahlliste"; 
                     break;
-                case "grid-structure":
+                case "grid-structure": // ?
                     throw new NotImplementedException();
-                case "browser":
-                    pageName = "Browser";
+                case "browser": // ?
+                    pageName = "Browser"; 
                     break;
                 default:
                     throw new Exception($"Invalid type {type} entered when trying to get ContentType from ESS_MS_Intern_Page_Content.");

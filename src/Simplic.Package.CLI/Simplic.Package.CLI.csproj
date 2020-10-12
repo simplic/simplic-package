@@ -179,8 +179,23 @@
     <PackageReference Include="Simplic.Authorization">
       <Version>6.3.20.322</Version>
     </PackageReference>
+    <PackageReference Include="Simplic.Authorization.Service">
+      <Version>6.3.20.322</Version>
+    </PackageReference>
     <PackageReference Include="Simplic.Base">
       <Version>7.2.220.329</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Cache.Service">
+      <Version>6.0.18.619</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Configuration">
+      <Version>7.0.20.1006</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Configuration.Data.DB">
+      <Version>7.0.120.1006</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Configuration.Service">
+      <Version>7.0.20.1006</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Data">
       <Version>1.6.120.322</Version>
@@ -206,6 +221,9 @@
     <PackageReference Include="Simplic.Log">
       <Version>7.2.220.329</Version>
     </PackageReference>
+    <PackageReference Include="Simplic.Session.Service">
+      <Version>6.4.20.322</Version>
+    </PackageReference>
     <PackageReference Include="Simplic.Sql">
       <Version>6.3.20.322</Version>
     </PackageReference>
@@ -221,7 +239,16 @@
     <PackageReference Include="Simplic.TenantSystem">
       <Version>2.0.320.41</Version>
     </PackageReference>
+    <PackageReference Include="Simplic.TenantSystem.Data.DB">
+      <Version>2.0.20.331</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.TenantSystem.Service">
+      <Version>2.0.20.331</Version>
+    </PackageReference>
     <PackageReference Include="Simplic.Tracking">
+      <Version>6.1.20.322</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Tracking.Data.DB">
       <Version>6.1.20.322</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Tracking.Service">

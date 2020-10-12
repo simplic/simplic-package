@@ -2,6 +2,9 @@
 
 namespace Simplic.Package
 {
+    /// <summary>
+    /// Base PackObjectService implementation
+    /// </summary>
     public abstract class PackObjectServiceBase : IPackObjectService
     {
         protected readonly IFileService fileService;
@@ -10,6 +13,11 @@ namespace Simplic.Package
             this.fileService = fileService;
         }
 
+        /// <summary>
+        /// Packs a 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public virtual async Task<PackObjectResult> ReadAsync(ObjectListItem item)
         {
             return new PackObjectResult

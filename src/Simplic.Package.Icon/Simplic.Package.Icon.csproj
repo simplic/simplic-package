@@ -41,8 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IconRepository.cs" />
     <Compile Include="InstallIconService.cs" />
-    <Compile Include="Model\DeserializedIcon.cs" />
+    <Compile Include="Model\IconContent.cs" />
     <Compile Include="PackIconService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnpackIconService.cs" />
@@ -59,6 +60,9 @@
     </PackageReference>
     <PackageReference Include="Simplic.Icon.Service">
       <Version>1.0.100.1</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Sql">
+      <Version>6.3.20.322</Version>
     </PackageReference>
     <PackageReference Include="Unity.Abstractions">
       <Version>5.11.6</Version>
