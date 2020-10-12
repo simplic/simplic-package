@@ -16,7 +16,7 @@ namespace Simplic.Package.Application
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedApplication application)
+            if (installableObject.Content is Application application)
             {
                 var result = new InstallObjectResult
                 {
@@ -96,7 +96,7 @@ namespace Simplic.Package.Application
             });
         }
 
-        private async Task<bool> SaveConfiguration(DeserializedApplication application, string type)
+        private async Task<bool> SaveConfiguration(Application application, string type)
         {
             var configuration = application.Configuration;
             switch (type)

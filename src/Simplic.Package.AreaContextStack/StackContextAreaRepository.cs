@@ -26,7 +26,6 @@ namespace Simplic.Package.StackContextArea
 
                 try
                 {
-                    Debugger.Launch();
                     var statement = $"Insert into IDContext (guid, displayname, stackguid, searchname) on existing update values (:Id, :DisplayName, :StackId, :SearchName)";
                     var param = new StatementParam
                     {
@@ -51,7 +50,20 @@ namespace Simplic.Package.StackContextArea
                         return affectedRows > 0;
                     });
 
-                    // TODO: What to put in IDContext_Assignment
+                    foreach (var item in stackContextArea.ContextOfStacks)
+                    {
+                        var exists = await IdContextAssignmentExists(item.StackId, stackContextArea.Id);
+                        Console.WriteLine(exists);
+                        Console.WriteLine(item);
+                        if (!exists)
+                        {
+                            await sqlService.OpenConnection(async (c) =>
+                            {
+                                await c.ExecuteAsync("Insert into IDContext_Assignment (guid, stackguid, idcontextguid) values (:newguid, :stackid, :id)",
+                                                            new { newGuid = Guid.NewGuid(), item.StackId, stackContextArea.Id });
+                            });
+                        }
+                    }
 
                     if (result.Success)
                         result.Message = $"Installed StackContextArea at {installableObject.Target}.";
@@ -70,6 +82,17 @@ namespace Simplic.Package.StackContextArea
                 return result;
             }
             throw new InvalidContentException();
+        }
+
+        private async Task<bool> IdContextAssignmentExists(Guid stackGuid, Guid IdContextGuid)
+        {
+            return await sqlService.OpenConnection(async (c) =>
+            {
+                var first = await c.QueryFirstOrDefaultAsync("Select * from IDCOntext_Assignment where stackguid = :stackguid and idcontextguid = :idcontextguid"
+                                                            , new { stackGuid, IdContextGuid});
+
+                return first != null;
+            });
         }
 
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)

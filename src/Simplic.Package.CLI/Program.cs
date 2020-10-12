@@ -227,6 +227,10 @@ namespace Simplic.Package.CLI
 
             container.RegisterType<IIconService, IconService>();
 
+            // For InstallReportService
+            Simplic.Base.GlobalSettings.UserName = "Package System";
+
+
             Framework.DAL.DALManager.Init(connectionString);
             Framework.DAL.ConnectionManager.Init(Thread.CurrentThread);
 

@@ -19,7 +19,7 @@ namespace Simplic.Package.Grid
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedGrid grid)
+            if (installableObject.Content is Grid grid)
             {
                 var result = new InstallObjectResult
                 {
@@ -28,7 +28,7 @@ namespace Simplic.Package.Grid
 
                 var mapConfig = new MapperConfiguration(cfg =>
                 {
-                    cfg.CreateMap<DeserializedGrid, GridContainerModel>(MemberList.None)
+                    cfg.CreateMap<Grid, GridContainerModel>(MemberList.None)
                         .ForMember(dest => dest.ReloadGridButtonVisibility, opt => opt.MapFrom(x => x.ReloadGridButtonVisibility));
                     cfg.CreateMap<GridMenuConfiguration, GridMenuConfigurationModel>(MemberList.None);
                     cfg.CreateMap<GridCellSqlHighlight, GridCellSqlHighlightModel>(MemberList.None);

@@ -25,7 +25,7 @@ namespace Simplic.Package.StackAutoconnector
                 jObject.Remove("configuration");
 
                 // Seperately deserialize settings and rest of json
-                var deserializedAutoStackonnector = jObject.ToObject<DeserializedStackAutoconnector>();
+                var deserializedAutoStackonnector = jObject.ToObject<StackAutoconnector>();
                 deserializedAutoStackonnector.Configuration = DeserializedConfiguration(deserializedAutoStackonnector.Type, settingsJson);
 
                 result.InstallableObject = new InstallableObject

@@ -1,6 +1,6 @@
 ﻿namespace Simplic.Package.ComboBox
 {
-    public class DeserializedComboBox : IContent
+    public class ComboBox : IContent
     {
         public string Name { get; set; }
         public string SqlStatement { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Simplic.Package.ItemBox
 {
-    public class DeserializedItemBox : IContent
+    public class ItemBox : IContent
     {
         public string Name { get; set; }
         public string Title { get; set; }

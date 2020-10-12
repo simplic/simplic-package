@@ -1,6 +1,6 @@
 ﻿namespace Simplic.Package.EplReportDesign
 {
-    public class UnpackEplReportDesignService : UnpackObjectServiceBase<DeserializedEplReportDesign>
+    public class UnpackEplReportDesignService : UnpackObjectServiceBase<EplReportDesign>
     {
     }
 }

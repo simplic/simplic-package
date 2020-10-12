@@ -16,7 +16,7 @@ namespace Simplic.Package.FormatList
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedFormatList formatList)
+            if (installableObject.Content is FormatList formatList)
             {
                 var result = new InstallObjectResult
                 {
@@ -51,7 +51,7 @@ namespace Simplic.Package.FormatList
 
         public async Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedFormatList formatList)
+            if (installableObject.Content is FormatList formatList)
             {
                 var result = new UninstallObjectResult
                 {

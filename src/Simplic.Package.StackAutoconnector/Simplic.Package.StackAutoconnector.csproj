@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InstallStackAutoconnectorService.cs" />
-    <Compile Include="Model\DeserializedStackAutoconnector.cs" />
+    <Compile Include="Model\StackAutoconnector.cs" />
     <Compile Include="Model\XmlConfiguration.cs" />
     <Compile Include="PackStackAutoconnectorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

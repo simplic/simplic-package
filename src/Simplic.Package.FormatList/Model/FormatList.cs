@@ -2,7 +2,7 @@
 
 namespace Simplic.Package.FormatList
 {
-    public class DeserializedFormatList : IContent
+    public class FormatList : IContent
     {
         public string InternalName { get; set; }
         public string Description { get; set; }

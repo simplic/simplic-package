@@ -2,7 +2,7 @@
 {
     public class FullReport : IContent
     {
-        public DeserializedReport Report { get; set; }
+        public Report Report { get; set; }
         public byte[] ReportData { get; set; }
     }
 }

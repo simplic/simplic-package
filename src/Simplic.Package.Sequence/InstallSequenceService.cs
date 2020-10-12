@@ -9,7 +9,7 @@ namespace Simplic.Package.Sequence
     {
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedSequence deserializedSequence)
+            if (installableObject.Content is Sequence deserializedSequence)
             {
                 var result = new InstallObjectResult
                 {

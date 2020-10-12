@@ -16,7 +16,7 @@ namespace Simplic.Package.EplReportDesign
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedEplReportDesign eplReportDesign)
+            if (installableObject.Content is EplReportDesign eplReportDesign)
             {
                 var result = new InstallObjectResult
                 {

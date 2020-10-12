@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InstallStackService.cs" />
-    <Compile Include="Model\DeserializedStack.cs" />
+    <Compile Include="Model\Stack.cs" />
     <Compile Include="Model\FullText.cs" />
     <Compile Include="PackStackService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

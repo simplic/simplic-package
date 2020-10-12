@@ -16,7 +16,7 @@ namespace Simplic.Package.Stack
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedStack stack)
+            if (installableObject.Content is Stack stack)
             {
                 var result = new InstallObjectResult
                 {

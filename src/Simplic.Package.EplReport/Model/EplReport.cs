@@ -3,7 +3,7 @@ using System;
 
 namespace Simplic.Package.EplReport
 {
-    public class DeserializedEplReport : IContent
+    public class EplReport : IContent
     {
         [JsonProperty(Required = Required.Always)]
         public Guid Id { get; set; }

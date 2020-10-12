@@ -3,7 +3,7 @@ using System;
 
 namespace Simplic.Package.Role
 {
-    public class DeserializedRole : IContent
+    public class Role : IContent
     {
         [JsonProperty(Required = Required.Always)]
         public Guid Id { get; set; }

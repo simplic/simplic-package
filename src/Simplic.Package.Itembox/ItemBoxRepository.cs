@@ -17,7 +17,7 @@ namespace Simplic.Package.ItemBox
         // TODO: Output if this fails?
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedItemBox itemBox)
+            if (installableObject.Content is ItemBox itemBox)
             {
                 var result = new InstallObjectResult
                 {

@@ -4,7 +4,7 @@ using System.Net.Mime;
 
 namespace Simplic.Package.Application
 {
-    public class DeserializedApplication : IContent
+    public class Application : IContent
     {
         [JsonProperty(Required = Required.Always)]
         public Guid Id { get; set; }

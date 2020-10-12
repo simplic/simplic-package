@@ -1,5 +1,6 @@
 ﻿using Simplic.Icon;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity;
 
@@ -32,7 +33,6 @@ namespace Simplic.Package.Icon
                     };
 
                     var guid = GetGuidByName(icon.Name);
-
                     if (guid != Guid.Empty)
                         simplicIcon.Guid = guid;
                     else
@@ -60,14 +60,14 @@ namespace Simplic.Package.Icon
             throw new InvalidContentException();
         }
 
-        public Guid GetGuidByName(string Name)
+        public Guid GetGuidByName(string name)
         {
-            foreach (var icon in iconService.GetAll())
-            {
-                if (icon.Name == Name)
-                    return icon.Guid;
-            }
-            return Guid.Empty;
+            var icon = iconService.GetAll().FirstOrDefault(x => x.Name == name);
+            
+            if (icon != null)
+                return icon.Guid;
+            else
+                return Guid.Empty;
         }
 
         public Task OverwriteObject(InstallableObject installableObject)

@@ -17,7 +17,7 @@ namespace Simplic.Package.StackAutoconnector
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedStackAutoconnector stackAutoconnector)
+            if (installableObject.Content is StackAutoconnector stackAutoconnector)
             {
                 var result = new InstallObjectResult
                 {

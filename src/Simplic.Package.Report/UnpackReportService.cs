@@ -28,7 +28,7 @@ namespace Simplic.Package.Report
                 var configuration = jObject["configuration"];
                 jObject.Remove("configuration");
 
-                var reportConfiguration = jObject.ToObject<DeserializedReport>();
+                var reportConfiguration = jObject.ToObject<Report>();
                 reportConfiguration.Configuration = DeserializeConfiguration(reportConfiguration.Type, configuration);
 
                 fullReport.Report = reportConfiguration;

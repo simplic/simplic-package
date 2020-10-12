@@ -2,7 +2,7 @@
 
 namespace Simplic.Package.StackAutoconnector
 {
-    public class DeserializedStackAutoconnector : IContent
+    public class StackAutoconnector : IContent
     {
         public string Name { get; set; }
         public string Type { get; set; }

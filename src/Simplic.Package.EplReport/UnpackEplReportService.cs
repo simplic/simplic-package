@@ -22,7 +22,7 @@ namespace Simplic.Package.EplReport
                 var configuration = jObject["configuration"];
                 jObject.Remove("configuration");
 
-                var content = jObject.ToObject<DeserializedEplReport>();
+                var content = jObject.ToObject<EplReport>();
                 content.Configuration = DeserializeConfiguration(content.Type, configuration);
 
                 result.InstallableObject = new InstallableObject

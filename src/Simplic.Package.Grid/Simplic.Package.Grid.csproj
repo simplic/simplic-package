@@ -54,7 +54,7 @@
   <ItemGroup>
     <Compile Include="InstallGridService.cs" />
     <Compile Include="Model\ColumnConfiguration.cs" />
-    <Compile Include="Model\DeserializedGrid.cs" />
+    <Compile Include="Model\Grid.cs" />
     <Compile Include="Model\DivergentColumnType.cs" />
     <Compile Include="Model\GridCellHighlight.cs" />
     <Compile Include="Model\GridColumnConfiguration.cs" />

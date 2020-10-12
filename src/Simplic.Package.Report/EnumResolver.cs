@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Simplic.Package.Report
 {
-    public class EnumResolver : IValueResolver<DeserializedReport, Simplic.Reporting.IReportConfiguration, ReportType>
+    public class EnumResolver : IValueResolver<Report, Simplic.Reporting.IReportConfiguration, ReportType>
     {
-        public ReportType Resolve(DeserializedReport source, Simplic.Reporting.IReportConfiguration destination, ReportType destMember, ResolutionContext context)
+        public ReportType Resolve(Report source, Simplic.Reporting.IReportConfiguration destination, ReportType destMember, ResolutionContext context)
         {
             var enumDict = new Dictionary<string, ReportType>
             {

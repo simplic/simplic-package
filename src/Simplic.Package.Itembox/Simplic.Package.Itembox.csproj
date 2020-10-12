@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="InstallItemBoxService.cs" />
     <Compile Include="ItemBoxRepository.cs" />
-    <Compile Include="Model\DeserializedItemBox.cs" />
+    <Compile Include="Model\ItemBox.cs" />
     <Compile Include="Model\ItemBoxProfile.cs" />
     <Compile Include="PackItemBoxService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

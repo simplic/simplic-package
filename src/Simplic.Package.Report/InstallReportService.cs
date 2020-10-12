@@ -8,7 +8,7 @@ namespace Simplic.Package.Report
 {
     public class InstallReportService : IInstallObjectService
     {
-        public static IMappingExpression<DeserializedReport, T> MapDefaults<T>(IMappingExpression<DeserializedReport, T> map) where T : class, IReportConfiguration
+        public static IMappingExpression<Report, T> MapDefaults<T>(IMappingExpression<Report, T> map) where T : class, IReportConfiguration
         {
             map.ForMember(dest => dest.ReportName, opt => opt.MapFrom(x => x.ReportFile));
             map.ForMember(dest => dest.Type, opt => opt.MapFrom<EnumResolver>());
@@ -35,7 +35,7 @@ namespace Simplic.Package.Report
                             .ForMember(dest => dest.Name, opt => opt.MapFrom(x => x.Name))
                             .ForMember(dest => dest.OrderId, opt => opt.MapFrom(x => x.OrderId));
 
-                        cfg.CreateMap<DeserializedReport, KeyValueConfigurationModel>(MemberList.Source)
+                        cfg.CreateMap<Report, KeyValueConfigurationModel>(MemberList.Source)
                             .ForMember(dest => dest.ConnectionString, opt => opt.MapFrom(x => x.Configuration.Connection))
                             .ForMember(dest => dest.PrinterName, opt => opt.MapFrom(x => x.Configuration.Provider))
                             .ForMember(dest => dest.IsListBased, opt => opt.MapFrom(x => ((KeyValueConfiguration)x.Configuration).IsListBased))
@@ -44,7 +44,7 @@ namespace Simplic.Package.Report
                             .ForMember(dest => dest.Type, opt => opt.MapFrom<EnumResolver>())
                             .ForSourceMember(x => x.Configuration, opt => opt.DoNotValidate());
 
-                        cfg.CreateMap<DeserializedReport, ParameterConfigurationModel>(MemberList.Source)
+                        cfg.CreateMap<Report, ParameterConfigurationModel>(MemberList.Source)
                             .ForMember(dest => dest.ConnectionString, opt => opt.MapFrom(x => x.Configuration.Connection))
                             .ForMember(dest => dest.ProviderName, opt => opt.MapFrom(x => x.Configuration.Provider))
                             .ForMember(dest => dest.ReportParameter, opt => opt.MapFrom(x => ((ParameterConfiguration)x.Configuration).Parameter))
@@ -58,15 +58,16 @@ namespace Simplic.Package.Report
 
                     IReportConfiguration mappedReportConfiguration = null;
                     if (report.Report.Configuration is KeyValueConfiguration)
-                        mappedReportConfiguration = mapper.Map<DeserializedReport, KeyValueConfigurationModel>(report.Report);
+                        mappedReportConfiguration = mapper.Map<Report, KeyValueConfigurationModel>(report.Report);
                     else if (report.Report.Configuration is ParameterConfiguration)
-                        mappedReportConfiguration = mapper.Map<DeserializedReport, ParameterConfigurationModel>(report.Report);
+                        mappedReportConfiguration = mapper.Map<Report, ParameterConfigurationModel>(report.Report);
                     else
                         throw new NotImplementedException();
 
                     ReportManager.Singleton.SaveConfiguration(mappedReportConfiguration);
-                    ReportManager.Singleton.SaveReportFile(report.Report.Name, report.ReportData); // TODO: Simplic.Package.InvalidObjectException: Failed to install Report at report/report_sample1.json. ---> System.Data.Entity.Infrastructure.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.Entity.Core.UpdateException: An error occurred while updating the entries. See the inner exception for details. ---> iAnywhere.Data.SQLAnywhere.SAException: Spalte 'UserName' in Tabelle 'Repository_FileHistory' kann nicht NULL sein
+                    ReportManager.Singleton.SaveReportFile(report.Report.Name, report.ReportData);
 
+                    result.Success = true;
                     result.Message = $"Installed Report at {installableObject.Target}.";
                 }
                 catch (Exception ex)

@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace Simplic.Package.Grid
 {
-    public class DeserializedGrid : IContent
+    public class Grid : IContent
     {
         [JsonProperty(Required = Required.Always)]
         public Guid Id { get; set; }

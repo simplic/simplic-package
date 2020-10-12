@@ -25,7 +25,7 @@ namespace Simplic.Package.Application
                 jObject.Remove("configuration");
 
                 // Seperately deserialize settings and rest of json
-                var deserializedApplication = jObject.ToObject<DeserializedApplication>();
+                var deserializedApplication = jObject.ToObject<Application>();
                 deserializedApplication.Configuration = DeseralizeSettings(deserializedApplication.Type, settingsJson);
 
                 result.InstallableObject = new InstallableObject

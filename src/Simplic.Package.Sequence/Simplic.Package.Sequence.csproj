@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\CounterItem.cs" />
-    <Compile Include="Model\DeserializedSequence.cs" />
+    <Compile Include="Model\Sequence.cs" />
     <Compile Include="InstallSequenceService.cs" />
     <Compile Include="PackSequenceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

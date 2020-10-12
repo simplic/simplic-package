@@ -16,7 +16,7 @@ namespace Simplic.Package.ComboBox
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedComboBox comboBox)
+            if (installableObject.Content is ComboBox comboBox)
             {
                 var result = new InstallObjectResult
                 {
@@ -63,7 +63,7 @@ namespace Simplic.Package.ComboBox
 
         public async Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedComboBox comboBox)
+            if (installableObject.Content is ComboBox comboBox)
             {
                 var result = new UninstallObjectResult
                 {

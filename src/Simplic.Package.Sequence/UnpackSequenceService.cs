@@ -1,6 +1,6 @@
 ﻿namespace Simplic.Package.Sequence
 {
-    public class UnpackSequenceService : UnpackObjectServiceBase<DeserializedSequence>, IUnpackObjectService
+    public class UnpackSequenceService : UnpackObjectServiceBase<Sequence>, IUnpackObjectService
     {
     }
 }

@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="FormatListRepository.cs" />
     <Compile Include="InstallFormatListService.cs" />
-    <Compile Include="Model\DeserializedFormatList.cs" />
+    <Compile Include="Model\FormatList.cs" />
     <Compile Include="Model\FormatListItem.cs" />
     <Compile Include="PackFormatListService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

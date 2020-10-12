@@ -19,7 +19,7 @@ namespace Simplic.Package.EplReport
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedEplReport eplReport)
+            if (installableObject.Content is EplReport eplReport)
             {
                 var result = new InstallObjectResult
                 {

@@ -1,6 +1,6 @@
 ﻿namespace Simplic.Package.ItemBox
 {
-    public class UnpackItemBoxService : UnpackObjectServiceBase<DeserializedItemBox>, IUnpackObjectService
+    public class UnpackItemBoxService : UnpackObjectServiceBase<ItemBox>, IUnpackObjectService
     {
     }
 }

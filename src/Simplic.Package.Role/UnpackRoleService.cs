@@ -1,6 +1,6 @@
 ﻿namespace Simplic.Package.Role
 {
-    public class UnpackRoleService : UnpackObjectServiceBase<DeserializedRole>, IUnpackObjectService
+    public class UnpackRoleService : UnpackObjectServiceBase<Role>, IUnpackObjectService
     {
     }
 }

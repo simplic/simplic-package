@@ -3,7 +3,7 @@ using System;
 
 namespace Simplic.Package.Stack
 {
-    public class DeserializedStack : IContent
+    public class Stack : IContent
     {
         [JsonProperty(Required = Required.Always)]
         public Guid Id { get; set; }

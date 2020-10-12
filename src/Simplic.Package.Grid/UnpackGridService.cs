@@ -1,6 +1,6 @@
 ﻿namespace Simplic.Package.Grid
 {
-    public class UnpackGridService : UnpackObjectServiceBase<DeserializedGrid>, IUnpackObjectService
+    public class UnpackGridService : UnpackObjectServiceBase<Grid>, IUnpackObjectService
     {
     }
 }

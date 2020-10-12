@@ -9,7 +9,7 @@ namespace Simplic.Package.Role
     {
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is DeserializedRole role)
+            if (installableObject.Content is Role role)
             {
                 var result = new InstallObjectResult
                 {
