@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Simplic.Sql;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Application
@@ -25,7 +26,8 @@ namespace Simplic.Package.Application
 
                 try
                 {
-                    var contentTypeGuid = await GetContentTypeId(application.Type);
+                    Debugger.Launch();
+                    var contentTypeGuid = GetContentTypeId(application.Type);
                     var success = await sqlService.OpenConnection(async (c) =>
                     {
                         var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page (guid, iconguid, contenttype, menutext, directjump, ribbongroupguid)" +
@@ -65,35 +67,23 @@ namespace Simplic.Package.Application
             throw new InvalidContentException();
         }
 
-        private async Task<Guid> GetContentTypeId(string type)
+        private Guid GetContentTypeId(string type)
         {
-            // TODO: Which names
-            var pageName = "";
             switch (type)
             {
-                case "clr":
-                    pageName = "Clr-Methode aufrufen";
-                    break;
-                case "python":  // Skript Application
-                    pageName = "Skriptübersicht";
-                    break;
-                case "grid": // ?
-                    pageName = "Einfache Auswahlliste"; 
-                    break;
-                case "grid-structure": // ?
-                    throw new NotImplementedException();
-                case "browser": // ?
-                    pageName = "Browser"; 
-                    break;
+                case "clr": // Clr-Methode aufrufen
+                    return Guid.Parse("7A1959FD-2F78-491E-BE38-1959DA826F8E");
+                case "python": // Skript Application
+                    return Guid.Parse("DE8D2FD3-7892-4D59-9936-EF8F2D7311E5");
+                case "grid": // Einfache Auswahlliste
+                    return Guid.Parse("6D29A4F2-C10C-4965-8527-19484FF50F63");
+                case "grid-structure": // DocCenter - Struktur
+                    return Guid.Parse("0CFBB9C9-FBD5-44C4-AA29-4970B827F3D6");
+                case "browser": // Browser
+                    return Guid.Parse("92E3E5AE-A925-400E-83F3-E3D75615FCCF");
                 default:
                     throw new Exception($"Invalid type {type} entered when trying to get ContentType from ESS_MS_Intern_Page_Content.");
             }
-
-            return await sqlService.OpenConnection(async (c) =>
-            {
-                // TODO: How do these get into the database in the first place
-                return await c.QueryFirstAsync<Guid>("Select * from ESS_MS_Intern_Page_Content where pagename = :pageName", new { pageName });
-            });
         }
 
         private async Task<bool> SaveConfiguration(Application application, string type)
@@ -137,9 +127,9 @@ namespace Simplic.Package.Application
                         {
                             var success = await sqlService.OpenConnection(async (c) =>
                             {
-                                var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page_DataGrid  (pageguid, gridname, loadonopen, dataconnectionstring) " +
-                                                                        "on existing update values (:id, :grid, :loadonopen, :connection)",
-                                                                        new { application.Id, gridConfig.Grid, gridConfig.LoadOnOpen, gridConfig.Connection, });
+                                var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page_DataGrid  (pageguid, gridname, loadonopen, dataconnectionstring, searchname) " +
+                                                                        "on existing update values (:id, :grid, :loadonopen, :connection, :searchname)",
+                                                                        new { application.Id, gridConfig.Grid, gridConfig.LoadOnOpen, gridConfig.Connection, gridConfig.SearchName});
                                 return affectedRows > 0;
                             });
                             return success;
@@ -152,7 +142,7 @@ namespace Simplic.Package.Application
                         {
                             var success = await sqlService.OpenConnection(async (c) =>
                             {
-                                var affectedRows = await c.ExecuteAsync("Insert into Browser_Configuration (guid, tab, url) on existing update values (:id, :tag, :url) ",
+                                var affectedRows = await c.ExecuteAsync("Insert into Browser_Configuration (pageguid, tabname, starturl) on existing update values (:id, :tab, :url) ",
                                                                         new { application.Id, browserConfig.Tab, browserConfig.Url });
                                 return affectedRows > 0;
                             });
@@ -169,8 +159,8 @@ namespace Simplic.Package.Application
                             {
                                 stackAdded += await sqlService.OpenConnection(async (c) =>
                                 {
-                                    return await c.ExecuteAsync("Insert into ESS_DCC_Structure_Stack (guid, parentguid, stackguid, showstacknode, difgridname, difdisplayname, ordernr)" +
-                                                                           " on existing update values (:id, :applicationid, :stackid, :isvisible, :grid, :displayname, :orderid)",
+                                    return await c.ExecuteAsync("Insert into ESS_DCC_Structure_Stack (guid, parentguid, stackguid, showstacknode, difgridname, difdisplayname, ordernr, difsearchname)" +
+                                                                           " on existing update values (:id, :applicationid, :stackid, :isvisible, :grid, :displayname, :orderid, :searchname)",
                                                                            new
                                                                            {
                                                                                stack.Id,
@@ -179,7 +169,8 @@ namespace Simplic.Package.Application
                                                                                stack.IsVisible,
                                                                                stack.Grid,
                                                                                stack.DisplayName,
-                                                                               stack.OrderId
+                                                                               stack.OrderId,
+                                                                               stack.SearchName
                                                                            });
                                 });
 
@@ -187,8 +178,8 @@ namespace Simplic.Package.Application
                                 {
                                     await sqlService.OpenConnection(async (c) =>
                                     {
-                                        return await c.ExecuteAsync("Insert into ESS_DCC_Structure_Stack_Register (guid, parentguid, registerguid, difgridname, difdisplayname, ordernr)" +
-                                                                               " on existing update values (:id, :stackid, :registerid, :grid, :displayname, :orderid)",
+                                        return await c.ExecuteAsync("Insert into ESS_DCC_Structure_Stack_Register (guid, parentguid, registerguid, difgridname, difdisplayname, ordernr, difsearchname)" +
+                                                                               " on existing update values (:id, :stackid, :registerid, :grid, :displayname, :orderid, :searchname)",
                                                                                new
                                                                                {
                                                                                    register.Id,
@@ -196,7 +187,8 @@ namespace Simplic.Package.Application
                                                                                    register.RegisterId,
                                                                                    register.Grid,
                                                                                    register.DisplayName,
-                                                                                   register.OrderId
+                                                                                   register.OrderId,
+                                                                                   register.SearchName
                                                                                });
                                     });
                                 }

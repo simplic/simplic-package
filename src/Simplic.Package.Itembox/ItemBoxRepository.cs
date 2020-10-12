@@ -78,19 +78,9 @@ namespace Simplic.Package.ItemBox
                         {
                             var inserted = await sqlService.OpenConnection(async (c) =>
                             {
-                                // TODO: Syntaxfehler bei ' statement = grid(grid-name), DisplayName = localized-profile-name, DefaultSearchString = %, ident = 2, IsActive = True, Regex =  ' in Zeile 1
-                                var rowsAffected = await c.ExecuteAsync("Insert into ESS_MS_Controls_ItemBox_Profiles" +
-                                                                        " (selectstatement, displayname, defaultsearchstring, itemboxident, isactive, regex)" +
-                                                                        " values (:statement, :displayname, :defaultsearchstring, :ident, :isactive, :regex);" +
-                                                                        new
-                                                                        {
-                                                                            statement,
-                                                                            profile.DisplayName,
-                                                                            profile.DefaultSearchString,
-                                                                            ident,
-                                                                            profile.IsActive,
-                                                                            profile.Regex
-                                                                        });
+                                var rowsAffected = await c.ExecuteAsync("Insert into ESS_MS_Controls_ItemBox_Profiles (selectstatement, displayname, defaultsearchstring, itemboxident, isactive, regex) " +
+                                                                        "values (:statement, :displayname, :defaultsearchstring, :ident, :isactive, :regex)",
+                                                                        new { statement, profile.DisplayName, profile.DefaultSearchString, ident, profile.IsActive, profile.Regex });
                                 return rowsAffected > 0;
                             });
                         }

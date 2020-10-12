@@ -34,14 +34,14 @@ namespace Simplic.Package.Service
                 Protocol.Debug.Add(message);
         }
 
-        public async Task WriteAsyncSuccess(string objectName, string target, LogLevel logLevel)
+        public async Task WriteAsyncSuccess(string objectName, string target)
         {
-            await WriteAsync($"Installed {objectName} at {target}.", logLevel);
+            await WriteAsync($"Installed {objectName} at {target}.", LogLevel.Info);
         }
 
-        public async Task WriteAsyncFailed(string objectName, string target, LogLevel logLevel)
+        public async Task WriteAsyncFailed(string objectName, string target)
         {
-            await WriteAsync($"Failed to install {objectName} at {target}.", logLevel);
+            await WriteAsync($"Failed to install {objectName} at {target}.", LogLevel.Error);
         }
     }
 }

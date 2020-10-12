@@ -6,5 +6,6 @@
         public string Connection { get; set; }
         public bool LoadOnOpen { get; set; }
         public bool RefreshOnSelect { get; set; }
+        public string SearchName { get; set; } = "";
     }
 }

@@ -9,5 +9,6 @@ namespace Simplic.Package.Application
         public string DisplayName { get; set; }
         public string Grid { get; set; }
         public int OrderId { get; set; }
+        public string SearchName { get; set; } = "";
     }
 }

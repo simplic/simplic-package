@@ -10,7 +10,7 @@ namespace Simplic.Package.Report
     {
         public static IMappingExpression<Report, T> MapDefaults<T>(IMappingExpression<Report, T> map) where T : class, IReportConfiguration
         {
-            map.ForMember(dest => dest.ReportName, opt => opt.MapFrom(x => x.ReportFile));
+            map.ForMember(dest => dest.PrinterName, opt => opt.MapFrom(x => x.PrinterName));
             map.ForMember(dest => dest.Type, opt => opt.MapFrom<EnumResolver>());
             map.ForSourceMember(x => x.Configuration, opt => opt.DoNotValidate());
 
@@ -40,7 +40,7 @@ namespace Simplic.Package.Report
                             .ForMember(dest => dest.PrinterName, opt => opt.MapFrom(x => x.Configuration.Provider))
                             .ForMember(dest => dest.IsListBased, opt => opt.MapFrom(x => ((KeyValueConfiguration)x.Configuration).IsListBased))
                             .ForMember(dest => dest.Parameter, opt => opt.MapFrom(x => ((KeyValueConfiguration)x.Configuration).Parameter))
-                            .ForMember(dest => dest.ReportName, opt => opt.MapFrom(x => x.ReportFile))
+                            .ForMember(dest => dest.PrinterName, opt => opt.MapFrom(x => x.PrinterName))
                             .ForMember(dest => dest.Type, opt => opt.MapFrom<EnumResolver>())
                             .ForSourceMember(x => x.Configuration, opt => opt.DoNotValidate());
 
@@ -48,7 +48,7 @@ namespace Simplic.Package.Report
                             .ForMember(dest => dest.ConnectionString, opt => opt.MapFrom(x => x.Configuration.Connection))
                             .ForMember(dest => dest.ProviderName, opt => opt.MapFrom(x => x.Configuration.Provider))
                             .ForMember(dest => dest.ReportParameter, opt => opt.MapFrom(x => ((ParameterConfiguration)x.Configuration).Parameter))
-                            .ForMember(dest => dest.ReportName, opt => opt.MapFrom(x => x.ReportFile))
+                            .ForMember(dest => dest.PrinterName, opt => opt.MapFrom(x => x.PrinterName))
                             .ForMember(dest => dest.Type, opt => opt.MapFrom<EnumResolver>())
                             .ForSourceMember(x => x.Configuration, opt => opt.DoNotValidate());
                     });
@@ -65,7 +65,7 @@ namespace Simplic.Package.Report
                         throw new NotImplementedException();
 
                     ReportManager.Singleton.SaveConfiguration(mappedReportConfiguration);
-                    ReportManager.Singleton.SaveReportFile(report.Report.Name, report.ReportData);
+                    ReportManager.Singleton.SaveReportFile(mappedReportConfiguration.ReportName, report.ReportData);
 
                     result.Success = true;
                     result.Message = $"Installed Report at {installableObject.Target}.";

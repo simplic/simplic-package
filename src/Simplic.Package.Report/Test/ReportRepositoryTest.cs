@@ -16,7 +16,7 @@ namespace Simplic.Package.Report
         public void EnumResolver_Test(string type, Reporting.ReportType expectedMapped)
         {
             var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<Report, Simplic.Reporting.IReportConfiguration>(MemberList.Source)
-                                                            .ForMember(dest => dest.ReportName, opt => opt.MapFrom(x => x.ReportFile))
+                                                            .ForMember(dest => dest.PrinterName, opt => opt.MapFrom(x => x.PrinterName))
                                                             .ForMember(dest => dest.Type, opt => opt.MapFrom<EnumResolver>())
                                                             .ForSourceMember(src => src.Configuration, opt => opt.DoNotValidate())
                                                             );
@@ -28,7 +28,7 @@ namespace Simplic.Package.Report
                 Id = new System.Guid(),
                 Type = type,
                 Name = "name",
-                ReportFile = "reportfilename"
+                PrinterName = "printername"
             };
 
             var mappedReportConfiguration = mapper.Map<Report, Simplic.Reporting.IReportConfiguration>(deserializedReport);

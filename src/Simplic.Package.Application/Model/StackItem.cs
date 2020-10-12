@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Simplic.Package.Application
 {
@@ -12,5 +13,6 @@ namespace Simplic.Package.Application
         public string Grid { get; set; }
         public int OrderId { get; set; }
         public IList<RegisterItem> Registers { get; set; }
+        public string SearchName { get; set; } = "";
     }
 }
