@@ -49,7 +49,7 @@
     <Compile Include="PackStackContextAreaService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StackContextAreaRepository.cs" />
-    <Compile Include="StatementHelper.cs" />
+    <Compile Include="StatementParam.cs" />
     <Compile Include="UnpackStackContextAreaService.cs" />
   </ItemGroup>
   <ItemGroup>

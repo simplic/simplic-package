@@ -28,7 +28,7 @@ namespace Simplic.Package.EplReport
 
                 try
                 {
-                    var param = new StatementHelper
+                    var param = new StatementParam
                     {
                         Id = eplReport.Id,
                         InternalName = eplReport.InternalName,

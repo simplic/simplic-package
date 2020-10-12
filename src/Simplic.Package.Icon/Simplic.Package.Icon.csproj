@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IconRepository.cs" />
     <Compile Include="InstallIconService.cs" />
     <Compile Include="Model\DeserializedIcon.cs" />
     <Compile Include="PackIconService.cs" />

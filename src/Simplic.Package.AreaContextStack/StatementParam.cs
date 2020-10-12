@@ -2,7 +2,7 @@
 
 namespace Simplic.Package.StackContextArea
 {
-    internal class StatementHelper
+    internal class StatementParam
     {
         public Guid Id { get; set; }
         public Guid StackId { get; set; }
@@ -10,5 +10,6 @@ namespace Simplic.Package.StackContextArea
         public string GridName {get;set;}
         public bool StackBased { get; set; }
         public bool ConnectWithArchive { get; set; }
+        public string SearchName { get; set; }
     }
 }

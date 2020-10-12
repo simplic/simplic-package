@@ -45,7 +45,6 @@
     <Compile Include="InstallRoleService.cs" />
     <Compile Include="PackRoleService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoleRepository.cs" />
     <Compile Include="UnpackRoleService.cs" />
   </ItemGroup>
   <ItemGroup>

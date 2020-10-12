@@ -45,7 +45,6 @@
     <Compile Include="PackRepositoryService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\RepositoryContent.cs" />
-    <Compile Include="RepositoryRepository.cs" />
     <Compile Include="UnpackRepositoryService.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simplic.Framework.Core;
+using System;
 using System.Threading.Tasks;
 using Unity;
 
@@ -6,16 +7,40 @@ namespace Simplic.Package.Role
 {
     public class InstallRoleService : IInstallObjectService
     {
-        private readonly IObjectRepository repository;
-
-        public InstallRoleService([Dependency("role")] IObjectRepository repository)
-        {
-            this.repository = repository;
-        }
-
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            return await repository.InstallObject(installableObject);
+            if (installableObject.Content is DeserializedRole role)
+            {
+                var result = new InstallObjectResult
+                {
+                    LogLevel = LogLevel.Info
+                };
+
+                try
+                {
+                    // TODO:  Der Typeninitialisierer für "Simplic.Framework.Core.RoleManager" hat eine Ausnahme verursacht. ---> System.InvalidOperationException:  ServiceLocationProvider must be set.
+
+                    RoleManager.Singleton.CreateRole(new Simplic.Framework.EF.Role
+                    {
+                        RoleId = role.Id,
+                        Description = role.Description,
+                        DisplayName = role.DisplayName,
+                        InternName = role.InternalName
+                    });
+
+                    result.Message = $"Installed role at {installableObject.Target}.";
+                    result.Success = true;
+                }
+                catch (Exception ex)
+                {
+                    result.Message = $"Failed to install role at {installableObject.Target}.";
+                    result.LogLevel = LogLevel.Error;
+                    result.Exception = ex;
+                }
+
+                return result;
+            }
+            throw new InvalidContentException();
         }
 
         public Task OverwriteObject(InstallableObject installableObject)

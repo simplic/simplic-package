@@ -28,16 +28,18 @@ namespace Simplic.Package.StackAutoconnector
                 {
                     Guid? xmlId = null;
                     var xmlText = "";
+                    var description = "";
                     if (stackAutoconnector.Configuration is XmlConfiguration xmlConfiguration)
                     {
                         xmlText = xmlConfiguration.Xml;
                         xmlId = xmlConfiguration.Id;
+                        description = xmlConfiguration.Description;
                     }
 
                     var xmlSuccess = await sqlService.OpenConnection(async (c) =>
                     {
-                        var affectedRows = await c.ExecuteAsync("Insert into ESS_DCC_SqlText (guid, sqltext) on existing update values (:xmlId, :xmlText)",
-                                                                new { xmlId, xmlText });
+                        var affectedRows = await c.ExecuteAsync("Insert into ESS_DCC_SqlText (guid, sqltext, description) on existing update values (:xmlId, :xmlText, :description)",
+                                                                new { xmlId, xmlText, description });
                         return affectedRows > 0;
                     });
 
@@ -55,17 +57,17 @@ namespace Simplic.Package.StackAutoconnector
                         if (success)
                         {
                             result.Success = true;
-                            result.Message = $"Installed StackRegister at {installableObject.Target}.";
+                            result.Message = $"Installed StackAutoconnector at {installableObject.Target}.";
                         }
                         else
                         {
-                            result.Message = $"Installed xml to ESS_DCC_SqlText but failed to install StackRegister at {installableObject.Target}.";
+                            result.Message = $"Installed xml to ESS_DCC_SqlText but failed to install StackAutoconnector at {installableObject.Target}.";
                             result.LogLevel = LogLevel.Error;
                         }
                     }
                     else
                     {
-                        result.Message = $"Failed to install StackRegister at {installableObject.Target}.";
+                        result.Message = $"Failed to install StackAutoconnector at {installableObject.Target}.";
                         result.LogLevel = LogLevel.Error;
                     }
                 }

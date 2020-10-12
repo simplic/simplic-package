@@ -2,7 +2,7 @@
 
 namespace Simplic.Package.EplReport
 {
-    internal class StatementHelper
+    internal class StatementParam
     {
         public Guid Id { get; set; }
         public string InternalName { get; set; }

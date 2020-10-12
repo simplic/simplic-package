@@ -40,6 +40,9 @@ using Simplic.Localization;
 using Simplic.Log.Console;
 using Simplic.Reporting;
 using Simplic.Framework.Reporting;
+using Simplic.Package.Icon;
+using Simplic.Tracking;
+using Simplic.TenantSystem;
 
 namespace Simplic.Package.CLI
 {
@@ -147,28 +150,28 @@ namespace Simplic.Package.CLI
             container.RegisterType<IPackObjectService, PackGridService>("grid");
             container.RegisterType<IUnpackObjectService, UnpackGridService>("grid");
 
+            container.RegisterType<IInstallObjectService, InstallIconService>("icon");
+            container.RegisterType<IPackObjectService, PackIconService>("icon");
+            container.RegisterType<IUnpackObjectService, UnpackIconService>("icon");
+
             container.RegisterType<IInstallObjectService, InstallItemBoxService>("itemBox");
             container.RegisterType<IObjectRepository, ItemBoxRepository>("itemBox");
             container.RegisterType<IPackObjectService, PackItemBoxService>("itemBox");
             container.RegisterType<IUnpackObjectService, UnpackItemBoxService>("itemBox");
 
             container.RegisterType<IInstallObjectService, InstallReportService>("report");
-            container.RegisterType<IObjectRepository, ReportRepository>("report");
             container.RegisterType<IPackObjectService, PackReportService>("report");
             container.RegisterType<IUnpackObjectService, UnpackReportService>("report");
 
             container.RegisterType<IInstallObjectService, InstallRepositoryService>("repository");
-            container.RegisterType<IObjectRepository, RepositoryRepository>("repository");
             container.RegisterType<IPackObjectService, PackRepositoryService>("repository");
             container.RegisterType<IUnpackObjectService, UnpackRepositoryService>("repository");
 
             container.RegisterType<IInstallObjectService, InstallRoleService>("role");
-            container.RegisterType<IObjectRepository, RoleRepository>("role");
             container.RegisterType<IPackObjectService, PackRoleService>("role");
             container.RegisterType<IUnpackObjectService, UnpackRoleService>("role");
 
             container.RegisterType<IInstallObjectService, InstallSequenceService>("sequence");
-            container.RegisterType<IObjectRepository, SequenceRepository>("sequence");
             container.RegisterType<IPackObjectService, PackSequenceService>("sequence");
             container.RegisterType<IUnpackObjectService, UnpackSequenceService>("sequence");
 
@@ -208,6 +211,8 @@ namespace Simplic.Package.CLI
             Framework.DAL.ConnectionManager.Init(Thread.CurrentThread);
 
             container.RegisterType<ILocalizationService, LocalizationService>();
+            container.RegisterType<ITrackingService, TrackingService>(); // TODO: Implement for Roleservice
+            container.RegisterType<IOrganizationService, OrganizationService>(); // TODO: Implement for SequenceService
 
             var serviceLocator = new UnityServiceLocator(container);
             CommonServiceLocator.ServiceLocator.SetLocatorProvider(() => serviceLocator);

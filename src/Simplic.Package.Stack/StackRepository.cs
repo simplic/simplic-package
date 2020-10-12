@@ -29,9 +29,9 @@ namespace Simplic.Package.Stack
                     {
                         var affectedRows = await c.ExecuteAsync(
                             "Insert into ESS_DCC_Stack (guid, displayname, stackgridname, isactive, connectwitharchiv, tablename, stackname," +
-                                                        " headersql, trackchanges, usefulltextindex, improveocrtext, usedce)" +
+                                                        " headersql, trackchanges, usefulltextindex, improveocrtext, usedce, stacksearchname)" +
                             "on existing update values (:id, :displayname, :stackgridname, :isactive, :connectwitharchive, :tablename, :stackname," +
-                                                        " :headersql, :trackchanges, :usefulltextindex, :improveocrtext, :usedce)",
+                                                        " :headersql, :trackchanges, :usefulltextindex, :improveocrtext, :usedce, :stacksearchname)",
                             new
                             {
                                 stack.Id,
@@ -45,7 +45,8 @@ namespace Simplic.Package.Stack
                                 stack.TrackChanges,
                                 stack.FullText.UseFullTextIndex,
                                 stack.FullText.ImproveOCRText,
-                                stack.FullText.UseDCE
+                                stack.FullText.UseDCE,
+                                stack.StackSearchName
                             }
                             );
 

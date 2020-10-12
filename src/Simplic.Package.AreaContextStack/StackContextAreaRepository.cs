@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Simplic.Sql;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.StackContextArea
@@ -25,18 +26,20 @@ namespace Simplic.Package.StackContextArea
 
                 try
                 {
-                    var statement = $"Insert into IDContext (guid, displayname, stackguid) on existing update values (:Id, :DisplayName, :StackId)";
-                    var param = new StatementHelper
+                    Debugger.Launch();
+                    var statement = $"Insert into IDContext (guid, displayname, stackguid, searchname) on existing update values (:Id, :DisplayName, :StackId, :SearchName)";
+                    var param = new StatementParam
                     {
                         Id = stackContextArea.Id,
                         StackId = stackContextArea.StackId,
                         DisplayName = stackContextArea.DisplayName,
+                        SearchName = stackContextArea.SearchName
                     };
 
                     if (stackContextArea.Configuration is GridConfiguration gridConfiguration)
                     {
-                        statement = $"Insert into IDContext (guid, displayname, stackguid, gridname, isstackbased, usearchiv) " +
-                                    $"on existing update values (:Id, :DisplayName, :StackId, :GridName, :StackBased, :ConnectWithArchive)";
+                        statement = $"Insert into IDContext (guid, displayname, stackguid, searchname, gridname, isstackbased, usearchiv) " +
+                                    $"on existing update values (:Id, :DisplayName, :StackId, :SearchName, :GridName, :StackBased, :ConnectWithArchive)";
                         param.ConnectWithArchive = gridConfiguration.ConnectWithArchive;
                         param.StackBased = gridConfiguration.StackBased;
                         param.GridName = gridConfiguration.Grid;

@@ -1,6 +1,9 @@
-﻿namespace Simplic.Package.Icon
+﻿using Newtonsoft.Json;
+using System.Threading.Tasks;
+
+namespace Simplic.Package.Icon
 {
-    internal class PackIconService : PackObjectServiceBase, IPackObjectService
+    public class PackIconService : PackObjectServiceBase, IPackObjectService
     {
         public PackIconService(IFileService fileService) : base(fileService)
         {

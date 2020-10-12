@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="EnumResolver.cs" />
     <Compile Include="InstallReportService.cs" />
-    <Compile Include="MappingExtensionMethods.cs" />
     <Compile Include="Model\DeserializedReport.cs" />
     <Compile Include="Model\FullReport.cs" />
     <Compile Include="Model\KeyValueConfiguration.cs" />
@@ -53,8 +52,7 @@
     <Compile Include="PackReportService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\ReportConfiguration.cs" />
-    <Compile Include="ReportRepository.cs" />
-    <Compile Include="ReportRepositoryTest.cs" />
+    <Compile Include="Test\ReportRepositoryTest.cs" />
     <Compile Include="UnpackReportService.cs" />
   </ItemGroup>
   <ItemGroup>

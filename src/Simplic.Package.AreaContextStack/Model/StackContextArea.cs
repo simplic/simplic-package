@@ -13,5 +13,6 @@ namespace Simplic.Package.StackContextArea
         public string Type { get; set; }
         public IStackContextAreaConfiguration Configuration { get; set; }
         public IList<ContextOfStackItem> ContextOfStacks { get; set; }
+        public string SearchName { get; set; } = "";
     }
 }
