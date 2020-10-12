@@ -14,10 +14,10 @@ namespace Simplic.Package
         }
 
         /// <summary>
-        /// Packs a 
+        /// Packs a ObjectListItem into a PackObjectResult
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
+        /// <param name="item">The ObjectListItem</param>
+        /// <returns>A PackObjectResult object</returns>
         public virtual async Task<PackObjectResult> ReadAsync(ObjectListItem item)
         {
             return new PackObjectResult

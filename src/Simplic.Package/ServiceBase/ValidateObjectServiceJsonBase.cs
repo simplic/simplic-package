@@ -7,8 +7,18 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
+    /// <summary>
+    /// Base ValidateObjectService implementation for json objects
+    /// Checks whether the json file can be deserialized and serialized again
+    /// </summary>
+    /// <typeparam name="T">The type to deserialize to</typeparam>
     public abstract class ValidateObjectServiceJsonBase<T> : IValidateObjectService where T : class, IContent
     {
+        /// <summary>
+        /// Checks whether the json file can be deserialized and serialized again
+        /// </summary>
+        /// <param name="packObjectResult">The packObjectResult containing the json to check</param>
+        /// <returns>A ValidateObjectResult object</returns>
         public async Task<ValidateObjectResult> Validate(PackObjectResult packObjectResult)
         {
             var json = Encoding.Default.GetString(packObjectResult.File);

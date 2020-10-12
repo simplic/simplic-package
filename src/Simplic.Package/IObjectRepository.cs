@@ -20,6 +20,5 @@ namespace Simplic.Package
         /// <param name="installableObject">The object to remove</param>
         /// <returns>A UninstallObjectResult object</returns>
         Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject);
-
     }
 }

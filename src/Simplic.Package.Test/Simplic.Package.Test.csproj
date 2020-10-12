@@ -45,10 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DependencyInjectionHelper.cs" />
-    <Compile Include="Pack\PackServiceTest.cs" />
-    <Compile Include="Pack\PackObjectServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Unpack\UnpackServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Package.Data.DB\Simplic.Package.Data.DB.csproj">

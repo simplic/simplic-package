@@ -36,12 +36,32 @@ namespace Simplic.Package
         /// <returns>The read text as a string</returns
         Task<string> ReadAllTextAsync(Stream stream);
 
+        /// <summary>
+        /// Writes bytes to a given path
+        /// </summary>
+        /// <param name="bytes">The bytes to write</param>
+        /// <param name="path">The path to write to</param>
         Task WriteAllBytesAsync(byte[] bytes, string path);
-
+        
+        /// <summary>
+        /// Writes bytes to a given path
+        /// </summary>
+        /// <param name="bytes">The stream whose content to write</param>
+        /// <param name="path">The path to write to</param>
         Task WriteAllBytesAsync(Stream stream, string path);
 
+        /// <summary>
+        /// Writes text to a given path
+        /// </summary>
+        /// <param name="text">The text to write</param>
+        /// <param name="path">The path to write to</param>
         Task WriteAllTextAsync(string text, string path);
         
+        /// <summary>
+        /// Checks whether a file exists at a given path
+        /// </summary>
+        /// <param name="path">The path to check</param>
+        /// <returns>Whether the path exists</returns>
         bool FileExists(string path);
     }
 }

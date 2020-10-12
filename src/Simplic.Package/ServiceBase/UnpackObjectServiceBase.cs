@@ -14,10 +14,10 @@ namespace Simplic.Package
     public abstract class UnpackObjectServiceBase<T> : IUnpackObjectService where T : class, IContent
     {
         /// <summary>
-        /// Unpacks a Json Object by deserializing
+        /// Unpacks a Json Object by deserializing it
         /// </summary>
-        /// <param name="extractArchiveEntryResult">The archive entry that holds the json file</param>
-        /// <returns></returns>
+        /// <param name="extractArchiveEntryResult">The archive entry containing the json file</param>
+        /// <returns>A UnpackObjectResult object</returns>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var result = new UnpackObjectResult
