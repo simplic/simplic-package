@@ -44,7 +44,7 @@ namespace Simplic.Package.Service
             else if (package.Version < existingPackageVersion)
             {
                 // await logService.WriteAsync($"A later version ({existingPackageVersion}) of {package.Name} is already installed.", LogLevel.Info);
-                throw new ExistingPackageException($"A later version ({existingPackageVersion}) of this package is already installed.");
+                //TODO: throw new ExistingPackageException($"A later version ({existingPackageVersion}) of this package is already installed.");
             }
             await logService.WriteAsync($"Found no installation of version {package.Version} of this package. Proceeding to install package.", LogLevel.Info);
 
@@ -72,7 +72,8 @@ namespace Simplic.Package.Service
                         else
                         {
                             await logService.WriteAsync(installObjectResult.Message, installObjectResult.LogLevel);
-                            await migrationService.AddMigration(installableObject);
+                            if (installableObject.Mode == InstallMode.Migrate)
+                                await migrationService.AddMigration(installableObject);
                         }
                     }
                 }

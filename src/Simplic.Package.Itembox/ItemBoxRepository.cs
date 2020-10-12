@@ -28,7 +28,7 @@ namespace Simplic.Package.ItemBox
                 {
                     var exists = await sqlService.OpenConnection(async (c) =>
                     {
-                        var query = await c.QueryFirstOrDefaultAsync("Select * from ESS_MS_Controls_ItemBox where name = :name, title = :title, description = :description",
+                        var query = await c.QueryFirstOrDefaultAsync("Select * from ESS_MS_Controls_ItemBox where name = :name and title = :title and description = :description",
                                                                         new { itemBox.Name, itemBox.Title, itemBox.Description });
                         return query != null;
                     });
@@ -45,7 +45,7 @@ namespace Simplic.Package.ItemBox
                     // Get the ident
                     var ident = await sqlService.OpenConnection(async (c) =>
                     {
-                        return await c.QueryFirstAsync<int>("Select ident from ESS_MS_Controls_ItemBox where name = :name, title = :title, description = :description order by ident desc",
+                        return await c.QueryFirstAsync<int>("Select ident from ESS_MS_Controls_ItemBox where name = :name and title = :title and description = :description order by ident desc",
                                                             new { itemBox.Name, itemBox.Title, itemBox.Description });
                     });
 
@@ -78,9 +78,10 @@ namespace Simplic.Package.ItemBox
                         {
                             var inserted = await sqlService.OpenConnection(async (c) =>
                             {
-                                var rowsAffected = await c.ExecuteAsync("Insert into ESS_MS_Controls_ItemBox_Profiles " +
-                                                                        "(selectstatement, displayname, defaultsearchstring, itemboxident, isactive, regex) " +
-                                                                        " values (:statement, :displayname, :defaultsearchstring, :ident, :isactive, :regex)" +
+                                // TODO: Syntaxfehler bei ' statement = grid(grid-name), DisplayName = localized-profile-name, DefaultSearchString = %, ident = 2, IsActive = True, Regex =  ' in Zeile 1
+                                var rowsAffected = await c.ExecuteAsync("Insert into ESS_MS_Controls_ItemBox_Profiles" +
+                                                                        " (selectstatement, displayname, defaultsearchstring, itemboxident, isactive, regex)" +
+                                                                        " values (:statement, :displayname, :defaultsearchstring, :ident, :isactive, :regex);" +
                                                                         new
                                                                         {
                                                                             statement,

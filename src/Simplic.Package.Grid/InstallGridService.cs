@@ -35,19 +35,14 @@ namespace Simplic.Package.Grid
                     cfg.CreateMap<DivergentColumnType, IDivergentColumnType>(MemberList.None);
 
 
-                    cfg.CreateMap<ColumnConfiguration, ColumnConfigurationModel>(MemberList.Source)
-                            .Include<ColumnConfiguration, GridColumnConfigurationModel>();
+                    cfg.CreateMap<ColumnConfiguration, ColumnConfigurationModel>(MemberList.Source).As<GridColumnConfigurationModel>();
 
                     cfg.CreateMap<ColumnConfiguration, GridColumnConfigurationModel>(MemberList.Source);
 
                     cfg.CreateMap<GridProfileConfiguration, GridProfileConfigurationModel>(MemberList.None);
 
                     cfg.CreateMap<GridVirtualGroupConfiguration, Simplic.UI.GridView.GridVirtualGroupConfiguration>(MemberList.None)
-                        .ForMember(x => x.ViewDataTemplate, opt => opt.Ignore())
-                        .ForMember(x => x.EditDataTemplate, opt => opt.Ignore())
-                        .ForMember(x => x.ViewDataTemplatePath, opt => opt.Ignore())
-                        .ForMember(x => x.EditDataTemplatePath, opt => opt.Ignore())
-                        .ForMember(x => x.ItemFilterText, opt => opt.Ignore());
+                        .IgnoreAllPropertiesWithAnInaccessibleSetter();
                     cfg.CreateMap<VirtualGroupDefinition, Simplic.Framework.DBUI.VirtualGroupDefinition>(MemberList.None)
                         .ForMember(x => x.Name, opt => opt.Ignore());
                 });

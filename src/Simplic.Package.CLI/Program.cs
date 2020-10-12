@@ -38,6 +38,8 @@ using Simplic.Framework.Core;
 using Unity.ServiceLocation;
 using Simplic.Localization;
 using Simplic.Log.Console;
+using Simplic.Reporting;
+using Simplic.Framework.Reporting;
 
 namespace Simplic.Package.CLI
 {
@@ -56,7 +58,7 @@ namespace Simplic.Package.CLI
 
             var install = false;
             var path = "";
-            var connectionString = "dbn=PackageTest;server=PackageTest;uid=admin;pwd=admin";
+            var connectionString = "dbn=PackageTest;server=PackageTest;uid=admin;pwd=school";
 
             var optionSet = new OptionSet()
             {
@@ -209,6 +211,9 @@ namespace Simplic.Package.CLI
 
             var serviceLocator = new UnityServiceLocator(container);
             CommonServiceLocator.ServiceLocator.SetLocatorProvider(() => serviceLocator);
+
+            var singelton = ReportManager.Singleton;
+            singelton.Initialize(new DefaultReportConfigurationProvider());
 
             Log.LogManagerInstance.Instance.OutputProvider.Add(new ConsoleLogOutput());
             #endregion

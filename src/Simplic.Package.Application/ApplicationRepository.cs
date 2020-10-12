@@ -91,6 +91,7 @@ namespace Simplic.Package.Application
 
             return await sqlService.OpenConnection(async (c) =>
             {
+                // TODO: How do these get into the database in the first place
                 return await c.QueryFirstAsync<Guid>("Select * from ESS_MS_Intern_Page_Content where pagename = :pageName", new { pageName });
             });
         }

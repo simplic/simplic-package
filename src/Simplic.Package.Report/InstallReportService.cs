@@ -8,7 +8,7 @@ namespace Simplic.Package.Report
     {
         private readonly IObjectRepository repository;
 
-        public InstallReportService([Dependency("repository")] IObjectRepository repository)
+        public InstallReportService([Dependency("report")] IObjectRepository repository)
         {
             this.repository = repository;
         }

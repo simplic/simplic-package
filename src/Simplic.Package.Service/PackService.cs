@@ -130,7 +130,7 @@ namespace Simplic.Package.Service
                 else
                 {
                     await fileService.WriteAllBytesAsync(stream.ToArray(), archiveName);
-                    await logService.WriteAsync($"Succesfully created package.", LogLevel.Info);
+                    await logService.WriteAsync($"Succesfully created package {archiveName}.", LogLevel.Info);
                 }
 
                 return stream.ToArray();
