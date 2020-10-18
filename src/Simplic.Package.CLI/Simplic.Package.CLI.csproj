@@ -7,7 +7,7 @@
     <ProjectGuid>{D49674CC-DB8D-4C91-A74E-6E178E5F6CA3}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Simplic.Package.CLI</RootNamespace>
-    <AssemblyName>sipack</AssemblyName>
+    <AssemblyName>simpack</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
