@@ -11,20 +11,19 @@ namespace Simplic.Package.EplReport
     public class EplReportRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
+        private readonly ILogService logService;
 
-        public EplReportRepository(ISqlService sqlService)
+        public EplReportRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
+            this.logService = logService;
         }
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is EplReport eplReport)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -57,25 +56,25 @@ namespace Simplic.Package.EplReport
                         // Grid has no additional properties
                     }
 
-                    result.Success = await sqlService.OpenConnection(async (c) =>
+                    var execResult = await sqlService.OpenConnection(async (c) =>
                     {
                         var affectedRows = await c.ExecuteAsync(statement, param);
                         return affectedRows > 0;
                     });
 
-                    if (result.Success)
-                        result.Message = $"Installed EplReport at {installableObject.Target}.";
+                    if (execResult)
+                    {
+                        await logService.WriteAsync($"Installed EplReport at {installableObject.Target}.", LogLevel.Info);
+                    }
                     else
                     {
-                        result.LogLevel = LogLevel.Warning;
-                        result.Message = $"Failed to install EplReport at {installableObject.Target}.";
+                        await logService.WriteAsync($"Failed to install EplReport at {installableObject.Target}.", LogLevel.Warning);
                     }
                 }
                 catch (Exception ex)
                 {
-                    result.LogLevel = LogLevel.Error;
-                    result.Message = $"Failed to install EplReport at {installableObject.Target}.";
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install EplReport at {installableObject.Target}.", LogLevel.Error, ex);
+                    result.Success = false;
                 }
                 return result;
             }

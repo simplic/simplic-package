@@ -8,20 +8,19 @@ namespace Simplic.Package.StackFulltext
     public class StackFulltextRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
+        private readonly ILogService logService;
 
-        public StackFulltextRepository(ISqlService sqlService)
+        public StackFulltextRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
+            this.logService = logService;
         }
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is StackFulltext stackFulltext)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -37,18 +36,19 @@ namespace Simplic.Package.StackFulltext
                     });
 
                     if (result.Success)
-                        result.Message = $"Installed StackFulltext at {installableObject.Target}.";
+                    {
+                        await logService.WriteAsync($"Installed StackFulltext at {installableObject.Target}.", LogLevel.Info);
+                    }
                     else
                     {
-                        result.Message = $"Failed to install StackFulltext at {installableObject.Target}.";
-                        result.LogLevel = LogLevel.Error;
+                        await logService.WriteAsync($"Failed to install StackFulltext at {installableObject.Target}.", LogLevel.Warning);
                     }
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install StackFulltext at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install StackFulltext at {installableObject.Target}.", LogLevel.Error, ex);
+
+                    result.Success = false;
                 }
                 return result;
             }

@@ -9,20 +9,19 @@ namespace Simplic.Package.Application
     public class ApplicationRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
+        private readonly ILogService logService;
 
-        public ApplicationRepository(ISqlService sqlService)
+        public ApplicationRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
+            this.logService = logService;
         }
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is Application application)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -41,26 +40,25 @@ namespace Simplic.Package.Application
                     {
                         if (await SaveConfiguration(application, application.Type))
                         {
-                            result.Success = true;
-                            result.Message = $"Installed Application at {installableObject.Target}.";
+                            await logService.WriteAsync($"Installed Application at {installableObject.Target}.", LogLevel.Info);
                         }
                         else
                         {
-                            result.Message = $"Installed Application but failed to install ApplicationConfiguration at {installableObject.Target}.";
-                            result.LogLevel = LogLevel.Error;
+                            result.Success = false;
+                            
+                            await logService.WriteAsync($"Installed Application but failed to install ApplicationConfiguration at {installableObject.Target}.", LogLevel.Error);
                         }
                     }
                     else
                     {
-                        result.Message = $"Failed to install Application at {installableObject.Target}.";
-                        result.LogLevel = LogLevel.Warning;
+                        await logService.WriteAsync($"Failed to install Application at {installableObject.Target}.", LogLevel.Warning);
                     }
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install Application at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    result.Success = false;
+
+                    await logService.WriteAsync($"Failed to install Application at {installableObject.Target}.", LogLevel.Error, ex);
                 }
                 return result;
             }
@@ -71,15 +69,15 @@ namespace Simplic.Package.Application
         {
             switch (type)
             {
-                case "clr": // Clr-Methode aufrufen
+                case "clr":
                     return Guid.Parse("7A1959FD-2F78-491E-BE38-1959DA826F8E");
-                case "python": // Skript Application
+                case "python":
                     return Guid.Parse("DE8D2FD3-7892-4D59-9936-EF8F2D7311E5");
-                case "grid": // Einfache Auswahlliste
+                case "grid":
                     return Guid.Parse("6D29A4F2-C10C-4965-8527-19484FF50F63");
-                case "grid-structure": // DocCenter - Struktur
+                case "grid-structure":
                     return Guid.Parse("0CFBB9C9-FBD5-44C4-AA29-4970B827F3D6");
-                case "browser": // Browser
+                case "browser":
                     return Guid.Parse("92E3E5AE-A925-400E-83F3-E3D75615FCCF");
                 default:
                     throw new Exception($"Invalid type {type} entered when trying to get ContentType from ESS_MS_Intern_Page_Content.");

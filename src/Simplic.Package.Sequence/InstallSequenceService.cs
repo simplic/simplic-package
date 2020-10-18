@@ -7,14 +7,18 @@ namespace Simplic.Package.Sequence
 {
     public class InstallSequenceService : IInstallObjectService
     {
+        private readonly ILogService logService;
+
+        public InstallSequenceService(ILogService logService)
+        {
+            this.logService = logService;
+        }
+
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is Sequence deserializedSequence)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -45,14 +49,14 @@ namespace Simplic.Package.Sequence
 
                     SequenceNumberManager.Singleton.Save(sequence);
 
-                    result.Message = $"Installed Sequence at {installableObject.Target}.";
+                    await logService.WriteAsync($"Installed Sequence at {installableObject.Target}.", LogLevel.Info);
                     result.Success = true;
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install Sequence at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install Sequence at {installableObject.Target}.", LogLevel.Error, ex);
+                    
+                    result.Success = false;
                 }
                 return result;
             }

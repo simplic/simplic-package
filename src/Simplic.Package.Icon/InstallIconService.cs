@@ -9,20 +9,19 @@ namespace Simplic.Package.Icon
     public class InstallIconService : IInstallObjectService
     {
         private readonly IIconService iconService;
+        private readonly ILogService logService;
 
-        public InstallIconService(IIconService iconService)
+        public InstallIconService(IIconService iconService, ILogService logService)
         {
             this.iconService = iconService;
+            this.logService = logService;
         }
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is IconContent icon)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info,
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -38,21 +37,22 @@ namespace Simplic.Package.Icon
                     else
                         simplicIcon.Guid = Guid.NewGuid();
 
-                    result.Success = iconService.Save(simplicIcon);
+                    var execResult = iconService.Save(simplicIcon);
 
-                    if (result.Success)
-                        result.Message = $"Installed icon at {installableObject.Target}.";
+                    if (execResult)
+                    {
+                        await logService.WriteAsync($"Installed icon at {installableObject.Target}.", LogLevel.Info);
+                    }
                     else
                     {
-                        result.Message = $"Failed to install icon at {installableObject.Target}.";
-                        result.LogLevel = LogLevel.Warning;
+                        await logService.WriteAsync($"Failed to install icon at {installableObject.Target}.", LogLevel.Warning);
                     }
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install icon at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install icon at {installableObject.Target}.", LogLevel.Error, ex);
+
+                    result.Success = false;
                 }
 
                 return result;

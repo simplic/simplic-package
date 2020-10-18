@@ -9,20 +9,19 @@ namespace Simplic.Package.StackContextArea
     public class StackContextAreaRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
+        private readonly ILogService logService;
 
-        public StackContextAreaRepository(ISqlService sqlService)
+        public StackContextAreaRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
+            this.logService = logService;
         }
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is StackContextArea stackContextArea)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -44,7 +43,7 @@ namespace Simplic.Package.StackContextArea
                         param.GridName = gridConfiguration.Grid;
                     }
 
-                    result.Success = await sqlService.OpenConnection(async (c) =>
+                    var execResult = await sqlService.OpenConnection(async (c) =>
                     {
                         var affectedRows = await c.ExecuteAsync(statement, param);
                         return affectedRows > 0;
@@ -65,19 +64,19 @@ namespace Simplic.Package.StackContextArea
                         }
                     }
 
-                    if (result.Success)
-                        result.Message = $"Installed StackContextArea at {installableObject.Target}.";
+                    if (execResult)
+                    {
+                        await logService.WriteAsync($"Installed StackContextArea at {installableObject.Target}.", LogLevel.Info);
+                    }
                     else
                     {
-                        result.Message = $"Failed to install StackContextArea at {installableObject.Target}.";
-                        result.LogLevel = LogLevel.Error;
+                        await logService.WriteAsync($"Failed to install StackContextArea at {installableObject.Target}.", LogLevel.Warning);
                     }
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install StackContextArea at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install StackContextArea at {installableObject.Target}.", LogLevel.Error, ex);
+                    result.Success = false;
                 }
                 return result;
             }

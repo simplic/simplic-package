@@ -9,20 +9,19 @@ namespace Simplic.Package.StackAutoconnector
     public class StackAutoconnectorRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
+        private readonly ILogService logService;
 
-        public StackAutoconnectorRepository(ISqlService sqlService)
+        public StackAutoconnectorRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
+            this.logService = logService;
         }
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is StackAutoconnector stackAutoconnector)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -56,26 +55,23 @@ namespace Simplic.Package.StackAutoconnector
 
                         if (success)
                         {
-                            result.Success = true;
-                            result.Message = $"Installed StackAutoconnector at {installableObject.Target}.";
+                            await logService.WriteAsync($"Installed StackAutoconnector at {installableObject.Target}.", LogLevel.Info);
                         }
                         else
                         {
-                            result.Message = $"Installed xml to ESS_DCC_SqlText but failed to install StackAutoconnector at {installableObject.Target}.";
-                            result.LogLevel = LogLevel.Error;
+                            await logService.WriteAsync($"Installed xml to ESS_DCC_SqlText but failed to install StackAutoconnector at {installableObject.Target}.", LogLevel.Warning);
                         }
                     }
                     else
                     {
-                        result.Message = $"Failed to install StackAutoconnector at {installableObject.Target}.";
-                        result.LogLevel = LogLevel.Error;
+                        await logService.WriteAsync($"Failed to install StackAutoconnector at {installableObject.Target}.", LogLevel.Warning);
                     }
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install StackRegister at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install StackRegister at {installableObject.Target}.", LogLevel.Error, ex);
+
+                    result.Success = false;
                 }
                 return result;
             }

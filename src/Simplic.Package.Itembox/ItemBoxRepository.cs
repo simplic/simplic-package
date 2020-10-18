@@ -22,10 +22,7 @@ namespace Simplic.Package.ItemBox
         {
             if (installableObject.Content is ItemBox itemBox)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -91,13 +88,13 @@ namespace Simplic.Package.ItemBox
                     }
 
                     result.Success = true;
-                    result.Message = $"Succesfully installed ItemBox at {installableObject.Target}.";
+
+                    await logService.WriteAsync($"Succesfully installed ItemBox at {installableObject.Target}.", LogLevel.Info);
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install ItemBox at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install ItemBox at {installableObject.Target}.", LogLevel.Error, ex);
+                    result.Success = false;
                 }
                 return result;
             }

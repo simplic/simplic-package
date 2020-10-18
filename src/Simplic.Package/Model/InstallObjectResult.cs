@@ -1,6 +1,6 @@
 ﻿namespace Simplic.Package
 {
-    public class InstallObjectResult : LogResult
+    public class InstallObjectResult
     {
         public bool Success { get; set; }
     }

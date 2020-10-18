@@ -8,20 +8,19 @@ namespace Simplic.Package.ComboBox
     public class ComboBoxRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
+        private readonly ILogService logService;
 
-        public ComboBoxRepository(ISqlService sqlService)
+        public ComboBoxRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
+            this.logService = logService;
         }
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is ComboBox comboBox)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -40,20 +39,18 @@ namespace Simplic.Package.ComboBox
                                                         "(:sqlstatement, :name, :selectcolumn, :selectcolumnbackground, :fscontrolname)",
                                                         new { comboBox.SqlStatement, comboBox.Name, comboBox.SelectColumn, comboBox.SelectColumnBackground, comboBox.FsControlName });
                         });
-                        result.Success = true;
-                        result.Message = $"Installed ComboBox at {installableObject.Target}.";
+
+                        await logService.WriteAsync($"Installed ComboBox at {installableObject.Target}.", LogLevel.Info);
                     }
                     else
                     {
-                        result.Success = true;
-                        result.Message = $"Didnt install ComboBox at {installableObject.Target}, because it already existed.";
+                        await logService.WriteAsync($"Didnt install ComboBox at {installableObject.Target}, because it already existed.", LogLevel.Info);
                     }
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install ComboBox at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install ComboBox at {installableObject.Target}.", LogLevel.Error, ex);
+                    result.Success = false;
                 }
 
                 return result;

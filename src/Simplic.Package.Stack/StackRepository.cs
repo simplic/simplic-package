@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Simplic.Sql;
 using System;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Stack
@@ -8,24 +9,23 @@ namespace Simplic.Package.Stack
     public class StackRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
+        private readonly ILogService logService;
 
-        public StackRepository(ISqlService sqlService)
+        public StackRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
+            this.logService = logService;
         }
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is Stack stack)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
-                    result.Success = await sqlService.OpenConnection(async (c) =>
+                    var execResult = await sqlService.OpenConnection(async (c) =>
                     {
                         var affectedRows = await c.ExecuteAsync(
                             "Insert into ESS_DCC_Stack (guid, displayname, stackgridname, isactive, connectwitharchiv, tablename, stackname," +
@@ -53,19 +53,19 @@ namespace Simplic.Package.Stack
                         return affectedRows > 0;
                     });
 
-                    if (result.Success)
-                        result.Message = $"Installed stack at {installableObject.Target}.";
+                    if (execResult)
+                    {
+                        await logService.WriteAsync($"Installed stack at {installableObject.Target}.", LogLevel.Info);
+                    }
                     else
                     {
-                        result.Message = $"Failed to install stack at {installableObject.Target}.";
-                        result.LogLevel = LogLevel.Error;
+                        await logService.WriteAsync($"Failed to install stack at {installableObject.Target}.", LogLevel.Warning);
                     }
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install stack at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install stack at {installableObject.Target}.", LogLevel.Error, ex);
+                    result.Success = false;
                 }
                 return result;
             }

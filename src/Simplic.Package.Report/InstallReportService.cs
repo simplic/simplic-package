@@ -8,6 +8,13 @@ namespace Simplic.Package.Report
 {
     public class InstallReportService : IInstallObjectService
     {
+        private readonly ILogService logService;
+
+        public InstallReportService(ILogService logService)
+        {
+            this.logService = logService;
+        }
+
         public static IMappingExpression<Report, T> MapDefaults<T>(IMappingExpression<Report, T> map) where T : class, IReportConfiguration
         {
             map.ForMember(dest => dest.PrinterName, opt => opt.MapFrom(x => x.PrinterName));
@@ -21,10 +28,7 @@ namespace Simplic.Package.Report
         {
             if (installableObject.Content is FullReport report)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -68,13 +72,14 @@ namespace Simplic.Package.Report
                     ReportManager.Singleton.SaveReportFile(mappedReportConfiguration.ReportName, report.ReportData);
 
                     result.Success = true;
-                    result.Message = $"Installed Report at {installableObject.Target}.";
+
+                    await logService.WriteAsync($"Installed Report at {installableObject.Target}.", LogLevel.Info);
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install Report at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install Report at {installableObject.Target}.", LogLevel.Error, ex);
+                    
+                    result.Success = false;
                 }
                 return result;
             }

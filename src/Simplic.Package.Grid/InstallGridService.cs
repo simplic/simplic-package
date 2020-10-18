@@ -9,22 +9,19 @@ namespace Simplic.Package.Grid
 {
     public class InstallGridService : IInstallObjectService
     {
-        /*
-        private readonly IObjectRepository repository;
+        private readonly ILogService logService;
 
-        public InstallGridService([Dependency("grid")] IObjectRepository repository)
+        public InstallGridService(ILogService logService)
         {
-            this.repository = repository;
-        }*/
+            this.logService = logService;
+        }
+
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is Grid grid)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 var mapConfig = new MapperConfiguration(cfg =>
                 {
@@ -56,14 +53,15 @@ namespace Simplic.Package.Grid
                     GridViewManager.Singleton.SaveConfiguration(containerModel);
 
                     result.Success = true;
-                    result.Message = $"Installed Grid at {installableObject.Target}.";
+
+                    await logService.WriteAsync($"Installed Grid at {installableObject.Target}.", LogLevel.Info);
 
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install Grid at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install Grid at {installableObject.Target}.", LogLevel.Error, ex);
+
+                    result.Success = false;
                 }
                 return result;
             }

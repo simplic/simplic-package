@@ -68,13 +68,7 @@ namespace Simplic.Package.Service
                         var installObjectResult = await installObjectService.InstallObject(installableObject);
 
                         if (!installObjectResult.Success)
-                            throw new InvalidObjectException(installObjectResult.Message, installObjectResult.Exception);
-                        else
-                        {
-                            await logService.WriteAsync(installObjectResult.Message, installObjectResult.LogLevel);
-                            if (installableObject.Mode == InstallMode.Migrate)
-                                await migrationService.AddMigration(installableObject);
-                        }
+                            throw new InvalidObjectException();
                     }
                 }
             }

@@ -7,20 +7,19 @@ namespace Simplic.Package.Sql
     public class SqlRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
+        private readonly ILogService logService;
 
-        public SqlRepository(ISqlService sqlService)
+        public SqlRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
+            this.logService = logService;
         }
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is SqlContent sqlContent)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -33,13 +32,13 @@ namespace Simplic.Package.Sql
                     });
 
                     result.Success = true;
-                    result.Message = $"Succesfully executed sqlscript: {sqlContent.Data}\n at {installableObject.Target}.";
+                    await logService.WriteAsync($"Succesfully executed sqlscript: {sqlContent.Data}\n at {installableObject.Target}.", LogLevel.Info);
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to execute sqlscript:{sqlContent.Data}\n at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to execute sqlscript:{sqlContent.Data}\n at {installableObject.Target}.", LogLevel.Error, ex);
+
+                    result.Success = false;
                 }
                 return result;
             }

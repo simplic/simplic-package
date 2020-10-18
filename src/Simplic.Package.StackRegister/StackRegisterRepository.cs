@@ -8,20 +8,19 @@ namespace Simplic.Package.StackRegister
     public class StackRegisterRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
+        private readonly ILogService logService;
 
-        public StackRegisterRepository(ISqlService sqlService)
+        public StackRegisterRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
+            this.logService = logService;
         }
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is StackRegister stackRegister)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -40,19 +39,18 @@ namespace Simplic.Package.StackRegister
                     if (success)
                     {
                         result.Success = true;
-                        result.Message = $"Installed StackRegister at {installableObject.Target}.";
+                        await logService.WriteAsync($"Installed StackRegister at {installableObject.Target}.", LogLevel.Info);
                     }
                     else
                     {
-                        result.Message = $"Failed to install StackRegister at {installableObject.Target}.";
-                        result.LogLevel = LogLevel.Warning;
+                        await logService.WriteAsync($"Failed to install StackRegister at {installableObject.Target}.", LogLevel.Warning);
                     }
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install StackRegister at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install StackRegister at {installableObject.Target}.", LogLevel.Error, ex);
+
+                    result.Success = false;
                 }
                 return result;
             }

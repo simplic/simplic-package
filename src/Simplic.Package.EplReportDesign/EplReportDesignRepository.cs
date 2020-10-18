@@ -8,24 +8,23 @@ namespace Simplic.Package.EplReportDesign
     public class EplReportDesignRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
+        private readonly ILogService logService;
 
-        public EplReportDesignRepository(ISqlService sqlService)
+        public EplReportDesignRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
+            this.logService = logService;
         }
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is EplReportDesign eplReportDesign)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
-                    result.Success = await sqlService.OpenConnection(async (c) =>
+                    var execResult = await sqlService.OpenConnection(async (c) =>
                     {
                         var affectedRows = await c.ExecuteAsync("Insert into EPL_ReportDesign (id, internname, displayname, reportcontent, printerheadwidth) " +
                                                             "on existing update values (:id, :internalname, :displayname, :reportcontent, :printerheadwidth)",
@@ -40,19 +39,20 @@ namespace Simplic.Package.EplReportDesign
                         return affectedRows > 0;
                     });
 
-                    if (result.Success)
-                        result.Message = $"Installed EplReportDesign at {installableObject.Target}.";
+                    if (execResult)
+                    {
+                        await logService.WriteAsync($"Installed EplReportDesign at {installableObject.Target}.", LogLevel.Info);
+                    }
                     else
                     {
-                        result.LogLevel = LogLevel.Warning;
-                        result.Message = $"Failed to install EplReportDesign at {installableObject.Target}.";
+                        await logService.WriteAsync($"Failed to install EplReportDesign at {installableObject.Target}.", LogLevel.Warning);
                     }
                 }
                 catch (Exception ex)
                 {
-                    result.LogLevel = LogLevel.Error;
-                    result.Message = $"Failed to install EplReportDesign at {installableObject.Target}.";
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install EplReportDesign at {installableObject.Target}.", LogLevel.Error, ex);
+
+                    result.Success = false;
                 }
                 return result;
             }

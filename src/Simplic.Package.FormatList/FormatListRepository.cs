@@ -8,20 +8,19 @@ namespace Simplic.Package.FormatList
     public class FormatListRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
+        private readonly ILogService logService;
 
-        public FormatListRepository(ISqlService sqlService)
+        public FormatListRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
+            this.logService = logService;
         }
 
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is FormatList formatList)
             {
-                var result = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
@@ -36,14 +35,14 @@ namespace Simplic.Package.FormatList
                                                         , new { entry.DisplayName, formatList.InternalName, formatList.Description, entry.Value });
                         });
                     }
-                    result.Message = $"Installed FormatList at {installableObject.Target}.";
-                    result.Success = true;
+
+                    await logService.WriteAsync($"Installed FormatList at {installableObject.Target}.", LogLevel.Info);
                 }
                 catch (Exception ex)
                 {
-                    result.Message = $"Failed to install FormatList at {installableObject.Target}.";
-                    result.LogLevel = LogLevel.Error;
-                    result.Exception = ex;
+                    await logService.WriteAsync($"Failed to install FormatList at {installableObject.Target}.", LogLevel.Error, ex);
+                    
+                    result.Success = false;
                 }
                 return result;
             }

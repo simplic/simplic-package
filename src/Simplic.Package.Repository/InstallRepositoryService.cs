@@ -8,30 +8,34 @@ namespace Simplic.Package.Repository
 {
     public class InstallRepositoryService : IInstallObjectService
     {
+        private readonly ILogService logService;
+
+        public InstallRepositoryService(ILogService logService)
+        {
+            this.logService = logService;
+        }
+
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is RepositoryContent repositoryContent)
             {
                 var repositoryManager = RepositoryManager.Singleton;
-                var installObjectResult = new InstallObjectResult
-                {
-                    LogLevel = LogLevel.Info,
-                };
+                var result = new InstallObjectResult { Success = true };
 
                 try
                 {
                     repositoryManager.WriteAllBytes(installableObject.Target, repositoryContent.Data);
-                    
-                    installObjectResult.Success = true;
-                    installObjectResult.Message = $"Installed repository content at {installableObject.Target}.";
+
+                    await logService.WriteAsync($"Installed repository content at {installableObject.Target}.", LogLevel.Info);
                 }
                 catch (Exception ex)
                 {
-                    installObjectResult.Message = $"Failed to install repository content at {installableObject.Target}.";
-                    installObjectResult.LogLevel = LogLevel.Error;
-                    installObjectResult.Exception = ex;
+                    await logService.WriteAsync($"Failed to install repository content at {installableObject.Target}.", LogLevel.Error, ex);
+
+                    result.Success = false;
                 }
-                return installObjectResult;
+
+                return result;
             }
             throw new InvalidContentException();
         }
