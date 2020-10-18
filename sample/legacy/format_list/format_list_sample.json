@@ -1,0 +1,11 @@
+// Target-Table: ESS_MS_Controls_FormatList
+{
+  "internalName": "<internal-name>",
+  "description": "<description>",
+  "items": [
+    {
+      "name": "<entry-name>",
+      "value": "<entry-value>"
+    }
+  ]
+}

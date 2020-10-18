@@ -1,0 +1,10 @@
+{
+  "id": "<unique-id>",
+  "name": "<name>",
+  "stackId": "<stack-id>",
+  "isActive": true,
+  "type": "sql", // At the moment only SQL is supported
+  "configuration": {
+    "sql": "<sql-statement>"
+  }
+}

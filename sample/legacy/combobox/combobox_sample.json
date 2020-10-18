@@ -1,0 +1,8 @@
+// Target-Table: ESS_MS_Controls_DropDownBox
+{
+  "name": "<internal-name>",
+  "sqlStatement": "<select-statement>",
+  "selectColumn": "<column-name>",
+  "selectColumnBackground": "<column-name>",
+  "fsControlName": "<format_list>"
+}

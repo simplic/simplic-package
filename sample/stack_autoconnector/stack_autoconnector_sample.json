@@ -1,0 +1,9 @@
+{
+  "name": "<name>",
+  "type": "xml-sql",
+  "stackId": "<stack-id>",
+  "target": "<target-stack-name>",
+  "configuration": {
+    "xml": "<xml-configuration>"
+  }
+}

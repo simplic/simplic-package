@@ -1,0 +1,11 @@
+{
+  "id": "<unique-id>",
+  "reportDesignId": "<report-design-id>",
+  "printer": "Printer-name",
+  "isContextlessPrintable": false,
+  "type": "<type>", // Possible types: none, sequence, grid, sql
+  "configuration": {
+    "sequenceId": "<sequence-id>", // Only for sequence
+    "sqlDataSourceCode": "<sequence-id>" // only for sql
+  }
+}
