@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
+using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
@@ -14,50 +13,143 @@ namespace Simplic.Package.Service
     public class PackService : IPackService
     {
         private readonly IUnityContainer container;
+        private readonly ILogService logService;
+        private readonly IValidatePackageConfigurationService validatePackageConfigurationService;
+        private readonly IFileService fileService;
 
-        public PackService(IUnityContainer container)
+        public PackService(IUnityContainer container, ILogService logService, IValidatePackageConfigurationService validatePackageConfigurationService, IFileService fileService)
         {
             this.container = container;
+            this.logService = logService;
+            this.validatePackageConfigurationService = validatePackageConfigurationService;
+            this.fileService = fileService;
         }
 
+        /// <summary>
+        /// Creates and writes a package based on the package configuration file
+        /// </summary>
+        /// <param name="json">The package configuration file as a string</param>
+        /// <returns>The written archive in bytes</returns>
         public async Task<byte[]> Pack(string json)
         {
-            var package = JsonConvert.DeserializeObject<Package>(json);
-
-            return await Pack(package);
+            try
+            {
+                var packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(json);
+                return await Pack(packageConfiguration);
+            }
+            catch (JsonSerializationException jse)
+            {
+                throw new PackageConfigurationException("Couldent deserialize the package configuration.", jse);
+            }
         }
 
-        public async Task<byte[]> Pack(Package package)
+        /// <summary>
+        /// Creates and writes a package based on the given PackageConfiguration object
+        /// </summary>
+        /// <param name="packageConfiguration">The PackageConfiguration to create from</param>
+        /// <returns>The written archive in bytes</returns>
+        public async Task<byte[]> Pack(PackageConfiguration packageConfiguration)
         {
+            // Debugger.Launch();
+            // Validate the PackageConfiguration object
+            var validatePackageConfigurationResult = await validatePackageConfigurationService.Validate(packageConfiguration);
+            if (!validatePackageConfigurationResult.IsValid)
+                throw new PackageConfigurationException(validatePackageConfigurationResult.Message);
+            else
+                await logService.WriteAsync(validatePackageConfigurationResult.Message, validatePackageConfigurationResult.LogLevel);
+
+            // Create the package archive
             using (var stream = new MemoryStream())
             {
-                using (var zip = new ZipArchive(stream, ZipArchiveMode.Create))
+                using (var archive = new ZipArchive(stream, ZipArchiveMode.Create, true))
                 {
-                    foreach (var item in package.Objects)
+                    var configurationEntry = archive.CreateEntry("package.json");
+
+                    var jsonSerializerSettings = new JsonSerializerSettings
                     {
-                        // Resolves the concrete registered PackObjectService
-                        // Hier exception handeling, falls ein type registriert werden soll, der nicht existiert
+                        Converters = new List<JsonConverter> {
+                            new VersionConverter()
+                        }
+                    };
+
+                    var json = JsonConvert.SerializeObject(packageConfiguration, jsonSerializerSettings);
+                    var jsonBytes = Encoding.Default.GetBytes(json);
+
+                    await WriteToEntry(configurationEntry, jsonBytes);
+
+                    // Add all the objects to the archive
+                    foreach (var item in packageConfiguration.Objects)
+                    {
                         var packObjectService = container.Resolve<IPackObjectService>(item.Key);
 
-                        // configuration is of Type ObjectListItem
-                        foreach (var configuration in item.Value)
+                        foreach (var objectListItem in item.Value)
                         {
-                            // await extracts PackObjectResult from Task<PackObjectResult> 
-                            var result = await packObjectService.ReadAsync(configuration);
+                            var packObjectResult = await packObjectService.ReadAsync(objectListItem);
 
-                            // Creates a path inside the zip
-                            var entry = zip.CreateEntry(result.Location);
-
-                            using (var resultStream = new MemoryStream(result.File))
+                            // Validate the packgedObject before it can be written
+                            ValidateObjectResult validateObjectResult = null;
+                            try
                             {
-                                // Copy the read file content (byte[]) to the created entry
-                                await resultStream.CopyToAsync(entry.Open());
+                                var validateObjectService = container.Resolve<IValidateObjectService>(item.Key);
+                                validateObjectResult = await validateObjectService.Validate(packObjectResult);
+
+                                if (!validateObjectResult.IsValid)
+                                    throw new InvalidObjectException(validateObjectResult.Message, validateObjectResult.Exception);
+                                else
+                                    await logService.WriteAsync(validateObjectResult.Message, validateObjectResult.LogLevel);
+                            }
+                            catch (ResolutionFailedException)
+                            {
+                                await logService.WriteAsync($"Skipped Validation on {objectListItem.Source} due to inability to resolve validation service for {item.Key}", LogLevel.Info);
+                            }
+
+                            // Write the object to the archive
+                            if (validateObjectResult == null || validateObjectResult.IsValid)
+                            {
+                                var entry = archive.CreateEntry(packObjectResult.Location);
+                                await WriteToEntry(entry, packObjectResult.File);
+
+                                foreach (var payload in packObjectResult.Payload)
+                                {
+                                    var payloadEntry = archive.CreateEntry(payload.Key);
+                                    await WriteToEntry(payloadEntry, payload.Value);
+                                }
+
                             }
                         }
                     }
                 }
-                // Return fuer Test?
+                string archiveName = $"{packageConfiguration.Name}_v{packageConfiguration.Version}.zip";
+                if (fileService.FileExists(archiveName))
+                {
+                    await logService.WriteAsync($"[TODO: Decide what to do here] A Package with name {packageConfiguration.Name}_v{packageConfiguration.Version} already exists in working directory", LogLevel.Warning);
+                    File.Delete(archiveName);
+                    await fileService.WriteAllBytesAsync(stream.ToArray(), archiveName);
+                    await logService.WriteAsync($"Succesfully created package.", LogLevel.Info);
+                }
+                else
+                {
+                    await fileService.WriteAllBytesAsync(stream.ToArray(), archiveName);
+                    await logService.WriteAsync($"Succesfully created package {archiveName}.", LogLevel.Info);
+                }
+
                 return stream.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Copies content to a ZipArchiveEntry
+        /// </summary>
+        /// <param name="entry">A ZipArchiveEntry</param>
+        /// <param name="content">The content to write to the entry</param>
+        private async Task WriteToEntry(ZipArchiveEntry entry, byte[] content)
+        {
+            using (var stream = new MemoryStream(content))
+            {
+                using (var entryStream = entry.Open())
+                {
+                    await stream.CopyToAsync(entryStream);
+                }
             }
         }
     }

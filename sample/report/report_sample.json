@@ -1,0 +1,20 @@
+{
+  "id": "<unique-id>",
+  "name": "<name>",
+  "type": "<type>", // sql, key-value, parameter
+  "reportFile": "/private/...",
+  "configuration": {
+    "connection": "connection",
+    "provider": "<ado.net provider>",
+
+    "isListBaed": false, // only for key-value
+    "parameter": [ // only for key-value
+      {
+        "name": "sample",
+        "orderId": 0
+      }
+    ]
+
+
+  }
+}

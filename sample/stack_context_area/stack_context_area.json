@@ -1,0 +1,15 @@
+{
+  "stackId": "<stack-id>",
+  "displayName": "<display-name>",
+  "type": "grid",
+  "configuration": {
+    "grid": "<grid-name>",
+    "stackBased": true,
+    "connectWithArchive": true
+  },
+  "contextOfStacks": [
+    {
+      "stackId": "<stack-id>"
+    }
+  ]
+}

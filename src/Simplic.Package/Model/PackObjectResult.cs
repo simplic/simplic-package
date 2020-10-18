@@ -1,8 +1,5 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
@@ -10,5 +7,6 @@ namespace Simplic.Package
     {
         public byte[] File { get; set; }
         public string Location { get; set; }
+        public IDictionary<string, byte[]> Payload { get; set; } = new Dictionary<string, byte[]>();
     }
 }

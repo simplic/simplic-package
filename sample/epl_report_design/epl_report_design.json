@@ -1,0 +1,7 @@
+{
+  "id": "<unique-id>",
+  "internalName": "<name>",
+  "displayName": "<display-name>",
+  "reportContent": "report-content",
+  "printerHeadWidth": 10
+}

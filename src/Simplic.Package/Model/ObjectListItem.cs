@@ -1,8 +1,6 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simplic.Package
 {
@@ -10,5 +8,8 @@ namespace Simplic.Package
     {
         public string Source { get; set; }
         public string Target { get; set; }
+        public Guid? Guid { get; set; }
+        public InstallMode Mode { get; set; }
+        public IList<Payload> Payload { get; set; } = new List<Payload>();
     }
 }

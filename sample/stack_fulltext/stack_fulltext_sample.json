@@ -1,0 +1,8 @@
+{
+  "id": "<unique-guid>",
+  "stackId": "<stack-id>",
+  "type": "sql",
+  "configuration": {
+    "statement": "fulltext-sql"
+  }
+}

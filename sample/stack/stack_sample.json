@@ -1,0 +1,16 @@
+// We will create a new service in simplic-framework for this. This service will be used in the package-system than
+{
+  "displayName": "<localized-name>",
+  "stackGridName": "<Grid-Name>",
+  "isActive": true,
+  "connectWithArchiv": false,
+  "tableName": "<table-name>",
+  "stackName": "STACK_<name>",
+  "headerSql": "<header-statement>",
+  "trackChanges": false,
+  "fullText": {
+    "useFulltextIndex": true,
+    "improveOCRText": true,
+    "useDCE": true
+  }
+}
