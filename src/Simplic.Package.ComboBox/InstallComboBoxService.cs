@@ -18,11 +18,6 @@ namespace Simplic.Package.ComboBox
             return await repository.InstallObject(installableObject);
         }
 
-        public Task OverwriteObject(InstallableObject installableObject)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             return await repository.UninstallObject(installableObject);

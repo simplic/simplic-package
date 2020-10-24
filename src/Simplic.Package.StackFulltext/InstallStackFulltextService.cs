@@ -18,11 +18,6 @@ namespace Simplic.Package.StackFulltext
             return await repository.InstallObject(installableObject);
         }
 
-        public Task OverwriteObject(InstallableObject installableObject)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();

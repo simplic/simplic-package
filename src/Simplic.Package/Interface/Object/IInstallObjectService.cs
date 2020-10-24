@@ -24,13 +24,5 @@ namespace Simplic.Package
         /// <param name="installableObject">The Object to uninstall</param>
         /// <returns></returns>
         Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject);
-
-        /// <summary>
-        /// NOT IMPLEMENTED!
-        /// Force installs an Object by first uninstalling an existing one and then installing the new one
-        /// </summary>
-        /// <param name="installableObject">The Object to overwrite</param>
-        /// <returns></returns>
-        Task OverwriteObject(InstallableObject installableObject);
     }
 }

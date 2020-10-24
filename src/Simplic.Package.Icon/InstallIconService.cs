@@ -62,17 +62,13 @@ namespace Simplic.Package.Icon
 
         public Guid GetGuidByName(string name)
         {
+            // TODO: Make this more efficient
             var icon = iconService.GetAll().FirstOrDefault(x => x.Name == name);
             
             if (icon != null)
                 return icon.Guid;
             else
                 return Guid.Empty;
-        }
-
-        public Task OverwriteObject(InstallableObject installableObject)
-        {
-            throw new NotImplementedException();
         }
 
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
