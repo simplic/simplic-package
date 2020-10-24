@@ -21,13 +21,5 @@ namespace Simplic.Package
         /// <param name="unpackedPackage">The package to uninstall</param>
         /// <returns></returns>
         Task Uninstall(Package unpackedPackage);
-
-        /// <summary>
-        /// NOT IMPLEMENTED
-        /// Force installs a package by uninstalling a potentially existing one and then installing it
-        /// </summary>
-        /// <param name="unpackedPackage">The package to overwrite</param>
-        /// <returns></returns>
-        Task Overwrite(Package unpackedPackage);
     }
 }
