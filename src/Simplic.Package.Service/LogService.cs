@@ -3,14 +3,15 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Service
 {
+    /// <summary>
+    /// Log service implementation
+    /// </summary>
     public class LogService : ILogService
-
-    {       /// <summary>
-            /// Subscribers to this event are invoked whenever a message is added to the log
-            /// </summary>
+    {
+        /// <summary>
+        /// Subscribers to this event are invoked whenever a message is added to the log
+        /// </summary>
         public event EventHandler<LogMessageEventArgs> MessageAdded;
-
-        public Protocol Protocol { get; set; } = new Protocol();
 
         /// <summary>
         /// Adds a message to the log
@@ -21,7 +22,6 @@ namespace Simplic.Package.Service
         /// <returns></returns>
         public async Task WriteAsync(string message, LogLevel logLevel, Exception exception = null)
         {
-            // TODO: Potentially add the time here already if its needed in the log
             MessageAdded?.Invoke(this, new LogMessageEventArgs { Message = message, LogLevel = logLevel, Exception = exception });
 
             Protocol.Messages.Add(new ProtocolItem
@@ -31,5 +31,10 @@ namespace Simplic.Package.Service
                 Exception = exception
             });
         }
+
+        /// <summary>
+        /// Gets or sets the actual log protocol instance
+        /// </summary>
+        public Protocol Protocol { get; set; } = new Protocol();
     }
 }

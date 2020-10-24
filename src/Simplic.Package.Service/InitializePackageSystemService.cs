@@ -16,7 +16,7 @@ namespace Simplic.Package.Service
 
         public async Task Initialize()
         {
-            var result = await initializePackageSystemRepository.Intialize();
+            var result = await initializePackageSystemRepository.Initialize();
             await logService.WriteAsync(result.Message, result.LogLevel, result.Exception);
         }
     }

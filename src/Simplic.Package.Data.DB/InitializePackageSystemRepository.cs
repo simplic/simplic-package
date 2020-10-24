@@ -15,7 +15,7 @@ namespace Simplic.Package.Data.DB
             this.sqlService = sqlService;
         }
 
-        public async Task<InitializePackageSystemResult> Intialize()
+        public async Task<InitializePackageSystemResult> Initialize()
         {
             var packageTableExists = await TableExists("Package");
             var packageObjectTableExists = await TableExists("Package_Object");

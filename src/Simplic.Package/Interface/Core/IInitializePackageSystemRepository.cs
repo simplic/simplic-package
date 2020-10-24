@@ -11,6 +11,6 @@ namespace Simplic.Package
         /// Initializes the Package System by creating the tables necesarry for having package version control
         /// </summary>
         /// <returns>A InitializePackageSystemResult object</returns>
-        Task<InitializePackageSystemResult> Intialize();
+        Task<InitializePackageSystemResult> Initialize();
     }
 }
