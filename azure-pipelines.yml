@@ -58,3 +58,4 @@ steps:
         **\Simplic.Package.Test.dll
         !**\obj\**
       searchFolder: "src"
+      .\

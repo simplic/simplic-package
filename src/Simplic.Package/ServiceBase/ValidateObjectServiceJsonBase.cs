@@ -42,8 +42,10 @@ namespace Simplic.Package
                 result.LogLevel = LogLevel.Error;
                 result.Exception = ex;
             }
+
             return result;
         }
+
         private string ElementName => typeof(T).Name;
     }
 }

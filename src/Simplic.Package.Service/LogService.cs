@@ -24,24 +24,12 @@ namespace Simplic.Package.Service
             // TODO: Potentially add the time here already if its needed in the log
             MessageAdded?.Invoke(this, new LogMessageEventArgs { Message = message, LogLevel = logLevel, Exception = exception });
 
-            if (logLevel == LogLevel.Error)
-                Protocol.Error.Add(message);
-            else if (logLevel == LogLevel.Warning)
-                Protocol.Warning.Add(message);
-            else if (logLevel == LogLevel.Info)
-                Protocol.Warning.Add(message);
-            else if (logLevel == LogLevel.Debug)
-                Protocol.Debug.Add(message);
-        }
-
-        public async Task WriteAsyncSuccess(string objectName, string target)
-        {
-            await WriteAsync($"Installed {objectName} at {target}.", LogLevel.Info);
-        }
-
-        public async Task WriteAsyncFailed(string objectName, string target)
-        {
-            await WriteAsync($"Failed to install {objectName} at {target}.", LogLevel.Error);
+            Protocol.Messages.Add(new ProtocolItem
+            {
+                Message = message,
+                LogLevel = logLevel,
+                Exception = exception
+            });
         }
     }
 }
