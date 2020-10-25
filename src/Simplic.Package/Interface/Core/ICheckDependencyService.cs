@@ -13,7 +13,7 @@ namespace Simplic.Package
         /// </summary>
         /// <param name="dependencies">A list of the dependecies to check</param>
         /// <returns>A CheckDependenciesResult object</returns>
-        Task<CheckDependenciesResult> CheckAllDependencies(IList<Dependency> dependencies);
+        Task<CheckDependenciesResult> CheckDependencies(IList<Dependency> dependencies);
 
         /// <summary>
         /// Checks if a given dependecy is satisfied or not

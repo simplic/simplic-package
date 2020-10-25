@@ -29,7 +29,7 @@ namespace Simplic.Package.Service
             // Check dependencies
             var checkDependencyService = container.Resolve<ICheckDependencyService>();
 
-            var checkDependenciesResult = await checkDependencyService.CheckAllDependencies(package.Dependencies);
+            var checkDependenciesResult = await checkDependencyService.CheckDependencies(package.Dependencies);
             if (checkDependenciesResult.LogLevel != LogLevel.Error)
                 await logService.WriteAsync(checkDependenciesResult.Message, checkDependenciesResult.LogLevel);
             else

@@ -13,7 +13,7 @@ namespace Simplic.Package.Service
             this.repository = repository;
         }
 
-        public async Task<CheckDependenciesResult> CheckAllDependencies(IList<Dependency> dependencies)
+        public async Task<CheckDependenciesResult> CheckDependencies(IList<Dependency> dependencies)
         {
             var result = new CheckDependenciesResult
             {
@@ -54,8 +54,12 @@ namespace Simplic.Package.Service
         {
             var version = await repository.GetPackageVersion(dependency.Package);
 
-            if ((version == dependency.Version) || (version > dependency.Version && dependency.GreaterAllowed))
+            if (version == null)
+                return false;
+
+            if (version == dependency.Version || (version > dependency.Version && dependency.GreaterAllowed))
                 return true;
+
             return false;
         }
     }

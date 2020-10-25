@@ -6,6 +6,6 @@ namespace Simplic.Package
     {
         public string Package { get; set; }
         public Version Version { get; set; }
-        public bool GreaterAllowed { get; set; }
+        public bool GreaterAllowed { get; set; } = true;
     }
 }
