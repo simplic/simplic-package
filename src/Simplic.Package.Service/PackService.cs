@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -57,6 +58,13 @@ namespace Simplic.Package.Service
                 throw new PackageConfigurationException(validatePackageConfigurationResult.Message);
             else
                 await logService.WriteAsync(validatePackageConfigurationResult.Message, validatePackageConfigurationResult.LogLevel);
+
+            if (packageConfiguration.Guid == Guid.Empty)
+            {
+                var error = $"Empty guid (`{Guid.Empty}`) is not valid package id.";
+                await logService.WriteAsync(error, LogLevel.Error);
+                throw new PackageConfigurationException(error);
+            }
 
             // Create the package archive
             using (var stream = new MemoryStream())
@@ -151,8 +159,8 @@ namespace Simplic.Package.Service
                     var jsonBytes = Encoding.Default.GetBytes(json);
 
                     await WriteToEntry(configurationEntry, jsonBytes);
-
                 }
+
                 string archiveName = $"{packageConfiguration.Name}_v{packageConfiguration.Version}.zip";
                 if (fileService.FileExists(archiveName))
                 {
