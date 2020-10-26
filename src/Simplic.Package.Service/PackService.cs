@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
@@ -50,7 +51,6 @@ namespace Simplic.Package.Service
         /// <returns>The written archive in bytes</returns>
         public async Task<byte[]> Pack(PackageConfiguration packageConfiguration)
         {
-            // Debugger.Launch();
             // Validate the PackageConfiguration object
             var validatePackageConfigurationResult = await validatePackageConfigurationService.Validate(packageConfiguration);
             if (!validatePackageConfigurationResult.IsValid)
@@ -63,8 +63,83 @@ namespace Simplic.Package.Service
             {
                 using (var archive = new ZipArchive(stream, ZipArchiveMode.Create, true))
                 {
-                    var configurationEntry = archive.CreateEntry("package.json");
+                    // Add all the objects to the archive
+                    foreach (var item in packageConfiguration.Objects)
+                    {
 
+                        async Task writeEntry(ObjectListItem _oli, PackObjectResult _por)
+                        {
+                            // Validate the packgedObject before it can be written
+                            ValidateObjectResult validateObjectResult = null;
+                            try
+                            {
+                                var validateObjectService = container.Resolve<IValidateObjectService>(item.Key);
+                                validateObjectResult = await validateObjectService.Validate(_por);
+
+                                if (!validateObjectResult.IsValid)
+                                    throw new InvalidObjectException(validateObjectResult.Message, validateObjectResult.Exception);
+                                else
+                                    await logService.WriteAsync(validateObjectResult.Message, validateObjectResult.LogLevel);
+                            }
+                            catch (ResolutionFailedException)
+                            {
+                                await logService.WriteAsync($"Skipped Validation on {_oli.Source} due to inability to resolve validation service for {item.Key}", LogLevel.Info);
+                            }
+
+                            // Write the object to the archive
+                            if (validateObjectResult == null || validateObjectResult.IsValid)
+                            {
+                                var entry = archive.CreateEntry(_por.Location);
+                                await WriteToEntry(entry, _por.File);
+
+                                foreach (var payload in _por.Payload)
+                                {
+                                    var payloadEntry = archive.CreateEntry(payload.Key);
+                                    await WriteToEntry(payloadEntry, payload.Value);
+                                }
+                            }
+                        }
+
+                        var packObjectService = container.Resolve<IPackObjectService>(item.Key);
+
+                        foreach (var objectListItem in item.Value.ToList())
+                        {
+                            if (objectListItem.Source.Contains("*"))
+                            {
+                                var directory = Path.GetDirectoryName(objectListItem.Source);
+                                var fileWildCard = Path.GetFileName(objectListItem.Source);
+
+                                foreach (var fullPath in Directory.GetFiles(directory, fileWildCard))
+                                {
+                                    var source = Path.Combine(directory, Path.GetFileName(fullPath));
+
+                                    var wildCardPOR = new PackObjectResult
+                                    {
+                                        File = await fileService.ReadAllBytesAsync(fullPath),
+                                        Location = source
+                                    };
+                                    await writeEntry(objectListItem, wildCardPOR);
+
+                                    // Add to target
+                                    item.Value.Add(new ObjectListItem 
+                                    {
+                                        Source = source,
+                                        Target = source
+                                    });
+                                }
+
+                                item.Value.Remove(objectListItem);
+                            }
+                            else
+                            {
+                                var packObjectResult = await packObjectService.ReadAsync(objectListItem);
+                                await writeEntry(objectListItem, packObjectResult);
+                            }
+                        }
+                    }
+
+                    // Write package config
+                    var configurationEntry = archive.CreateEntry("package.json");
                     var jsonSerializerSettings = new JsonSerializerSettings
                     {
                         Converters = new List<JsonConverter> {
@@ -77,47 +152,6 @@ namespace Simplic.Package.Service
 
                     await WriteToEntry(configurationEntry, jsonBytes);
 
-                    // Add all the objects to the archive
-                    foreach (var item in packageConfiguration.Objects)
-                    {
-                        var packObjectService = container.Resolve<IPackObjectService>(item.Key);
-
-                        foreach (var objectListItem in item.Value)
-                        {
-                            var packObjectResult = await packObjectService.ReadAsync(objectListItem);
-
-                            // Validate the packgedObject before it can be written
-                            ValidateObjectResult validateObjectResult = null;
-                            try
-                            {
-                                var validateObjectService = container.Resolve<IValidateObjectService>(item.Key);
-                                validateObjectResult = await validateObjectService.Validate(packObjectResult);
-
-                                if (!validateObjectResult.IsValid)
-                                    throw new InvalidObjectException(validateObjectResult.Message, validateObjectResult.Exception);
-                                else
-                                    await logService.WriteAsync(validateObjectResult.Message, validateObjectResult.LogLevel);
-                            }
-                            catch (ResolutionFailedException)
-                            {
-                                await logService.WriteAsync($"Skipped Validation on {objectListItem.Source} due to inability to resolve validation service for {item.Key}", LogLevel.Info);
-                            }
-
-                            // Write the object to the archive
-                            if (validateObjectResult == null || validateObjectResult.IsValid)
-                            {
-                                var entry = archive.CreateEntry(packObjectResult.Location);
-                                await WriteToEntry(entry, packObjectResult.File);
-
-                                foreach (var payload in packObjectResult.Payload)
-                                {
-                                    var payloadEntry = archive.CreateEntry(payload.Key);
-                                    await WriteToEntry(payloadEntry, payload.Value);
-                                }
-
-                            }
-                        }
-                    }
                 }
                 string archiveName = $"{packageConfiguration.Name}_v{packageConfiguration.Version}.zip";
                 if (fileService.FileExists(archiveName))
