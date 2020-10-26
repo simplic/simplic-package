@@ -71,7 +71,7 @@ namespace Simplic.Package.Service
             {
                 using (var archive = new ZipArchive(stream, ZipArchiveMode.Create, true))
                 {
-                    // Add all the objects to the archive
+                    // Add all objects to the archive
                     foreach (var item in packageConfiguration.Objects)
                     {
 
