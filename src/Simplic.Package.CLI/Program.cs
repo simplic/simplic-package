@@ -90,7 +90,7 @@ namespace Simplic.Package.CLI
             catch (OptionException e)
             {
                 Console.WriteLine(e.Message);
-                Console.WriteLine("Try `sipack --help' for more information.");
+                Console.WriteLine("Try `simpack --help' for more information.");
                 return 1;
             }
 
@@ -259,7 +259,7 @@ namespace Simplic.Package.CLI
                 var packageConfiguration = new PackageConfiguration
                 {
                     PackageFormatVersion = Version.Parse(PackageFormatVersion.Version),
-                    Guid = new Guid(),
+                    Guid = Guid.NewGuid(),
                     Name = name,
                     Version = new Version(1, 0, 0, 0),
                     Dependencies = new List<Dependency>(),
@@ -352,7 +352,7 @@ namespace Simplic.Package.CLI
 
         private static void ShowHelp(OptionSet optionSet)
         {
-            Console.WriteLine("Usage: sipack [Options]");
+            Console.WriteLine("Usage: simpack [Options]");
             Console.WriteLine();
             Console.WriteLine("Options:");
             optionSet.WriteOptionDescriptions(Console.Out);
