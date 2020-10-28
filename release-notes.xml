@@ -1,0 +1,5 @@
+<ReleaseNotes>
+  <ChangeSet>
+    <Change type="feature">Add basic package system.</Change>
+  </ChangeSet>
+</ReleaseNotes>

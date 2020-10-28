@@ -58,4 +58,19 @@ steps:
         **\Simplic.Package.Test.dll
         !**\obj\**
       searchFolder: "src"
-      .\
+
+  - task: NuGetCommand@2
+    inputs:
+      command: "pack"
+      packagesToPack: "src/Simplic.**/*.csproj;!src/Simplic.**/*.Test.csproj"
+      configuration: "$(buildConfiguration)"
+      versioningScheme: "off"
+
+  - task: NuGetCommand@2
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    inputs:
+      command: "push"
+      packagesToPush: "$(Build.ArtifactStagingDirectory)/Simplic.*.nupkg;!$(Build.ArtifactStagingDirectory)/Simplic.*.symbols.nupkg"
+      nuGetFeedType: "internal"
+      publishVstsFeed: "f7087ef5-bf6f-48b2-8b8b-5e513f4a7a9e"
+      allowPackageConflicts: true
