@@ -22,6 +22,6 @@ namespace Simplic.Package
         public IList<Dependency> Dependencies { get; set; } = new List<Dependency>();
 
         [JsonProperty(Required = Required.Always)]
-        public IDictionary<string, IList<ObjectListItem>> Objects { get; set; } = new Dictionary<string, IList<ObjectListItem>>()
+        public IDictionary<string, IList<ObjectListItem>> Objects { get; set; } = new Dictionary<string, IList<ObjectListItem>>();
     }
 }
