@@ -8,7 +8,7 @@ namespace Simplic.Package
         public string Name { get; set; }
         public Guid Guid { get; set; }
         public Version Version { get; set; }
-        public IList<Dependency> Dependencies { get; set; }
+        public IList<Dependency> Dependencies { get; set; } = new List<Dependency>();
         public IDictionary<string, IList<InstallableObject>> UnpackedObjects { get; set; } = new Dictionary<string, IList<InstallableObject>>();
     }
 }

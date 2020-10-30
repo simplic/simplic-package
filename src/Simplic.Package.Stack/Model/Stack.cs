@@ -16,6 +16,5 @@ namespace Simplic.Package.Stack
         public string HeaderSql { get; set; }
         public bool TrackChanges { get; set; }
         public FullText FullText { get; set; }
-        public string StackSearchName { get; set; } = "";
     }
 }

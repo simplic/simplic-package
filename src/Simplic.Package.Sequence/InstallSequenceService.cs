@@ -43,7 +43,7 @@ namespace Simplic.Package.Sequence
                                 Step = counter.Step,
                                 FixedLength = counter.FixedLength,
                                 Format = counter.OptionalFormat,
-                                TenantId = counter.TenenatId
+                                TenantId = counter.TenantId
                             });
                     }
 

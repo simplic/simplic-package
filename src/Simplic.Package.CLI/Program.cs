@@ -270,7 +270,8 @@ namespace Simplic.Package.CLI
                 {
                     Converters = new List<JsonConverter> {
                         new VersionConverter()
-                    }
+                    },
+                    Formatting = Formatting.Indented
                 };
 
                 var json = JsonConvert.SerializeObject(packageConfiguration, jsonSerializerSettings);
