@@ -8,6 +8,6 @@ namespace Simplic.Package.ItemBox
         public string Name { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public IList<ItemBoxProfile> Profiles { get; set; }
+        public IList<ItemBoxProfile> Profiles { get; set; } = new List<ItemBoxProfile>();
     }
 }

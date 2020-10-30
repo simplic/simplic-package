@@ -6,6 +6,6 @@ namespace Simplic.Package.FormatList
     {
         public string InternalName { get; set; }
         public string Description { get; set; }
-        public IList<FormatListItem> Items { get; set; }
+        public IList<FormatListItem> Items { get; set; } = new List<FormatListItem>();
     }
 }

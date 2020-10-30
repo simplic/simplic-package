@@ -12,7 +12,7 @@ namespace Simplic.Package.StackContextArea
         public string DisplayName { get; set; }
         public string Type { get; set; }
         public IStackContextAreaConfiguration Configuration { get; set; }
-        public IList<ContextOfStackItem> ContextOfStacks { get; set; }
+        public IList<ContextOfStackItem> ContextOfStacks { get; set; } = new List<ContextOfStackItem>();
         public string SearchName { get; set; } = "";
     }
 }

@@ -11,7 +11,8 @@ namespace Simplic.Package.Sequence
         public int Max { get; set; }
         public int Step { get; set; }
         public int FixedLength { get; set; }
+        public bool Format { get; set; }
         public string OptionalFormat { get; set; }
-        public Guid? TenenatId { get; set; }
+        public Guid? TenantId { get; set; }
     }
 }

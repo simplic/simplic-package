@@ -31,7 +31,7 @@ namespace Simplic.Package.Stack
                             "Insert into ESS_DCC_Stack (guid, displayname, stackgridname, isactive, connectwitharchiv, tablename, stackname," +
                                                         " headersql, trackchanges, usefulltextindex, improveocrtext, usedce, stacksearchname)" +
                             "on existing update values (:id, :displayname, :stackgridname, :isactive, :connectwitharchive, :tablename, :stackname," +
-                                                        " :headersql, :trackchanges, :usefulltextindex, :improveocrtext, :usedce, :stacksearchname)",
+                                                        " :headersql, :trackchanges, :usefulltextindex, :improveocrtext, :usedce, '')",
                             new
                             {
                                 stack.Id,
@@ -45,8 +45,7 @@ namespace Simplic.Package.Stack
                                 stack.TrackChanges,
                                 stack.FullText.UseFullTextIndex,
                                 stack.FullText.ImproveOCRText,
-                                stack.FullText.UseDCE,
-                                stack.StackSearchName
+                                stack.FullText.UseDCE
                             }
                             );
 

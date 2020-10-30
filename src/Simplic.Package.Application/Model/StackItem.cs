@@ -12,7 +12,7 @@ namespace Simplic.Package.Application
         public string DisplayName { get; set; }
         public string Grid { get; set; }
         public int OrderId { get; set; }
-        public IList<RegisterItem> Registers { get; set; }
+        public IList<RegisterItem> Registers { get; set; } = new List<RegisterItem>();
         public string SearchName { get; set; } = "";
     }
 }

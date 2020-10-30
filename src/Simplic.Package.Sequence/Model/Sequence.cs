@@ -11,6 +11,6 @@ namespace Simplic.Package.Sequence
         public string InternalName { get; set; }
         public string DisplayName { get; set; }
         public string Format { get; set; }
-        public IList<CounterItem> Counter { get; set; }
+        public IList<CounterItem> Counter { get; set; } = new List<CounterItem>();
     }
 }
