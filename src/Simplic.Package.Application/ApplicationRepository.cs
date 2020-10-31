@@ -24,8 +24,7 @@ namespace Simplic.Package.Application
                 var result = new InstallObjectResult { Success = true };
 
                 try
-                {
-                    Debugger.Launch();
+                {                    
                     var contentTypeGuid = GetContentTypeId(application.Type);
                     var success = await sqlService.OpenConnection(async (c) =>
                     {

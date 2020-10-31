@@ -24,8 +24,7 @@ namespace Simplic.Package
             {
                 LogLevel = LogLevel.Info
             };
-
-            Debugger.Launch();
+                        
             try
             {
                 var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);

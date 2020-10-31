@@ -78,8 +78,7 @@ namespace Simplic.Package.Service
                         Dependencies = packageConfiguration.Dependencies
                     };
 
-                    //Debugger.Launch();
-
+                    
                     // Unpack all the packages content
                     foreach (var item in packageConfiguration.Objects)
                     {
