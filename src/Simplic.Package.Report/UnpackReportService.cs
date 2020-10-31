@@ -18,8 +18,7 @@ namespace Simplic.Package.Report
             };
 
             try
-            {
-                Debugger.Launch();
+            {                
                 var fullReport = new FullReport();
 
                 var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);

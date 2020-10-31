@@ -17,7 +17,6 @@ namespace Simplic.Package.StackRegister
 
             try
             {
-                Debugger.Launch();
                 var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
                 var jObject = JObject.Parse(json);
 

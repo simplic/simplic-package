@@ -46,6 +46,7 @@ using Simplic.TenantSystem;
 using Simplic.Authorization;
 using Simplic.Icon;
 using Simplic.Icon.Service;
+using Simplic.Package.Ribbon;
 
 namespace Simplic.Package.CLI
 {
@@ -106,8 +107,6 @@ namespace Simplic.Package.CLI
                 return 0;
             }
 
-
-            // Debugger.Launch();
             #region Register types
             var container = new UnityContainer();
             container.RegisterType<ILogService, LogService>(new ContainerControlledLifetimeManager());
@@ -127,6 +126,11 @@ namespace Simplic.Package.CLI
             container.RegisterType<IObjectRepository, ApplicationRepository>("application");
             container.RegisterType<IPackObjectService, PackApplicationService>("application");
             container.RegisterType<IUnpackObjectService, UnpackApplicationService>("application");
+
+            container.RegisterType<IInstallObjectService, InstallRibbonService>("ribbon");
+            container.RegisterType<IObjectRepository, RibbonRepository>("ribbon");
+            container.RegisterType<IPackObjectService, PackRibbonService>("ribbon");
+            container.RegisterType<IUnpackObjectService, UnpackRibbonService>("ribbon");
 
             container.RegisterType<IInstallObjectService, InstallComboBoxService>("comboBox");
             container.RegisterType<IObjectRepository, ComboBoxRepository>("comboBox");

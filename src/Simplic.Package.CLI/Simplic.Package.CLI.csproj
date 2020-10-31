@@ -118,6 +118,10 @@
       <Project>{1366426d-40ce-4e6f-9990-a5ac7d67b9a6}</Project>
       <Name>Simplic.Package.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.Ribbon\Simplic.Package.Ribbon.csproj">
+      <Project>{B528F0D8-D0A8-4C46-9416-F812D292468F}</Project>
+      <Name>Simplic.Package.Ribbon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Package.Role\Simplic.Package.Role.csproj">
       <Project>{52b5de4c-00af-44c3-a74e-0be285790baa}</Project>
       <Name>Simplic.Package.Role</Name>
