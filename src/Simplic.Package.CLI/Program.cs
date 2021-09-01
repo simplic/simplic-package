@@ -1,4 +1,4 @@
-﻿using iAnywhere.Data.SQLAnywhere;
+using Sap.Data.SQLAnywhere;
 using NDesk.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
