@@ -2,4 +2,7 @@
   <ChangeSet>
     <Change type="feature">Add basic package system.</Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="feature">Upgrade from SAP Sybase Sql Anywhere 12 to SAP Sybase Sql Anywhere 17.</Change>
+  </ChangeSet>
 </ReleaseNotes>
