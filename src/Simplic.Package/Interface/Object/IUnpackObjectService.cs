@@ -11,7 +11,7 @@ namespace Simplic.Package
         /// Unpacks an object and makes it installable,
         /// </summary>
         /// <param name="extractArchiveEntryResult">The archive entry to unpack from.</param>
-        /// <returns>A UnpackObjectResult object that is wrapping the InstallableObject.</returns>
+        /// <returns>A <see cref="UnpackObjectResult"/> object that is wrapping the <see cref="InstallableObject"/>.</returns>
         Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult);
     }
 }
