@@ -63,6 +63,7 @@
     <Compile Include="Interface\Package\IValidatePackageConfigurationService.cs" />
     <Compile Include="Model\InitializePackageSystemResult.cs" />
     <Compile Include="Interface\Core\IInitializePackageSystemRepository.cs" />
+    <Compile Include="Model\LogResult.cs" />
     <Compile Include="Model\ProtocolItem.cs" />
     <Compile Include="Model\UninstallObjectResult.cs" />
     <Compile Include="Model\InstallObjectResult.cs" />
@@ -89,7 +90,6 @@
     <Compile Include="Model\Dependency.cs" />
     <Compile Include="Model\IContent.cs" />
     <Compile Include="Model\InstallableObject.cs" />
-    <Compile Include="Model\LogResult.cs" />
     <Compile Include="Model\Package.cs" />
     <Compile Include="Model\ObjectListItem.cs" />
     <Compile Include="Model\PackageConfiguration.cs" />
