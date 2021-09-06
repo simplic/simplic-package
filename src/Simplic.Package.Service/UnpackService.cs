@@ -9,6 +9,7 @@ using Unity;
 
 namespace Simplic.Package.Service
 {
+    /// <inheritdoc/>
     public class UnpackService : IUnpackService
     {
         private readonly IUnityContainer container;
@@ -16,6 +17,13 @@ namespace Simplic.Package.Service
         private readonly ILogService logService;
         private IValidatePackageConfigurationService validatePackageConfigurationService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="UnpackService"/>.
+        /// </summary>
+        /// <param name="container"></param>
+        /// <param name="fileService"></param>
+        /// <param name="logService"></param>
+        /// <param name="validatePackageConfigurationService"></param>
         public UnpackService(IUnityContainer container, IFileService fileService, ILogService logService, IValidatePackageConfigurationService validatePackageConfigurationService)
         {
             this.container = container;
@@ -78,7 +86,7 @@ namespace Simplic.Package.Service
                         Dependencies = packageConfiguration.Dependencies
                     };
 
-                    
+
                     // Unpack all the packages content
                     foreach (var item in packageConfiguration.Objects)
                     {
