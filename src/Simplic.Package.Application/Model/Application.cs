@@ -5,7 +5,7 @@ using System.Net.Mime;
 namespace Simplic.Package.Application
 {
     /// <summary>
-    /// Represents the content of a simplilic application.
+    /// Represents the content of a simplic application.
     /// </summary>
     public class Application : IContent
     {
