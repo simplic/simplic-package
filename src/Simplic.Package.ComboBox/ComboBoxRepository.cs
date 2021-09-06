@@ -5,17 +5,26 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.ComboBox
 {
+    /// <summary>
+    /// Repository to write and check combo boxes from the database.
+    /// </summary>
     public class ComboBoxRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initialises a new instance of <see cref="ComboBoxRepository"/>
+        /// </summary>
+        /// <param name="sqlService"></param>
+        /// <param name="logService"></param>
         public ComboBoxRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
             this.logService = logService;
         }
 
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is ComboBox comboBox)
@@ -58,6 +67,7 @@ namespace Simplic.Package.ComboBox
             throw new InvalidContentException();
         }
 
+        /// <inheritdoc/>
         public async Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is ComboBox comboBox)
