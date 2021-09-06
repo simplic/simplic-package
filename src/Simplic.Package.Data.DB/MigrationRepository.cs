@@ -8,15 +8,21 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Data.DB
 {
+    /// <inheritdoc cref="IMigrationRepository"/>
     public class MigrationRepository : IMigrationRepository
     {
         private readonly ISqlService sqlService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="MigrationRepository"/>.
+        /// </summary>
+        /// <param name="sqlService"></param>
         public MigrationRepository(ISqlService sqlService)
         {
             this.sqlService = sqlService;
         }
 
+        /// <inheritdoc/>
         public async Task<CheckMigrationResult> CheckMigration(InstallableObject installableObject)
         {
             var result = new CheckMigrationResult
@@ -48,6 +54,7 @@ namespace Simplic.Package.Data.DB
         }
 
         // TODO: This could return a result object aswell, if information should be logged
+        /// <inheritdoc/>
         public async Task AddMigration(InstallableObject installableObject)
         {
             await sqlService.OpenConnection(async (c) =>

@@ -6,15 +6,21 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Data.DB
 {
+    /// <inheritdoc cref="IInitializePackageSystemRepository"/>
     public class InitializePackageSystemRepository : IInitializePackageSystemRepository
     {
         private readonly ISqlService sqlService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="InitializePackageSystemRepository"/>.
+        /// </summary>
+        /// <param name="sqlService"></param>
         public InitializePackageSystemRepository(ISqlService sqlService)
         {
             this.sqlService = sqlService;
         }
 
+        /// <inheritdoc/>
         public async Task<InitializePackageSystemResult> Initialize()
         {
             var packageTableExists = await TableExists("Package");
@@ -67,6 +73,11 @@ namespace Simplic.Package.Data.DB
             return initializePackageSystemResult;
         }
 
+        /// <summary>
+        /// Checks wherther the table already exists.
+        /// </summary>
+        /// <param name="tableName">The table name.</param>
+        /// <returns>Wherther the table already exists.</returns>
         private async Task<bool> TableExists(string tableName)
         {
             return await sqlService.OpenConnection(async (c) =>
