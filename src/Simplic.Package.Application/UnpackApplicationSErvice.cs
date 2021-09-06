@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Application
 {
+    /// <summary>
+    /// Service to unpack applications.
+    /// </summary>
     public class UnpackApplicationService : IUnpackObjectService
     {
+        /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var result = new UnpackObjectResult
@@ -45,6 +49,12 @@ namespace Simplic.Package.Application
             return result;
         }
 
+        /// <summary>
+        /// Deserializes application configuration.
+        /// </summary>
+        /// <param name="type">The type name.</param>
+        /// <param name="settingsJson">The json string containing the configuration.</param>
+        /// <returns>Returns the application configuration.</returns>
         private IApplicationConfiguration DeseralizeSettings(string type, string settingsJson)
         {
             if (type == "grid")
