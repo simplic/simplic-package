@@ -34,7 +34,6 @@ using Simplic.Package.StackContextArea;
 using Simplic.Package.StackFulltext;
 using Simplic.Package.StackRegister;
 using Simplic.Package.Application;
-using Simplic.Framework.Core;
 using Unity.ServiceLocation;
 using Simplic.Localization;
 using Simplic.Log.Console;
