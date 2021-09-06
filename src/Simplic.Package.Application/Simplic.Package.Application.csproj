@@ -54,7 +54,7 @@
     <Compile Include="Model\StackItem.cs" />
     <Compile Include="PackApplicationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnpackApplicationSErvice.cs" />
+    <Compile Include="UnpackApplicationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Package\Simplic.Package.csproj">
