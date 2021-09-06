@@ -74,7 +74,7 @@ namespace Simplic.Package.Data.DB
         }
 
         /// <summary>
-        /// Checks wherther the table already exists.
+        /// Checks whether the table already exists.
         /// </summary>
         /// <param name="tableName">The table name.</param>
         /// <returns>Wherther the table already exists.</returns>
