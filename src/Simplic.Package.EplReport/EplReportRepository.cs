@@ -1,24 +1,30 @@
 ﻿using Dapper;
-using Simplic.Framework.DBUI.Sql;
 using Simplic.Sql;
 using System;
-using System.Reflection.Emit;
-using System.Security.Authentication.ExtendedProtection;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.EplReport
 {
+    /// <summary>
+    /// Repository to check and write epl reports to the database.
+    /// </summary>
     public class EplReportRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="EplReportRepository"/>.
+        /// </summary>
+        /// <param name="sqlService"></param>
+        /// <param name="logService"></param>
         public EplReportRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
             this.logService = logService;
         }
 
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is EplReport eplReport)
@@ -81,6 +87,7 @@ namespace Simplic.Package.EplReport
             throw new InvalidContentException();
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();

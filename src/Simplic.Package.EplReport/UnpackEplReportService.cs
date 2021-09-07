@@ -5,8 +5,12 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.EplReport
 {
+    /// <summary>
+    /// Service to unpack epl reports
+    /// </summary>
     public class UnpackEplReportService : IUnpackObjectService
     {
+        /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var result = new UnpackObjectResult
@@ -42,6 +46,12 @@ namespace Simplic.Package.EplReport
             return result;
         }
 
+        /// <summary>
+        /// Deserializes the configuraiton.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         private IEplReportConfiguration DeserializeConfiguration(string type, JToken configuration)
         {
             if (type == "sequence")
