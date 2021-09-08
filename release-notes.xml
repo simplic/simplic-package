@@ -1,8 +1,8 @@
 <ReleaseNotes>
-  <ChangeSet>
+  <ChangeSet guid="dd96d587-2c7d-4b24-8eef-bfd05a48b98e">
     <Change type="feature">Add basic package system.</Change>
   </ChangeSet>
-  <ChangeSet>
+  <ChangeSet guid="46048834-2076-4cbb-ae14-0ec56a42abd2">
     <Change type="feature">Upgrade from SAP Sybase Sql Anywhere 12 to SAP Sybase Sql Anywhere 17.</Change>
   </ChangeSet>
 </ReleaseNotes>
