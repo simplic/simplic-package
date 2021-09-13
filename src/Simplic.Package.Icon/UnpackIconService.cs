@@ -3,8 +3,12 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Icon
 {
+    /// <summary>
+    /// Service to unpack an icon.
+    /// </summary>
     public class UnpackIconService : IUnpackObjectService
     {
+        /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var installableObject = new InstallableObject
