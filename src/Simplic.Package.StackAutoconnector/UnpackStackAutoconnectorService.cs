@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.StackAutoconnector
 {
+    /// <summary>
+    /// Service to unppack stack autoconnectors.
+    /// </summary>
     public class UnpackStackAutoconnectorService : IUnpackObjectService
     {
+        /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var result = new UnpackObjectResult
