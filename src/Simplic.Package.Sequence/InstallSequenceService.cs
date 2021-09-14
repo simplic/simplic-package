@@ -1,19 +1,26 @@
 ﻿using Simplic.Framework.Core;
 using System;
 using System.Threading.Tasks;
-using Unity;
 
 namespace Simplic.Package.Sequence
 {
+    /// <summary>
+    /// Service to install a sequence.
+    /// </summary>
     public class InstallSequenceService : IInstallObjectService
     {
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="InstallSequenceService"/>
+        /// </summary>
+        /// <param name="logService"></param>
         public InstallSequenceService(ILogService logService)
         {
             this.logService = logService;
         }
 
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is Sequence deserializedSequence)
@@ -55,7 +62,7 @@ namespace Simplic.Package.Sequence
                 catch (Exception ex)
                 {
                     await logService.WriteAsync($"Failed to install Sequence at {installableObject.Target}.", LogLevel.Error, ex);
-                    
+
                     result.Success = false;
                 }
                 return result;
@@ -63,6 +70,7 @@ namespace Simplic.Package.Sequence
             throw new InvalidContentException();
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();
