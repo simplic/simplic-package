@@ -1,15 +1,18 @@
 ﻿using Newtonsoft.Json.Linq;
 using Simplic.Package.Report.Model;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Report
 {
+    /// <summary>
+    /// Service to unpack a report.
+    /// </summary>
     public class UnpackReportService : IUnpackObjectService
     {
+        /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var result = new UnpackObjectResult
@@ -18,7 +21,7 @@ namespace Simplic.Package.Report
             };
 
             try
-            {                
+            {
                 var fullReport = new FullReport();
 
                 var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
