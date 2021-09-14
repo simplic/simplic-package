@@ -5,17 +5,26 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Ribbon
 {
+    /// <summary>
+    /// Repository to check and read ribbon items from the db.
+    /// </summary>
     public class RibbonRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="RibbonRepository"/>.
+        /// </summary>
+        /// <param name="sqlService"></param>
+        /// <param name="logService"></param>
         public RibbonRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
             this.logService = logService;
         }
 
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is RibbonTab ribbon)
@@ -64,6 +73,7 @@ namespace Simplic.Package.Ribbon
             throw new InvalidContentException();
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();

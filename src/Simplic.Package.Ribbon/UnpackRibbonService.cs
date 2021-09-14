@@ -1,14 +1,16 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Ribbon
 {
+    /// <summary>
+    /// Service to unpack ribbon items.
+    /// </summary>
     public class UnpackRibbonService : IUnpackObjectService
     {
+        /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var result = new UnpackObjectResult
