@@ -1,22 +1,30 @@
 ﻿using Dapper;
 using Simplic.Sql;
 using System;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Stack
 {
+    /// <summary>
+    /// Repository to read and write stack information to a database.
+    /// </summary>
     public class StackRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instace of <see cref="StackRepository"/>.
+        /// </summary>
+        /// <param name="sqlService"></param>
+        /// <param name="logService"></param>
         public StackRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
             this.logService = logService;
         }
 
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is Stack stack)
@@ -71,6 +79,7 @@ namespace Simplic.Package.Stack
             throw new InvalidContentException();
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();
