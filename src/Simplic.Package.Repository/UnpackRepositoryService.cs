@@ -2,8 +2,12 @@
 
 namespace Simplic.Package.Repository
 {
+    /// <summary>
+    /// Service to unpack a repository item.
+    /// </summary>
     public class UnpackRepositoryService : IUnpackObjectService
     {
+        /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var installableObject = new InstallableObject
