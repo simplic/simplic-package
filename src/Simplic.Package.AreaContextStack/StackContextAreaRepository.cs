@@ -6,17 +6,26 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.StackContextArea
 {
+    /// <summary>
+    /// Repository to read and write stack context area from the database.
+    /// </summary>
     public class StackContextAreaRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="StackContextAreaRepository"/>.
+        /// </summary>
+        /// <param name="sqlService"></param>
+        /// <param name="logService"></param>
         public StackContextAreaRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
             this.logService = logService;
         }
 
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is StackContextArea stackContextArea)
@@ -88,12 +97,13 @@ namespace Simplic.Package.StackContextArea
             return await sqlService.OpenConnection(async (c) =>
             {
                 var first = await c.QueryFirstOrDefaultAsync("Select * from IDCOntext_Assignment where stackguid = :stackguid and idcontextguid = :idcontextguid"
-                                                            , new { stackGuid, IdContextGuid});
+                                                            , new { stackGuid, IdContextGuid });
 
                 return first != null;
             });
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();
