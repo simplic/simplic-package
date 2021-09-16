@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.StackRegister
 {
+    /// <summary>
+    /// Service to unpack stack register.
+    /// </summary>
     public class UnpackStackRegisterService : IUnpackObjectService
     {
+        /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var result = new UnpackObjectResult
