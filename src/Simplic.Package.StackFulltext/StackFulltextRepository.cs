@@ -5,17 +5,26 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.StackFulltext
 {
+    /// <summary>
+    /// Repository to read and write sack fulltexts.
+    /// </summary>
     public class StackFulltextRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="StackFulltextRepository"/>.
+        /// </summary>
+        /// <param name="sqlService"></param>
+        /// <param name="logService"></param>
         public StackFulltextRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
             this.logService = logService;
         }
 
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is StackFulltext stackFulltext)
@@ -55,6 +64,7 @@ namespace Simplic.Package.StackFulltext
             throw new InvalidContentException();
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();

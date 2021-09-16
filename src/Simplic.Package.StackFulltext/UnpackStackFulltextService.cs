@@ -5,8 +5,12 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.StackFulltext
 {
+    /// <summary>
+    /// Service to unpack a stac fulltext.
+    /// </summary>
     public class UnpackStackFulltextService : IUnpackObjectService
     {
+        /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var result = new UnpackObjectResult
