@@ -164,7 +164,7 @@
       <Version>1.2.11</Version>
     </PackageReference>
     <PackageReference Include="CommonServiceLocator">
-      <Version>2.0.5</Version>
+      <Version>2.0.6</Version>
     </PackageReference>
     <PackageReference Include="EntityFramework">
       <Version>6.4.0</Version>
@@ -176,7 +176,7 @@
       <Version>1.2.5</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.1</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Authorization">
       <Version>6.3.20.322</Version>
@@ -263,16 +263,16 @@
       <Version>2018.0.1127.1</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Controls.Data.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.2.615</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Controls.GridView.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.2.615</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Controls.RibbonView.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.2.615</Version>
     </PackageReference>
     <PackageReference Include="Unity.Container">
-      <Version>5.11.8</Version>
+      <Version>5.11.11</Version>
     </PackageReference>
     <PackageReference Include="Unity.ServiceLocation">
       <Version>5.11.1</Version>

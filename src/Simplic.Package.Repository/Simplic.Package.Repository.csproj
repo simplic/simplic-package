@@ -58,7 +58,7 @@
       <Version>8.0.21.908</Version>
     </PackageReference>
     <PackageReference Include="Unity.Abstractions">
-      <Version>5.11.6</Version>
+      <Version>5.11.7</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
