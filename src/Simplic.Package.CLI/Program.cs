@@ -46,6 +46,7 @@ using Simplic.Authorization;
 using Simplic.Icon;
 using Simplic.Icon.Service;
 using Simplic.Package.Ribbon;
+using System.Diagnostics;
 
 namespace Simplic.Package.CLI
 {
@@ -233,6 +234,7 @@ namespace Simplic.Package.CLI
             // For InstallReportService
             Simplic.Base.GlobalSettings.UserName = "Package System";
 
+            Debugger.Launch();
 
             Framework.DAL.DALManager.Init(connectionString);
             Framework.DAL.ConnectionManager.Init(Thread.CurrentThread);

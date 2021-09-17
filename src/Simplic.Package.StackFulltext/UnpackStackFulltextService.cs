@@ -24,8 +24,8 @@ namespace Simplic.Package.StackFulltext
                 var jObject = JObject.Parse(json);
 
                 // Seperate settings and rest of json
-                var configuration = jObject["configuration"];
-                jObject.Remove("configuration");
+                var configuration = jObject["Configuration"];
+                jObject.Remove("Configuration");
 
                 // Seperately deserialize settings and rest of json
                 var deserializedStackFulltext = jObject.ToObject<StackFulltext>();
@@ -41,7 +41,7 @@ namespace Simplic.Package.StackFulltext
             }
             catch (Exception ex)
             {
-                result.Message = $"Failed to unpack StackContextArea at {extractArchiveEntryResult.Location}.";
+                result.Message = $"Failed to unpack Fulltext at {extractArchiveEntryResult.Location}.";
                 result.LogLevel = LogLevel.Error;
                 result.Exception = ex;
             }

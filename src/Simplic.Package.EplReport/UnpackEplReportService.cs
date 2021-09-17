@@ -23,8 +23,8 @@ namespace Simplic.Package.EplReport
                 var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
                 var jObject = JObject.Parse(json);
 
-                var configuration = jObject["configuration"];
-                jObject.Remove("configuration");
+                var configuration = jObject["Configuration"];
+                jObject.Remove("Configuration");
 
                 var content = jObject.ToObject<EplReport>();
                 content.Configuration = DeserializeConfiguration(content.Type, configuration);

@@ -42,7 +42,7 @@ namespace Simplic.Package.StackRegister
             }
             catch (Exception ex)
             {
-                result.Message = $"Failed to unpack StackContextArea at {extractArchiveEntryResult.Location}.";
+                result.Message = $"Failed to unpack StackRegister at {extractArchiveEntryResult.Location}.";
                 result.LogLevel = LogLevel.Error;
                 result.Exception = ex;
             }
