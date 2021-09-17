@@ -69,16 +69,16 @@
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Framework">
-      <Version>7.2.320.927</Version>
+      <Version>8.0.21.908</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Framework.Base">
-      <Version>7.2.220.329</Version>
+      <Version>8.0.21.908</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Framework.DocumentProcessing">
-      <Version>7.2.220.329</Version>
+      <Version>7.3.721.719</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Reporting">
-      <Version>7.2.220.329</Version>
+      <Version>8.0.21.908</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Sql">
       <Version>6.3.20.322</Version>

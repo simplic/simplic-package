@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Simplic.Framework.Repository">
-      <Version>7.2.220.329</Version>
+      <Version>8.0.21.908</Version>
     </PackageReference>
     <PackageReference Include="Unity.Abstractions">
       <Version>5.11.6</Version>
