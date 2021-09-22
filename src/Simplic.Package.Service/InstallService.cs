@@ -5,6 +5,7 @@ using Unity;
 
 namespace Simplic.Package.Service
 {
+    /// <inheritdoc cref="IInstallService"/>
     public class InstallService : IInstallService
     {
         private readonly IUnityContainer container;
@@ -12,6 +13,13 @@ namespace Simplic.Package.Service
         private readonly IPackageTrackingRepository packageTrackingRepository;
         private readonly IMigrationService migrationService;
 
+        /// <summary>
+        /// Initialize a new instance of <see cref="InstallService"/>.
+        /// </summary>
+        /// <param name="container"></param>
+        /// <param name="logService"></param>
+        /// <param name="packageTrackingRepository"></param>
+        /// <param name="migrationService"></param>
         public InstallService(IUnityContainer container, ILogService logService, IPackageTrackingRepository packageTrackingRepository, IMigrationService migrationService)
         {
             this.container = container;
@@ -84,6 +92,7 @@ namespace Simplic.Package.Service
                 await logService.WriteAsync($"Failed to write package with name {package.Name} and version {package.Version} to installed packages table.", LogLevel.Error);
         }
 
+        /// <inheritdoc/>
         public async Task Uninstall(Package unpackedPackage)
         {
             throw new NotImplementedException();

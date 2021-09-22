@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Service
 {
+    /// <inheritdoc cref="IFileService"/>
     public class FileService : IFileService
     {
         /// <summary>
@@ -60,6 +61,7 @@ namespace Simplic.Package.Service
             return Encoding.Default.GetString(byteArray);
         }
 
+        /// <inheritdoc/>
         public async Task WriteAllBytesAsync(byte[] bytes, string path)
         {
             using (var stream = new FileStream(path, FileMode.OpenOrCreate))
@@ -69,6 +71,7 @@ namespace Simplic.Package.Service
             }
         }
 
+        /// <inheritdoc/>
         public async Task WriteAllBytesAsync(Stream stream, string path)
         {
             using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
@@ -83,6 +86,7 @@ namespace Simplic.Package.Service
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public async Task WriteAllTextAsync(string text, string path)
         {
             using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
@@ -94,6 +98,7 @@ namespace Simplic.Package.Service
             }
         }
 
+        /// <inheritdoc/>
         public bool FileExists(string path)
         {
             return File.Exists(path);

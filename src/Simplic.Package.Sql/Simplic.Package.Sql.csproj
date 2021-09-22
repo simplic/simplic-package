@@ -59,7 +59,7 @@
       <Version>6.3.20.322</Version>
     </PackageReference>
     <PackageReference Include="Unity.Container">
-      <Version>5.11.8</Version>
+      <Version>5.11.11</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

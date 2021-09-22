@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -164,7 +164,7 @@
       <Version>1.2.11</Version>
     </PackageReference>
     <PackageReference Include="CommonServiceLocator">
-      <Version>2.0.5</Version>
+      <Version>2.0.6</Version>
     </PackageReference>
     <PackageReference Include="EntityFramework">
       <Version>6.4.0</Version>
@@ -176,7 +176,7 @@
       <Version>1.2.5</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.1</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Authorization">
       <Version>6.3.20.322</Version>
@@ -185,43 +185,43 @@
       <Version>6.3.20.322</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Base">
-      <Version>7.2.220.329</Version>
+      <Version>8.0.21.908</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Cache.Service">
       <Version>6.0.18.619</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Configuration">
-      <Version>7.0.20.1006</Version>
+      <Version>7.0.321.705</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Configuration.Data.DB">
-      <Version>7.0.120.1006</Version>
+      <Version>7.0.721.705</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Configuration.Service">
-      <Version>7.0.20.1006</Version>
+      <Version>7.0.321.705</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Data">
-      <Version>1.6.120.322</Version>
+      <Version>1.7.121.809</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Data.Sql">
-      <Version>1.14.220.427</Version>
+      <Version>1.14.321.816</Version>
     </PackageReference>
     <PackageReference Include="Simplic.EntityFramework">
-      <Version>7.2.220.329</Version>
+      <Version>8.0.21.908</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Framework.DAL">
-      <Version>7.2.220.329</Version>
+      <Version>8.0.21.908</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Framework.DBUI">
-      <Version>7.3.220.930</Version>
+      <Version>8.0.21.908</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Framework.Model">
-      <Version>7.2.220.329</Version>
+      <Version>7.2.521.827</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Localization">
       <Version>6.1.20.322</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Log">
-      <Version>7.2.220.329</Version>
+      <Version>7.2.421.426</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Session.Service">
       <Version>6.4.20.322</Version>
@@ -230,13 +230,13 @@
       <Version>6.3.20.322</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Sql.SqlAnywhere.Service">
-      <Version>5.95.318.101</Version>
+      <Version>6.0.21.908</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Studio.UI">
-      <Version>1.5.120.918</Version>
+      <Version>1.6.821.915</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Studio.UI.Input">
-      <Version>1.4.120.428</Version>
+      <Version>1.5.821.718</Version>
     </PackageReference>
     <PackageReference Include="Simplic.TenantSystem">
       <Version>2.0.320.41</Version>
@@ -254,25 +254,25 @@
       <Version>6.1.20.322</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Tracking.Service">
-      <Version>5.95.18.529</Version>
+      <Version>5.95.118.529</Version>
     </PackageReference>
     <PackageReference Include="Simplic.UI">
-      <Version>7.2.220.329</Version>
+      <Version>7.2.1121.812</Version>
     </PackageReference>
     <PackageReference Include="Telerik.DataAccess.Core">
       <Version>2018.0.1127.1</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Controls.Data.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.2.615</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Controls.GridView.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.2.615</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Controls.RibbonView.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.2.615</Version>
     </PackageReference>
     <PackageReference Include="Unity.Container">
-      <Version>5.11.8</Version>
+      <Version>5.11.11</Version>
     </PackageReference>
     <PackageReference Include="Unity.ServiceLocation">
       <Version>5.11.1</Version>

@@ -2,9 +2,11 @@
 
 namespace Simplic.Package.Service
 {
+    /// <inheritdoc cref="IValidatePackageConfigurationService"/>
     public class ValidatePackageConfigurationService : IValidatePackageConfigurationService
     {
         // TODO: Validate more
+        /// <inheritdoc/>
         public async Task<ValidatePackageConfigurationResult> Validate(PackageConfiguration packageConfiguration)
         {
             var validatePackageConfigurationResult = new ValidatePackageConfigurationResult

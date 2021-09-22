@@ -6,17 +6,26 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Application
 {
+    /// <summary>
+    /// Repository to load and check applications from the db.
+    /// </summary>
     public class ApplicationRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ApplicationRepository"/>.
+        /// </summary>
+        /// <param name="sqlService"></param>
+        /// <param name="logService"></param>
         public ApplicationRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
             this.logService = logService;
         }
 
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is Application application)
@@ -24,14 +33,21 @@ namespace Simplic.Package.Application
                 var result = new InstallObjectResult { Success = true };
 
                 try
-                {                    
+                {
                     var contentTypeGuid = GetContentTypeId(application.Type);
                     var success = await sqlService.OpenConnection(async (c) =>
                     {
                         var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page (guid, iconguid, contenttype, menutext, directjump, ribbongroupguid)" +
                                                                 " on existing update values (:Id, :IconId, :contentTypeGuid, :Name, :ShortCut, :RibbonGroupId)",
-                                                                   new { application.Id, application.IconId, contentTypeGuid, application.Name,
-                                                                        application.Shortcut, application.RibbonGroupId });
+                                                                   new
+                                                                   {
+                                                                       application.Id,
+                                                                       application.IconId,
+                                                                       contentTypeGuid,
+                                                                       application.Name,
+                                                                       application.Shortcut,
+                                                                       application.RibbonGroupId
+                                                                   });
                         return affectedRows > 0;
                     });
 
@@ -44,7 +60,7 @@ namespace Simplic.Package.Application
                         else
                         {
                             result.Success = false;
-                            
+
                             await logService.WriteAsync($"Installed Application but failed to install ApplicationConfiguration at {installableObject.Target}.", LogLevel.Error);
                         }
                     }
@@ -64,6 +80,11 @@ namespace Simplic.Package.Application
             throw new InvalidContentException();
         }
 
+        /// <summary>
+        /// Gets the content type id.
+        /// </summary>
+        /// <param name="type">The type as string.</param>
+        /// <returns>The typr id.</returns>
         private Guid GetContentTypeId(string type)
         {
             switch (type)
@@ -83,6 +104,12 @@ namespace Simplic.Package.Application
             }
         }
 
+        /// <summary>
+        /// Saves the configuration data.
+        /// </summary>
+        /// <param name="application">The application.</param>
+        /// <param name="type">the type.</param>
+        /// <returns>Returns whether the save was successfull.</returns>
         private async Task<bool> SaveConfiguration(Application application, string type)
         {
             var configuration = application.Configuration;
@@ -198,10 +225,11 @@ namespace Simplic.Package.Application
                         throw new InvalidContentException("Type was specified to grid-structure, but configuration was not of type GridStructureConfiguration");
                     }
                 default:
-                    throw new Exception($"Got unkown type for inserting configuration into database. Type: {type}.");
+                    throw new Exception($"Got unknown type for inserting configuration into database. Type: {type}.");
             }
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();

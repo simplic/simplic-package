@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -12,6 +11,7 @@ using Unity;
 
 namespace Simplic.Package.Service
 {
+    /// <inheritdoc cref="IPackService"/>
     public class PackService : IPackService
     {
         private readonly IUnityContainer container;
@@ -19,6 +19,13 @@ namespace Simplic.Package.Service
         private readonly IValidatePackageConfigurationService validatePackageConfigurationService;
         private readonly IFileService fileService;
 
+        /// <summary>
+        /// Initialize a new instance of <see cref="PackService"/>.
+        /// </summary>
+        /// <param name="container"></param>
+        /// <param name="logService"></param>
+        /// <param name="validatePackageConfigurationService"></param>
+        /// <param name="fileService"></param>
         public PackService(IUnityContainer container, ILogService logService, IValidatePackageConfigurationService validatePackageConfigurationService, IFileService fileService)
         {
             this.container = container;

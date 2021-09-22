@@ -2,28 +2,26 @@
 using Simplic.Reporting;
 using System;
 using System.Threading.Tasks;
-using Unity;
 
 namespace Simplic.Package.Report
 {
+    /// <summary>
+    /// Service to install a report.
+    /// </summary>
     public class InstallReportService : IInstallObjectService
     {
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="InstallReportService"/>.
+        /// </summary>
+        /// <param name="logService"></param>
         public InstallReportService(ILogService logService)
         {
             this.logService = logService;
         }
 
-        public static IMappingExpression<Report, T> MapDefaults<T>(IMappingExpression<Report, T> map) where T : class, IReportConfiguration
-        {
-            map.ForMember(dest => dest.PrinterName, opt => opt.MapFrom(x => x.PrinterName));
-            map.ForMember(dest => dest.Type, opt => opt.MapFrom<EnumResolver>());
-            map.ForSourceMember(x => x.Configuration, opt => opt.DoNotValidate());
-
-            return map;
-        }
-
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is FullReport report)
@@ -78,7 +76,7 @@ namespace Simplic.Package.Report
                 catch (Exception ex)
                 {
                     await logService.WriteAsync($"Failed to install Report at {installableObject.Target}.", LogLevel.Error, ex);
-                    
+
                     result.Success = false;
                 }
                 return result;
@@ -86,6 +84,7 @@ namespace Simplic.Package.Report
             throw new InvalidContentException();
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();

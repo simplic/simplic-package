@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Data.DB
 {
+    /// <inheritdoc cref="IPackageTrackingRepository"/>
     public class PackageTrackingRepository : IPackageTrackingRepository
     {
         private readonly ISqlService sqlService;

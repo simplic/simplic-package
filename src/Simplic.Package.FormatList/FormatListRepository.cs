@@ -5,17 +5,26 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.FormatList
 {
+    /// <summary>
+    /// Repository to check and write format lists to a database.
+    /// </summary>
     public class FormatListRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="FormatListRepository"/>.
+        /// </summary>
+        /// <param name="sqlService"></param>
+        /// <param name="logService"></param>
         public FormatListRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
             this.logService = logService;
         }
 
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is FormatList formatList)
@@ -41,7 +50,7 @@ namespace Simplic.Package.FormatList
                 catch (Exception ex)
                 {
                     await logService.WriteAsync($"Failed to install FormatList at {installableObject.Target}.", LogLevel.Error, ex);
-                    
+
                     result.Success = false;
                 }
                 return result;
@@ -50,6 +59,7 @@ namespace Simplic.Package.FormatList
             throw new InvalidContentException();
         }
 
+        /// <inheritdoc/>
         public async Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is FormatList formatList)

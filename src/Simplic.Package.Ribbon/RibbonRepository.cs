@@ -5,17 +5,26 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Ribbon
 {
+    /// <summary>
+    /// Repository to check and read ribbon items from the db.
+    /// </summary>
     public class RibbonRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="RibbonRepository"/>.
+        /// </summary>
+        /// <param name="sqlService"></param>
+        /// <param name="logService"></param>
         public RibbonRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
             this.logService = logService;
         }
 
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is RibbonTab ribbon)
@@ -26,14 +35,14 @@ namespace Simplic.Package.Ribbon
                 {
                     var success = await sqlService.OpenConnection(async (c) =>
                     {
-                        var affectedRows = await c.ExecuteAsync("INSERT INTO RibbonMenu_Tab(Guid, TabHeader, OrderNr) ON EXISTING UPDATE VALUE (:Guid, :TabHeader, :OrderNr)",
+                        var affectedRows = await c.ExecuteAsync("INSERT INTO RibbonMenu_Tab(Guid, TabHeader, OrderNr) ON EXISTING UPDATE VALUES (:Guid, :TabHeader, :OrderNr)",
                                                                  new { Guid = ribbon.Id, TabHeader = ribbon.Name, OrderNr = ribbon.OrderId });
 
                         if (ribbon.Groups != null)
                         {
                             foreach (var group in ribbon.Groups)
                             {
-                                affectedRows += await c.ExecuteAsync("INSERT INTO RibbonMenu_Group(Guid, TabGuid, GroupHeader, OrderNr) ON EXISTING UPDATE VALUE (:Guid, :TabGuid, :GroupHeader, :OrderNr)",
+                                affectedRows += await c.ExecuteAsync("INSERT INTO RibbonMenu_Group(Guid, TabGuid, GroupHeader, OrderNr) ON EXISTING UPDATE VALUES (:Guid, :TabGuid, :GroupHeader, :OrderNr)",
                                                                      new { Guid = group.Id, TabGuid = ribbon.Id, GroupHeader = group.Name, OrderNr = ribbon.OrderId });
                             }
                         }
@@ -64,6 +73,7 @@ namespace Simplic.Package.Ribbon
             throw new InvalidContentException();
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();

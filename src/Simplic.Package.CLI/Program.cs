@@ -34,7 +34,6 @@ using Simplic.Package.StackContextArea;
 using Simplic.Package.StackFulltext;
 using Simplic.Package.StackRegister;
 using Simplic.Package.Application;
-using Simplic.Framework.Core;
 using Unity.ServiceLocation;
 using Simplic.Localization;
 using Simplic.Log.Console;
@@ -47,6 +46,7 @@ using Simplic.Authorization;
 using Simplic.Icon;
 using Simplic.Icon.Service;
 using Simplic.Package.Ribbon;
+using System.Diagnostics;
 
 namespace Simplic.Package.CLI
 {
@@ -234,6 +234,7 @@ namespace Simplic.Package.CLI
             // For InstallReportService
             Simplic.Base.GlobalSettings.UserName = "Package System";
 
+            Debugger.Launch();
 
             Framework.DAL.DALManager.Init(connectionString);
             Framework.DAL.ConnectionManager.Init(Thread.CurrentThread);
