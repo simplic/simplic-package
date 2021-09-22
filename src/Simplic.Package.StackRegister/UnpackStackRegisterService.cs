@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.StackRegister
 {
+    /// <summary>
+    /// Service to unpack stack register.
+    /// </summary>
     public class UnpackStackRegisterService : IUnpackObjectService
     {
+        /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var result = new UnpackObjectResult
@@ -38,7 +42,7 @@ namespace Simplic.Package.StackRegister
             }
             catch (Exception ex)
             {
-                result.Message = $"Failed to unpack StackContextArea at {extractArchiveEntryResult.Location}.";
+                result.Message = $"Failed to unpack StackRegister at {extractArchiveEntryResult.Location}.";
                 result.LogLevel = LogLevel.Error;
                 result.Exception = ex;
             }

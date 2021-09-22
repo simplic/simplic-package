@@ -3,8 +3,12 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Sql
 {
+    /// <summary>
+    /// Service to unpack sql exports.
+    /// </summary>
     public class UnpackSqlService : IUnpackObjectService
     {
+        /// <inheritdoc/> 
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var installableObject = new InstallableObject

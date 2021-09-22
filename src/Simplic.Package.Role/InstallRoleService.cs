@@ -1,19 +1,26 @@
 ﻿using Simplic.Framework.Core;
 using System;
 using System.Threading.Tasks;
-using Unity;
 
 namespace Simplic.Package.Role
 {
+    /// <summary>
+    /// Service to install a role.
+    /// </summary>
     public class InstallRoleService : IInstallObjectService
     {
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="InstallRoleService"/>.
+        /// </summary>
+        /// <param name="logService"></param>
         public InstallRoleService(ILogService logService)
         {
             this.logService = logService;
         }
 
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is Role role)
@@ -35,7 +42,7 @@ namespace Simplic.Package.Role
                 catch (Exception ex)
                 {
                     await logService.WriteAsync($"Failed to install role at {installableObject.Target}.", LogLevel.Error, ex);
-                    
+
                     result.Success = false;
                 }
 
@@ -44,6 +51,7 @@ namespace Simplic.Package.Role
             throw new InvalidContentException();
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();

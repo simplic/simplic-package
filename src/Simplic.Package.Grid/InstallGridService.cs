@@ -2,11 +2,13 @@
 using Simplic.Framework.DBUI;
 using Simplic.UI.GridView;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Grid
 {
+    /// <summary>
+    /// Service to install a grid.
+    /// </summary>
     public class InstallGridService : IInstallObjectService
     {
         private readonly ILogService logService;
@@ -16,7 +18,7 @@ namespace Simplic.Package.Grid
             this.logService = logService;
         }
 
-
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is Grid grid)
@@ -68,6 +70,7 @@ namespace Simplic.Package.Grid
             throw new InvalidContentException();
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();

@@ -1,6 +1,9 @@
 ﻿namespace Simplic.Package.StackRegister
 {
-    public interface IStackRegisterConfiguration
+    /// <summary>
+    /// Interface for content of a stack register configuration.
+    /// </summary>
+    public interface IStackRegisterConfiguration                               
     {
     }
 }

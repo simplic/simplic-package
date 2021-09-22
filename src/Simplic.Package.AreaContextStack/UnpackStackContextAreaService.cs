@@ -5,8 +5,12 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.StackContextArea
 {
+    /// <summary>
+    /// Service to unpack a stack context area.
+    /// </summary>
     public class UnpackStackContextAreaService : IUnpackObjectService
     {
+        /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
             var result = new UnpackObjectResult

@@ -54,7 +54,7 @@
     <Compile Include="Model\StackItem.cs" />
     <Compile Include="PackApplicationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnpackApplicationSErvice.cs" />
+    <Compile Include="UnpackApplicationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Package\Simplic.Package.csproj">
@@ -64,13 +64,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.1</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Sql">
       <Version>6.3.20.322</Version>
     </PackageReference>
     <PackageReference Include="Unity.Abstractions">
-      <Version>5.11.6</Version>
+      <Version>5.11.7</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

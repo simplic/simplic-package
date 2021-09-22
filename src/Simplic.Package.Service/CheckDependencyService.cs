@@ -4,15 +4,21 @@ using System.Threading.Tasks;
 
 namespace Simplic.Package.Service
 {
+    /// <inheritdoc cref="ICheckDependencyService"/>
     public class CheckDependencyService : ICheckDependencyService
     {
         private readonly IPackageTrackingRepository repository;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="CheckDependencyService"/>.
+        /// </summary>
+        /// <param name="repository"></param>
         public CheckDependencyService(IPackageTrackingRepository repository)
         {
             this.repository = repository;
         }
 
+        /// <inheritdoc/>
         public async Task<CheckDependenciesResult> CheckDependencies(IList<Dependency> dependencies)
         {
             var result = new CheckDependenciesResult

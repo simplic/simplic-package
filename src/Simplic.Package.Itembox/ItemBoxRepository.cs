@@ -2,15 +2,23 @@
 using Simplic.Sql;
 using System;
 using System.Threading.Tasks;
-using Telerik.Windows.Data;
 
 namespace Simplic.Package.ItemBox
 {
+
+    /// <summary>
+    /// Repository to check and write itemboxen within the db.
+    /// </summary>
     public class ItemBoxRepository : IObjectRepository
     {
         private readonly ISqlService sqlService;
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ItemBoxRepository"/>.
+        /// </summary>
+        /// <param name="sqlService"></param>
+        /// <param name="logService"></param>
         public ItemBoxRepository(ISqlService sqlService, ILogService logService)
         {
             this.sqlService = sqlService;
@@ -18,6 +26,7 @@ namespace Simplic.Package.ItemBox
         }
 
         // TODO: Output if this fails?
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is ItemBox itemBox)
@@ -109,6 +118,7 @@ namespace Simplic.Package.ItemBox
             return name;
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();

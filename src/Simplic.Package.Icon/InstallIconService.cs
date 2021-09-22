@@ -2,21 +2,29 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Unity;
 
 namespace Simplic.Package.Icon
 {
+    /// <summary>
+    /// Service to install an icon.
+    /// </summary>
     public class InstallIconService : IInstallObjectService
     {
         private readonly IIconService iconService;
         private readonly ILogService logService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="InstallIconService"/>.
+        /// </summary>
+        /// <param name="iconService"></param>
+        /// <param name="logService"></param>
         public InstallIconService(IIconService iconService, ILogService logService)
         {
             this.iconService = iconService;
             this.logService = logService;
         }
 
+        /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             if (installableObject.Content is IconContent icon)
@@ -60,17 +68,23 @@ namespace Simplic.Package.Icon
             throw new InvalidContentException();
         }
 
+        /// <summary>
+        /// Gets the unique identfier of an icon by the icon name.
+        /// </summary>
+        /// <param name="name">The name of the icon.</param>
+        /// <returns>Returns the guid of the icon.</returns>
         public Guid GetGuidByName(string name)
         {
             // TODO: Make this more efficient
             var icon = iconService.GetAll().FirstOrDefault(x => x.Name == name);
-            
+
             if (icon != null)
                 return icon.Guid;
             else
                 return Guid.Empty;
         }
 
+        /// <inheritdoc/>
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
         {
             throw new NotImplementedException();
