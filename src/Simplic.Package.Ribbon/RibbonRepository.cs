@@ -35,14 +35,14 @@ namespace Simplic.Package.Ribbon
                 {
                     var success = await sqlService.OpenConnection(async (c) =>
                     {
-                        var affectedRows = await c.ExecuteAsync("INSERT INTO RibbonMenu_Tab(Guid, TabHeader, OrderNr) ON EXISTING UPDATE VALUE (:Guid, :TabHeader, :OrderNr)",
+                        var affectedRows = await c.ExecuteAsync("INSERT INTO RibbonMenu_Tab(Guid, TabHeader, OrderNr) ON EXISTING UPDATE VALUES (:Guid, :TabHeader, :OrderNr)",
                                                                  new { Guid = ribbon.Id, TabHeader = ribbon.Name, OrderNr = ribbon.OrderId });
 
                         if (ribbon.Groups != null)
                         {
                             foreach (var group in ribbon.Groups)
                             {
-                                affectedRows += await c.ExecuteAsync("INSERT INTO RibbonMenu_Group(Guid, TabGuid, GroupHeader, OrderNr) ON EXISTING UPDATE VALUE (:Guid, :TabGuid, :GroupHeader, :OrderNr)",
+                                affectedRows += await c.ExecuteAsync("INSERT INTO RibbonMenu_Group(Guid, TabGuid, GroupHeader, OrderNr) ON EXISTING UPDATE VALUES (:Guid, :TabGuid, :GroupHeader, :OrderNr)",
                                                                      new { Guid = group.Id, TabGuid = ribbon.Id, GroupHeader = group.Name, OrderNr = ribbon.OrderId });
                             }
                         }
