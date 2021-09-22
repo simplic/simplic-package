@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a application configuration for a grid application.
     /// </summary>
-    internal class GridConfiguration : IApplicationConfiguration
+    public class GridConfiguration : IApplicationConfiguration
     {
         /// <summary>
         /// Gets or sets the grid name.

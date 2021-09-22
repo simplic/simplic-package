@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Simplic.Package.Application
 {
     /// <summary>
-    /// Repository to laod and check applications from the db.
+    /// Repository to load and check applications from the db.
     /// </summary>
     public class ApplicationRepository : IObjectRepository
     {
@@ -225,7 +225,7 @@ namespace Simplic.Package.Application
                         throw new InvalidContentException("Type was specified to grid-structure, but configuration was not of type GridStructureConfiguration");
                     }
                 default:
-                    throw new Exception($"Got unkown type for inserting configuration into database. Type: {type}.");
+                    throw new Exception($"Got unknown type for inserting configuration into database. Type: {type}.");
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿namespace Simplic.Package.Application
 {
     /// <summary>
-    /// Represents the application configuration of an clr apllication.
+    /// Represents the application configuration of an clr application.
     /// </summary>
     public class ClrConfiguration : IApplicationConfiguration
     {
