@@ -25,8 +25,8 @@ namespace Simplic.Package.Application
                 var jObject = JObject.Parse(json);
 
                 // Seperate settings and rest of json
-                var settingsJson = jObject["configuration"].ToString();
-                jObject.Remove("configuration");
+                var settingsJson = jObject["Configuration"].ToString();
+                jObject.Remove("Configuration");
 
                 // Seperately deserialize settings and rest of json
                 var deserializedApplication = jObject.ToObject<Application>();

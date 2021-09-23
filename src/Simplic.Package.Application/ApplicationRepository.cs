@@ -28,56 +28,53 @@ namespace Simplic.Package.Application
         /// <inheritdoc/>
         public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
-            if (installableObject.Content is Application application)
+            if (!(installableObject.Content is Application application)) throw new InvalidContentException();
+            var result = new InstallObjectResult { Success = true };
+
+            try
             {
-                var result = new InstallObjectResult { Success = true };
-
-                try
+                var contentTypeGuid = GetContentTypeId(application.Type);
+                var success = await sqlService.OpenConnection(async (c) =>
                 {
-                    var contentTypeGuid = GetContentTypeId(application.Type);
-                    var success = await sqlService.OpenConnection(async (c) =>
-                    {
-                        var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page (guid, iconguid, contenttype, menutext, directjump, ribbongroupguid)" +
-                                                                " on existing update values (:Id, :IconId, :contentTypeGuid, :Name, :ShortCut, :RibbonGroupId)",
-                                                                   new
-                                                                   {
-                                                                       application.Id,
-                                                                       application.IconId,
-                                                                       contentTypeGuid,
-                                                                       application.Name,
-                                                                       application.Shortcut,
-                                                                       application.RibbonGroupId
-                                                                   });
-                        return affectedRows > 0;
-                    });
-
-                    if (success)
-                    {
-                        if (await SaveConfiguration(application, application.Type))
+                    var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page (guid, iconguid, contenttype, menutext, directjump, ribbongroupguid)" +
+                                                            " on existing update values (:Id, :IconId, :contentTypeGuid, :Name, :ShortCut, :RibbonGroupId)",
+                        new
                         {
-                            await logService.WriteAsync($"Installed Application at {installableObject.Target}.", LogLevel.Info);
-                        }
-                        else
-                        {
-                            result.Success = false;
+                            application.Id,
+                            application.IconId,
+                            contentTypeGuid,
+                            application.Name,
+                            application.Shortcut,
+                            application.RibbonGroupId
+                        });
+                    return affectedRows > 0;
+                });
 
-                            await logService.WriteAsync($"Installed Application but failed to install ApplicationConfiguration at {installableObject.Target}.", LogLevel.Error);
-                        }
+                if (success)
+                {
+                    if (await SaveConfiguration(application, application.Type))
+                    {
+                        await logService.WriteAsync($"Installed Application at {installableObject.Target}.", LogLevel.Info);
                     }
                     else
                     {
-                        await logService.WriteAsync($"Failed to install Application at {installableObject.Target}.", LogLevel.Warning);
+                        result.Success = false;
+
+                        await logService.WriteAsync($"Installed Application but failed to install ApplicationConfiguration at {installableObject.Target}.", LogLevel.Error);
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    result.Success = false;
-
-                    await logService.WriteAsync($"Failed to install Application at {installableObject.Target}.", LogLevel.Error, ex);
+                    await logService.WriteAsync($"Failed to install Application at {installableObject.Target}.", LogLevel.Warning);
                 }
-                return result;
             }
-            throw new InvalidContentException();
+            catch (Exception ex)
+            {
+                result.Success = false;
+
+                await logService.WriteAsync($"Failed to install Application at {installableObject.Target}.", LogLevel.Error, ex);
+            }
+            return result;
         }
 
         /// <summary>
