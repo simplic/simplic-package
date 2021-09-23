@@ -12,7 +12,9 @@ namespace Simplic.Package.Application
     public class UnpackApplicationService : IUnpackObjectService
     {
         /// <inheritdoc/>
+#pragma warning disable 1998
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
+#pragma warning restore 1998
         {
             var result = new UnpackObjectResult
             {
@@ -24,13 +26,19 @@ namespace Simplic.Package.Application
                 var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
                 var jObject = JObject.Parse(json);
 
-                // Seperate settings and rest of json
-                var settingsJson = jObject["Configuration"].ToString();
+                // Separate settings and rest of json
+                var settingsJson = jObject["Configuration"]?.ToString();
                 jObject.Remove("Configuration");
 
-                // Seperately deserialize settings and rest of json
+                // Separately deserialize settings and rest of json
                 var deserializedApplication = jObject.ToObject<Application>();
-                deserializedApplication.Configuration = DeseralizeSettings(deserializedApplication.Type, settingsJson);
+
+                if (deserializedApplication == null)
+                    throw new NullReferenceException("Deserialized application is null");
+
+
+                deserializedApplication.Configuration =
+                    DeserializeSettings(deserializedApplication.Type, settingsJson);
 
                 result.InstallableObject = new InstallableObject
                 {
@@ -38,6 +46,8 @@ namespace Simplic.Package.Application
                     Target = extractArchiveEntryResult.Location,
                     Mode = extractArchiveEntryResult.Mode
                 };
+
+
                 result.Message = $"Unpacked Application at {extractArchiveEntryResult.Location}.";
             }
             catch (Exception ex)
@@ -55,19 +65,23 @@ namespace Simplic.Package.Application
         /// <param name="type">The type name.</param>
         /// <param name="settingsJson">The json string containing the configuration.</param>
         /// <returns>Returns the application configuration.</returns>
-        private IApplicationConfiguration DeseralizeSettings(string type, string settingsJson)
+        private static IApplicationConfiguration DeserializeSettings(string type, string settingsJson)
         {
-            if (type == "grid")
-                return JsonConvert.DeserializeObject<GridConfiguration>(settingsJson);
-            else if (type == "grid-structure")
-                return JsonConvert.DeserializeObject<GridStructureConfiguration>(settingsJson);
-            else if (type == "browser")
-                return JsonConvert.DeserializeObject<BrowserConfiguration>(settingsJson);
-            else if (type == "python")
-                return JsonConvert.DeserializeObject<PythonConfiguration>(settingsJson);
-            else if (type == "clr")
-                return JsonConvert.DeserializeObject<ClrConfiguration>(settingsJson);
-            return null;
+            switch (type)
+            {
+                case "grid":
+                    return JsonConvert.DeserializeObject<GridConfiguration>(settingsJson);
+                case "grid-structure":
+                    return JsonConvert.DeserializeObject<GridStructureConfiguration>(settingsJson);
+                case "browser":
+                    return JsonConvert.DeserializeObject<BrowserConfiguration>(settingsJson);
+                case "python":
+                    return JsonConvert.DeserializeObject<PythonConfiguration>(settingsJson);
+                case "clr":
+                    return JsonConvert.DeserializeObject<ClrConfiguration>(settingsJson);
+                default:
+                    return null;
+            }
         }
     }
 }

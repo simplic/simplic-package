@@ -12,7 +12,7 @@ namespace Simplic.Package.Application
         private readonly IObjectRepository repository;
 
         /// <summary>
-        /// Initializes a new instace of <see cref="InstallApplicationService"/>
+        /// Initializes a new instance of <see cref="InstallApplicationService"/>
         /// </summary>
         /// <param name="repository"></param>
         public InstallApplicationService([Dependency("application")] IObjectRepository repository)
