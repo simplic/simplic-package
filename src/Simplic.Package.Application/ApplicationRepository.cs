@@ -34,10 +34,11 @@ namespace Simplic.Package.Application
             try
             {
                 var contentTypeGuid = GetContentTypeId(application.Type);
+
                 var success = await sqlService.OpenConnection(async (c) =>
-                {
-                    var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page (guid, iconguid, contenttype, menutext, directjump, ribbongroupguid)" +
-                                                            " on existing update values (:Id, :IconId, :contentTypeGuid, :Name, :ShortCut, :RibbonGroupId)",
+                    await c.ExecuteAsync(
+                        "INSERT INTO ESS_MS_Intern_Page (Guid, IconGuid, ContentType, MenuText, DirectJump, RibbonGroupGuid)" +
+                        " ON EXISTING UPDATE VALUES (:Id, :IconId, :contentTypeGuid, :Name, :ShortCut, :RibbonGroupId)",
                         new
                         {
                             application.Id,
@@ -46,9 +47,8 @@ namespace Simplic.Package.Application
                             application.Name,
                             application.Shortcut,
                             application.RibbonGroupId
-                        });
-                    return affectedRows > 0;
-                });
+                        }) > 0
+                );
 
                 if (success)
                 {
@@ -60,7 +60,9 @@ namespace Simplic.Package.Application
                     {
                         result.Success = false;
 
-                        await logService.WriteAsync($"Installed Application but failed to install ApplicationConfiguration at {installableObject.Target}.", LogLevel.Error);
+                        await logService.WriteAsync(
+                            $"Installed Application but failed to install ApplicationConfiguration at {installableObject.Target}.",
+                            LogLevel.Error);
                     }
                 }
                 else
@@ -81,8 +83,8 @@ namespace Simplic.Package.Application
         /// Gets the content type id.
         /// </summary>
         /// <param name="type">The type as string.</param>
-        /// <returns>The typr id.</returns>
-        private Guid GetContentTypeId(string type)
+        /// <returns>The type id.</returns>
+        private static Guid GetContentTypeId(string type)
         {
             switch (type)
             {
@@ -97,7 +99,8 @@ namespace Simplic.Package.Application
                 case "browser":
                     return Guid.Parse("92E3E5AE-A925-400E-83F3-E3D75615FCCF");
                 default:
-                    throw new Exception($"Invalid type {type} entered when trying to get ContentType from ESS_MS_Intern_Page_Content.");
+                    throw new Exception(
+                        $"Invalid type {type} entered when trying to get ContentType from ESS_MS_Intern_Page_Content.");
             }
         }
 
@@ -106,7 +109,7 @@ namespace Simplic.Package.Application
         /// </summary>
         /// <param name="application">The application.</param>
         /// <param name="type">the type.</param>
-        /// <returns>Returns whether the save was successfull.</returns>
+        /// <returns>Returns whether the save was successful.</returns>
         private async Task<bool> SaveConfiguration(Application application, string type)
         {
             var configuration = application.Configuration;
@@ -114,112 +117,128 @@ namespace Simplic.Package.Application
             {
                 case "clr":
                     {
-                        if (configuration is ClrConfiguration clrConfig)
+                        if (!(configuration is ClrConfiguration clrConfig))
+                            throw new InvalidContentException(
+                                "Type was specified to clr, but configuration was not of type ClrConfiguration");
+
+                        var success = await sqlService.OpenConnection(async (c) =>
                         {
-                            var success = await sqlService.OpenConnection(async (c) =>
-                            {
-                                var affectedRows = await c.ExecuteAsync("Insert into Application_ClrCall (pageguid, clrnamespace, clrclass, clrmethod) " +
-                                                                        "on existing update values (:id, :namespace, :class, :method)",
-                                                                        new { application.Id, clrConfig.Namespace, clrConfig.Class, clrConfig.Method });
-                                return affectedRows > 0;
-                            });
-                            return success;
-                        }
-                        throw new InvalidContentException("Type was specified to clr, but configuration was not of type ClrConfiguration");
+                            var affectedRows = await c.ExecuteAsync(
+                                "INSERT INTO Application_ClrCall (PageGuid, ClrNamespace, ClrClass, ClrMethod) " +
+                                "ON EXISTING UPDATE VALUES (:id, :namespace, :class, :method)",
+                                new { application.Id, clrConfig.Namespace, clrConfig.Class, clrConfig.Method });
+                            return affectedRows > 0;
+                        });
+                        return success;
                     }
                 case "python":
                     {
-                        if (configuration is PythonConfiguration pythonConfig)
+                        if (!(configuration is PythonConfiguration pythonConfig))
+                            throw new InvalidContentException(
+                                "Type was specified to python, but configuration was not of type PythonConfiguration");
+
+                        var success = await sqlService.OpenConnection(async (c) =>
                         {
-                            var success = await sqlService.OpenConnection(async (c) =>
-                            {
-                                var affectedRows = await c.ExecuteAsync("Insert into ESS_MS_Intern_Page_Script (pageguid, scriptname, scriptmethod, classname) " +
-                                                                        "on existing update values (:id, :path, :method, :class)",
-                                                                        new { application.Id, pythonConfig.Path, pythonConfig.Method, pythonConfig.Class });
-                                return affectedRows > 0;
-                            });
-                            return success;
-                        }
-                        throw new InvalidContentException("Type was specified to python, but configuration was not of type PythonConfiguration");
+                            var affectedRows = await c.ExecuteAsync(
+                                "INSERT INTO ESS_MS_Intern_Page_Script (PageGuid, ScriptName, ScriptMethod, classname) " +
+                                "on existing update values (:id, :path, :method, :class)",
+                                new { application.Id, pythonConfig.Path, pythonConfig.Method, pythonConfig.Class });
+                            return affectedRows > 0;
+                        });
+                        return success;
                     }
                 case "grid":
                     {
-                        if (configuration is GridConfiguration gridConfig)
-                        {
-                            var success = await sqlService.OpenConnection(async (c) =>
-                            {
-                                var affectedRows = await c.ExecuteAsync("DELETE FROM ESS_MS_Intern_Page_DataGrid WHERE PageGuid = :id",
-                                                                        new { application.Id });
+                        if (!(configuration is GridConfiguration gridConfig))
+                            throw new InvalidContentException(
+                                "Type was specified to grid, but configuration was not of type GridConfiguration");
 
-                                affectedRows += await c.ExecuteAsync(" Insert into ESS_MS_Intern_Page_DataGrid (pageguid, gridname, loadonopen, dataconnectionstring, searchname) " +
-                                                                        " on existing update values (:id, :grid, :loadonopen, :connection, :searchname)",
-                                                                        new { id = application.Id, gridConfig.Grid, gridConfig.LoadOnOpen, gridConfig.Connection, gridConfig.SearchName });
-                                return affectedRows > 0;
-                            });
-                            return success;
-                        }
-                        throw new InvalidContentException("Type was specified to grid, but configuration was not of type GridConfiguration");
+                        var success = await sqlService.OpenConnection(async (c) =>
+                        {
+                            var affectedRows = await c.ExecuteAsync(
+                                "DELETE FROM ESS_MS_Intern_Page_DataGrid WHERE PageGuid = :id",
+                                new { application.Id });
+
+                            affectedRows += await c.ExecuteAsync(
+                                "INSERT INTO ESS_MS_Intern_Page_DataGrid " +
+                                "(PageGuid, GridName, LoadOnOpen, DataConnectionString, SearchName) " +
+                                " ON EXISTING UPDATE VALUES (:id, :grid, :loadOnOpen, :connection, :searchName)",
+                                new
+                                {
+                                    id = application.Id,
+                                    gridConfig.Grid,
+                                    gridConfig.LoadOnOpen,
+                                    gridConfig.Connection,
+                                    gridConfig.SearchName
+                                });
+                            return affectedRows > 0;
+                        });
+                        return success;
                     }
                 case "browser":
                     {
-                        if (configuration is BrowserConfiguration browserConfig)
+                        if (!(configuration is BrowserConfiguration browserConfig))
+                            throw new InvalidContentException(
+                                "Type was specified to python, but configuration was not of type PythonConfiguration");
+
+                        var success = await sqlService.OpenConnection(async (c) =>
                         {
-                            var success = await sqlService.OpenConnection(async (c) =>
-                            {
-                                var affectedRows = await c.ExecuteAsync("Insert into Browser_Configuration (pageguid, tabname, starturl) on existing update values (:id, :tab, :url) ",
-                                                                        new { application.Id, browserConfig.Tab, browserConfig.Url });
-                                return affectedRows > 0;
-                            });
-                            return success;
-                        }
-                        throw new InvalidContentException("Type was specified to python, but configuration was not of type PythonConfiguration");
+                            var affectedRows = await c.ExecuteAsync(
+                                "Insert into Browser_Configuration (PageGuid, TabName, StartUrl) " +
+                                "on existing update values (:id, :tab, :url) ",
+                                new { application.Id, browserConfig.Tab, browserConfig.Url });
+                            return affectedRows > 0;
+                        });
+                        return success;
                     }
                 case "grid-structure":
                     {
-                        if (configuration is GridStructureConfiguration config)
-                        {
-                            var stackAdded = 0;
-                            foreach (var stack in config.Stacks)
-                            {
-                                stackAdded += await sqlService.OpenConnection(async (c) =>
-                                {
-                                    return await c.ExecuteAsync("Insert into ESS_DCC_Structure_Stack (guid, parentguid, stackguid, showstacknode, difgridname, difdisplayname, ordernr, difsearchname)" +
-                                                                           " on existing update values (:id, :applicationid, :stackid, :isvisible, :grid, :displayname, :orderid, :searchname)",
-                                                                           new
-                                                                           {
-                                                                               stack.Id,
-                                                                               applicationid = application.Id,
-                                                                               stack.StackId,
-                                                                               stack.IsVisible,
-                                                                               stack.Grid,
-                                                                               stack.DisplayName,
-                                                                               stack.OrderId,
-                                                                               stack.SearchName
-                                                                           });
-                                });
+                        if (!(configuration is GridStructureConfiguration config))
+                            throw new InvalidContentException(
+                                "Type was specified to grid-structure, but configuration was not of type GridStructureConfiguration");
 
-                                foreach (var register in stack.Registers)
+                        var stackAdded = 0;
+                        foreach (var stack in config.Stacks)
+                        {
+                            stackAdded += await sqlService.OpenConnection(async (c) =>
+                                await c.ExecuteAsync(
+                                    "INSERT INTO ESS_DCC_Structure_Stack " +
+                                    "(Guid, ParentGuid, StackGuid, ShowStackNode, DifGridName, DifDisplayName, OrderNr, DifSearchName) " +
+                                    "ON EXISTING UPDATE VALUES " +
+                                    "(:Id, :ApplicationId, :StackId, :IsVisible, :Grid, :DisplayName, :OrderId, :SearchName)",
+                                new
                                 {
-                                    await sqlService.OpenConnection(async (c) =>
+                                    stack.Id,
+                                    applicationid = application.Id,
+                                    stack.StackId,
+                                    stack.IsVisible,
+                                    stack.Grid,
+                                    stack.DisplayName,
+                                    stack.OrderId,
+                                    stack.SearchName
+                                }));
+
+                            foreach (var register in stack.Registers)
+                            {
+                                await sqlService.OpenConnection(async (c) =>
+                                    await c.ExecuteAsync(
+                                        "INSERT INTO ESS_DCC_Structure_Stack_Register " +
+                                        "(Guid, ParentGuid, RegisterGuid, DifGridName, DifDisplayName, OrderNr, DifSearchName) " +
+                                        "ON EXISTING UPDATE VALUES " +
+                                        "(:Id, :StackId, :RegisterId, :Grid, :DisplayName, :OrderId, :SearchName)",
+                                    new
                                     {
-                                        return await c.ExecuteAsync("Insert into ESS_DCC_Structure_Stack_Register (guid, parentguid, registerguid, difgridname, difdisplayname, ordernr, difsearchname)" +
-                                                                               " on existing update values (:id, :stackid, :registerid, :grid, :displayname, :orderid, :searchname)",
-                                                                               new
-                                                                               {
-                                                                                   register.Id,
-                                                                                   stack.StackId,
-                                                                                   register.RegisterId,
-                                                                                   register.Grid,
-                                                                                   register.DisplayName,
-                                                                                   register.OrderId,
-                                                                                   register.SearchName
-                                                                               });
-                                    });
-                                }
+                                        register.Id,
+                                        stack.StackId,
+                                        register.RegisterId,
+                                        register.Grid,
+                                        register.DisplayName,
+                                        register.OrderId,
+                                        register.SearchName
+                                    }));
                             }
-                            return stackAdded == config.Stacks.Count;
                         }
-                        throw new InvalidContentException("Type was specified to grid-structure, but configuration was not of type GridStructureConfiguration");
+                        return stackAdded == config.Stacks.Count;
                     }
                 default:
                     throw new Exception($"Got unknown type for inserting configuration into database. Type: {type}.");
