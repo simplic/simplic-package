@@ -41,7 +41,7 @@ namespace Simplic.Package.Application
         /// <summary>
         /// Gets or sets the ribbon group id.
         /// </summary>
-        public Guid RibbonGroupId { get; set; }
+        public Guid? RibbonGroupId { get; set; }
 
         /// <summary>
         /// Gets or sets the application configuration.
