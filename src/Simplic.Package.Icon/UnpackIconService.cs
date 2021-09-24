@@ -13,7 +13,7 @@ namespace Simplic.Package.Icon
         /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
-            var filename = Path.GetFileName(extractArchiveEntryResult.Location);
+            var filename = Path.GetFileNameWithoutExtension(extractArchiveEntryResult.Location);
 
             var installableObject = new InstallableObject
             {
