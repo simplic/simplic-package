@@ -34,7 +34,7 @@ namespace Simplic.Package.Icon
             if (!Guid.TryParse(Path.GetFileName(item.Target).Split('#').First(), out _))
                 throw new FormatException($"Icon target path does not contain a valid guid in {item.Target}");
 
-            if (Path.GetFileName(item.Target).Split('#').Last().Split('.').First().Length == 0)
+            if (Path.GetFileNameWithoutExtension(item.Target).Split('#').Last().Length == 0)
                 throw new FormatException($"Icon target path does not contain a valid filename in {item.Target}");
 
             return new PackObjectResult
