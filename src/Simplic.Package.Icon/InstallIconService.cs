@@ -1,6 +1,5 @@
 ﻿using Simplic.Icon;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Icon
@@ -40,20 +39,20 @@ namespace Simplic.Package.Icon
                         Name = icon.Name
                     };
 
-                    var execResult = iconService.Save(simplicIcon);
-
-                    if (execResult)
-                    {
+                    if (iconService.Save(simplicIcon))
                         await logService.WriteAsync($"Installed icon at {installableObject.Target}.", LogLevel.Info);
-                    }
                     else
                     {
-                        await logService.WriteAsync($"Failed to install icon at {installableObject.Target}.", LogLevel.Warning);
+                        await logService.WriteAsync($"Failed to install icon at {installableObject.Target}.",
+                            LogLevel.Warning);
+
+                        result.Success = false;
                     }
                 }
                 catch (Exception ex)
                 {
-                    await logService.WriteAsync($"Failed to install icon at {installableObject.Target}.", LogLevel.Error, ex);
+                    await logService.WriteAsync($"Failed to install icon at {installableObject.Target}.",
+                        LogLevel.Error, ex);
 
                     result.Success = false;
                 }
