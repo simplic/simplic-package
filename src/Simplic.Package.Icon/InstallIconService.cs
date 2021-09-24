@@ -35,15 +35,10 @@ namespace Simplic.Package.Icon
                 {
                     var simplicIcon = new Simplic.Icon.Icon
                     {
+                        Guid = icon.Guid,
                         IconBlob = icon.Blob,
                         Name = icon.Name
                     };
-
-                    var guid = GetGuidByName(icon.Name);
-                    if (guid != Guid.Empty)
-                        simplicIcon.Guid = guid;
-                    else
-                        simplicIcon.Guid = Guid.NewGuid();
 
                     var execResult = iconService.Save(simplicIcon);
 
@@ -66,22 +61,6 @@ namespace Simplic.Package.Icon
                 return result;
             }
             throw new InvalidContentException();
-        }
-
-        /// <summary>
-        /// Gets the unique identfier of an icon by the icon name.
-        /// </summary>
-        /// <param name="name">The name of the icon.</param>
-        /// <returns>Returns the guid of the icon.</returns>
-        public Guid GetGuidByName(string name)
-        {
-            // TODO: Make this more efficient
-            var icon = iconService.GetAll().FirstOrDefault(x => x.Name == name);
-
-            if (icon != null)
-                return icon.Guid;
-            else
-                return Guid.Empty;
         }
 
         /// <inheritdoc/>
