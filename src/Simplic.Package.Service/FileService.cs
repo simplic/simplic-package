@@ -28,7 +28,7 @@ namespace Simplic.Package.Service
         {
             var byteArray = await ReadAllBytesAsync(path);
 
-            return Encoding.Default.GetString(byteArray);
+            return Encoding.UTF8.GetString(byteArray);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Simplic.Package.Service
         {
             var byteArray = await ReadAllBytesAsync(stream);
 
-            return Encoding.Default.GetString(byteArray);
+            return Encoding.UTF8.GetString(byteArray);
         }
 
         /// <inheritdoc/>

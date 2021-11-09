@@ -15,7 +15,7 @@ namespace Simplic.Package.Sql
             {
                 Content = new SqlContent
                 {
-                    Data = Encoding.Default.GetString(extractArchiveEntryResult.Data)
+                    Data = Encoding.UTF8.GetString(extractArchiveEntryResult.Data)
                 },
                 Target = extractArchiveEntryResult.Location,
                 Mode = extractArchiveEntryResult.Mode
