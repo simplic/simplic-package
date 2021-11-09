@@ -21,7 +21,7 @@ namespace Simplic.Package
         /// <returns>A ValidateObjectResult object</returns>
         public async Task<ValidateObjectResult> Validate(PackObjectResult packObjectResult)
         {
-            var json = Encoding.Default.GetString(packObjectResult.File);
+            var json = Encoding.UTF8.GetString(packObjectResult.File);
 
             var result = new ValidateObjectResult { LogLevel = LogLevel.Info };
             try

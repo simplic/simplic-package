@@ -24,7 +24,7 @@ namespace Simplic.Package.Report
             {
                 var fullReport = new FullReport();
 
-                var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
+                var json = Encoding.UTF8.GetString(extractArchiveEntryResult.Data);
                 var jObject = JObject.Parse(json);
 
                 var configuration = jObject["Configuration"];

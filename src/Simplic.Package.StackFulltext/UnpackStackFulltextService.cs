@@ -20,7 +20,7 @@ namespace Simplic.Package.StackFulltext
 
             try
             {
-                var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
+                var json = Encoding.UTF8.GetString(extractArchiveEntryResult.Data);
                 var jObject = JObject.Parse(json);
 
                 // Seperate settings and rest of json
