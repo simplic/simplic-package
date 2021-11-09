@@ -27,7 +27,7 @@ namespace Simplic.Package
                         
             try
             {
-                var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
+                var json = Encoding.UTF8.GetString(extractArchiveEntryResult.Data);
                 var content = JsonConvert.DeserializeObject<T>(json);
 
                 result.InstallableObject = new InstallableObject
