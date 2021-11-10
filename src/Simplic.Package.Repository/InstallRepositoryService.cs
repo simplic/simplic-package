@@ -30,9 +30,10 @@ namespace Simplic.Package.Repository
 
                 try
                 {
-                    repositoryManager.WriteAllBytes(installableObject.Target, repositoryContent.Data);
+                    var target = installableObject.Target.Replace("repository\\", "");
+                    repositoryManager.WriteAllBytes(target, repositoryContent.Data);
 
-                    await logService.WriteAsync($"Installed repository content at {installableObject.Target}.", LogLevel.Info);
+                    await logService.WriteAsync($"Installed repository content at {target}.", LogLevel.Info);
                 }
                 catch (Exception ex)
                 {
