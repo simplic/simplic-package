@@ -50,5 +50,15 @@ namespace Simplic.Package.Application
         /// </para>
         /// </summary>
         public IApplicationConfiguration Configuration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the order number inside the ribbon group.
+        /// </summary>
+        public int RibbonOrderNr { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the application inside the ribbon group.
+        /// </summary>
+        public int RibbonButtonSize { get; set; }
     }
 }

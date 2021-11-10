@@ -163,7 +163,7 @@ namespace Simplic.Package.Service
                     };
 
                     var json = JsonConvert.SerializeObject(packageConfiguration, jsonSerializerSettings);
-                    var jsonBytes = Encoding.Default.GetBytes(json);
+                    var jsonBytes = Encoding.UTF8.GetBytes(json);
 
                     await WriteToEntry(configurationEntry, jsonBytes);
                 }

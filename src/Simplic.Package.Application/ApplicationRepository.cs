@@ -37,8 +37,10 @@ namespace Simplic.Package.Application
 
                 var success = await sqlService.OpenConnection(async (c) =>
                     await c.ExecuteAsync(
-                        "INSERT INTO ESS_MS_Intern_Page (Guid, IconGuid, ContentType, MenuText, DirectJump, RibbonGroupGuid)" +
-                        " ON EXISTING UPDATE VALUES (:Id, :IconId, :contentTypeGuid, :Name, :ShortCut, :RibbonGroupId)",
+                        "INSERT INTO ESS_MS_Intern_Page" +
+                        " (Guid, IconGuid, ContentType, MenuText, DirectJump, RibbonGroupGuid, RibbonOrderNr, RibbonButtonSize)" +
+                        " ON EXISTING UPDATE VALUES" +
+                        " (:Id, :IconId, :contentTypeGuid, :Name, :ShortCut, :RibbonGroupId, :RibbonOrderNr, :RibbonButtonSize)",
                         new
                         {
                             application.Id,
@@ -46,7 +48,9 @@ namespace Simplic.Package.Application
                             contentTypeGuid,
                             application.Name,
                             application.Shortcut,
-                            application.RibbonGroupId
+                            application.RibbonGroupId,
+                            application.RibbonOrderNr,
+                            application.RibbonButtonSize
                         }) > 0
                 );
 

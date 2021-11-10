@@ -20,7 +20,7 @@ namespace Simplic.Package.Ribbon
 
             try
             {
-                var json = Encoding.Default.GetString(extractArchiveEntryResult.Data);
+                var json = Encoding.UTF8.GetString(extractArchiveEntryResult.Data);
                 var ribbon = JsonConvert.DeserializeObject<RibbonTab>(json);
 
                 result.InstallableObject = new InstallableObject

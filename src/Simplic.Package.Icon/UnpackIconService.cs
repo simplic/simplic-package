@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Simplic.Package.Icon
 {
@@ -11,11 +13,14 @@ namespace Simplic.Package.Icon
         /// <inheritdoc/>
         public async Task<UnpackObjectResult> UnpackObject(ExtractArchiveEntryResult extractArchiveEntryResult)
         {
+            var filename = Path.GetFileNameWithoutExtension(extractArchiveEntryResult.Location);
+
             var installableObject = new InstallableObject
             {
                 Content = new IconContent
                 {
-                    Name = extractArchiveEntryResult.Location.Split('/').Last(),
+                    Guid = Guid.Parse(filename.Split('#').First()),
+                    Name = filename.Split('#').Last(),
                     Blob = extractArchiveEntryResult.Data
                 },
                 Target = extractArchiveEntryResult.Location,

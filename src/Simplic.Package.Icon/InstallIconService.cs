@@ -1,6 +1,5 @@
 ﻿using Simplic.Icon;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Icon
@@ -35,30 +34,25 @@ namespace Simplic.Package.Icon
                 {
                     var simplicIcon = new Simplic.Icon.Icon
                     {
+                        Guid = icon.Guid,
                         IconBlob = icon.Blob,
                         Name = icon.Name
                     };
 
-                    var guid = GetGuidByName(icon.Name);
-                    if (guid != Guid.Empty)
-                        simplicIcon.Guid = guid;
-                    else
-                        simplicIcon.Guid = Guid.NewGuid();
-
-                    var execResult = iconService.Save(simplicIcon);
-
-                    if (execResult)
-                    {
+                    if (iconService.Save(simplicIcon))
                         await logService.WriteAsync($"Installed icon at {installableObject.Target}.", LogLevel.Info);
-                    }
                     else
                     {
-                        await logService.WriteAsync($"Failed to install icon at {installableObject.Target}.", LogLevel.Warning);
+                        await logService.WriteAsync($"Failed to install icon at {installableObject.Target}.",
+                            LogLevel.Warning);
+
+                        result.Success = false;
                     }
                 }
                 catch (Exception ex)
                 {
-                    await logService.WriteAsync($"Failed to install icon at {installableObject.Target}.", LogLevel.Error, ex);
+                    await logService.WriteAsync($"Failed to install icon at {installableObject.Target}.",
+                        LogLevel.Error, ex);
 
                     result.Success = false;
                 }
@@ -66,22 +60,6 @@ namespace Simplic.Package.Icon
                 return result;
             }
             throw new InvalidContentException();
-        }
-
-        /// <summary>
-        /// Gets the unique identfier of an icon by the icon name.
-        /// </summary>
-        /// <param name="name">The name of the icon.</param>
-        /// <returns>Returns the guid of the icon.</returns>
-        public Guid GetGuidByName(string name)
-        {
-            // TODO: Make this more efficient
-            var icon = iconService.GetAll().FirstOrDefault(x => x.Name == name);
-
-            if (icon != null)
-                return icon.Guid;
-            else
-                return Guid.Empty;
         }
 
         /// <inheritdoc/>
