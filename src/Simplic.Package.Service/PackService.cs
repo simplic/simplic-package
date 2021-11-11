@@ -119,37 +119,37 @@ namespace Simplic.Package.Service
 
                         foreach (var objectListItem in item.Value.ToList())
                         {
-                            if (objectListItem.Source.Contains("*"))
-                            {
-                                var directory = Path.GetDirectoryName(objectListItem.Source);
-                                var fileWildCard = Path.GetFileName(objectListItem.Source);
-
-                                foreach (var fullPath in Directory.GetFiles(directory, fileWildCard))
-                                {
-                                    var source = Path.Combine(directory, Path.GetFileName(fullPath));
-
-                                    var wildCardPOR = new PackObjectResult
-                                    {
-                                        File = await fileService.ReadAllBytesAsync(fullPath),
-                                        Location = source
-                                    };
-                                    await writeEntry(objectListItem, wildCardPOR);
-
-                                    // Add to target
-                                    item.Value.Add(new ObjectListItem 
-                                    {
-                                        Source = source,
-                                        Target = source
-                                    });
-                                }
-
-                                item.Value.Remove(objectListItem);
-                            }
-                            else
+                            if (!objectListItem.Source.Contains("*"))
                             {
                                 var packObjectResult = await packObjectService.ReadAsync(objectListItem);
                                 await writeEntry(objectListItem, packObjectResult);
+                                continue;
                             }
+
+                            var directory = Path.GetDirectoryName(objectListItem.Source);
+                            var fileWildCard = Path.GetFileName(objectListItem.Source);
+
+                            foreach (var fullPath in Directory.GetFiles(directory, fileWildCard, SearchOption.AllDirectories))
+                            {
+                                var source = fullPath; //Path.Combine(directory, Path.GetFileName(fullPath));
+
+                                var wildCardPOR = new PackObjectResult
+                                {
+                                    File = await fileService.ReadAllBytesAsync(fullPath),
+                                    Location = source
+                                };
+                                await writeEntry(objectListItem, wildCardPOR);
+
+                                // Add to target
+                                item.Value.Add(new ObjectListItem
+                                {
+                                    Source = source,
+                                    Target = source
+                                });
+                            }
+
+                            item.Value.Remove(objectListItem);
+
                         }
                     }
 
