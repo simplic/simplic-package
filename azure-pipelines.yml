@@ -19,6 +19,7 @@ pool:
 variables:
 - group: simplic-deployment
 - group: simplic-deployment-dev02
+- group: simplic-chocolatey
 - name: buildConfiguration
   value: "Debug"
 
@@ -77,3 +78,16 @@ steps:
       nuGetFeedType: "internal"
       publishVstsFeed: "f7087ef5-bf6f-48b2-8b8b-5e513f4a7a9e"
       allowPackageConflicts: true
+
+  - task: ChocolateyCommand@0
+    inputs:
+      command: 'pack'
+      packOperation: 'multiple'
+      packWorkingDirectory: '$(Build.Repository.LocalPath)'
+  - task: ChocolateyCommand@0
+    inputs:
+      command: 'push'
+      pushOperation: 'multiple'
+      pushWorkingDirectory: '$(Build.ArtifactStagingDirectory)'
+      chocolateySourceType: 'manual'
+      pushApikey: '${choco_apikey}'
