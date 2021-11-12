@@ -112,4 +112,4 @@ steps:
       pushWorkingDirectory: '$(Build.ArtifactStagingDirectory)\package'
       pushNupkgFileName: 'simpack.$(Build.BuildNumber).nupkg'
       chocolateySourceType: 'manual'
-      pushApikey: 'choco_apikey'
+      pushApikey: '$(choco_apikey)'
