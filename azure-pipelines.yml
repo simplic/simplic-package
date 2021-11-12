@@ -103,6 +103,5 @@ steps:
       trace: true
       pushOperation: 'single'
       pushWorkingDirectory: '$(Build.ArtifactStagingDirectory)\package'
-      pushNupkgFileName: '*.nupkg'
       chocolateySourceType: 'manual'
       pushApikey: '${choco_apikey}'
