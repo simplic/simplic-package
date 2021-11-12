@@ -82,12 +82,14 @@ steps:
   - task: ChocolateyCommand@0
     inputs:
       command: 'pack'
-      packOperation: 'multiple'
+      packOperation: 'single'
       packWorkingDirectory: '$(Build.Repository.LocalPath)'
-  - task: ChocolateyCommand@0
-    inputs:
-      command: 'push'
-      pushOperation: 'multiple'
-      pushWorkingDirectory: '$(Build.ArtifactStagingDirectory)'
-      chocolateySourceType: 'manual'
-      pushApikey: '${choco_apikey}'
+      packNuspecFileName: 'Simplic.Package.CLI.nuspec'
+
+  #- task: ChocolateyCommand@0
+  #  inputs:
+  #    command: 'push'
+  #    pushOperation: 'multiple'
+  #    pushWorkingDirectory: '$(Build.ArtifactStagingDirectory)'
+  #    chocolateySourceType: 'manual'
+  #    pushApikey: '${choco_apikey}'
