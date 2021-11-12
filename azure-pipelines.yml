@@ -97,6 +97,6 @@ steps:
       trace: true
       pushOperation: 'single'
       pushWorkingDirectory: '$(Build.ArtifactStagingDirectory)'
-      pushNupkgFileName: 'simpack.nupkg'
+      pushNupkgFileName: 'simpack.*.nupkg'
       chocolateySourceType: 'manual'
       pushApikey: '${choco_apikey}'
