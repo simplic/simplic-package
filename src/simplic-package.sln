@@ -148,7 +148,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ENV", "ENV", "{DFD9C6CB-50F
 		..\azure-pipelines.yml = ..\azure-pipelines.yml
 		..\documentation_config.json = ..\documentation_config.json
 		..\release-notes.xml = ..\release-notes.xml
-		simpack.nuspec = simpack.nuspec
+		..\simpack.nuspec = ..\simpack.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Ribbon", "Simplic.Package.Ribbon\Simplic.Package.Ribbon.csproj", "{B528F0D8-D0A8-4C46-9416-F812D292468F}"
