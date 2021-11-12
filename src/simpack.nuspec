@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata minClientVersion="1.0.0.0">
-        <id>Simpack</id>
+        <id>Simplic.Package.CLI</id>
         <version>1.0.0</version>
         <title> Simplic package cli.</title>
         <authors>SIMPLIC GMBH</authors>

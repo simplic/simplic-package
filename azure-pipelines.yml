@@ -84,7 +84,7 @@ steps:
       command: 'pack'
       packOperation: 'single'
       packWorkingDirectory: '$(Build.Repository.LocalPath)'
-      packNuspecFileName: 'Simplic.Package.CLI.nuspec'
+      packNuspecFileName: 'simpack.nuspec'
 
   #- task: ChocolateyCommand@0
   #  inputs:
