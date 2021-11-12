@@ -93,6 +93,7 @@ steps:
       packOperation: 'single'
       packWorkingDirectory: '$(Build.Repository.LocalPath)'
       packNuspecFileName: 'simpack.nuspec'
+      packVersion: '$(Build.BuildNumber)'
       packOutputDirectory: '$(Build.ArtifactStagingDirectory)\package'
 
   - task: ChocolateyCommand@0
@@ -103,5 +104,6 @@ steps:
       trace: true
       pushOperation: 'single'
       pushWorkingDirectory: '$(Build.ArtifactStagingDirectory)\package'
+      pushNupkgFileName: 'simpack.$(Build.BuildNumber).nupkg'
       chocolateySourceType: 'manual'
       pushApikey: '${choco_apikey}'
