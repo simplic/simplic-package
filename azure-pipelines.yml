@@ -103,6 +103,7 @@ steps:
       publishLocation: 'Container'
 
   - task: ChocolateyCommand@0
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     inputs:
       command: 'push'
       debug: true
