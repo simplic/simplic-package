@@ -96,6 +96,12 @@ steps:
       packVersion: '$(Build.BuildNumber)'
       packOutputDirectory: '$(Build.ArtifactStagingDirectory)\package'
 
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\package'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
+
   - task: ChocolateyCommand@0
     inputs:
       command: 'push'
@@ -105,5 +111,5 @@ steps:
       pushOperation: 'single'
       pushWorkingDirectory: '$(Build.ArtifactStagingDirectory)\package'
       pushNupkgFileName: 'simpack.$(Build.BuildNumber).nupkg'
-      chocolateySourceType: 'stored'
-      externalEndpoint: 'choco'
+      chocolateySourceType: 'manual'
+      pushApikey: 'choco_apikey'
