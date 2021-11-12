@@ -105,5 +105,5 @@ steps:
       pushOperation: 'single'
       pushWorkingDirectory: '$(Build.ArtifactStagingDirectory)\package'
       pushNupkgFileName: 'simpack.$(Build.BuildNumber).nupkg'
-      chocolateySourceType: 'manual'
-      pushApikey: '${choco_apikey}'
+      chocolateySourceType: 'stored'
+      externalEndpoint: 'choco'
