@@ -93,7 +93,7 @@ steps:
       packOperation: 'single'
       packWorkingDirectory: '$(Build.Repository.LocalPath)'
       packNuspecFileName: 'simpack.nuspec'
-      packVersion: '20211112.17'
+      packVersion: '$(Build.BuildNumber)'
       packOutputDirectory: '$(Build.ArtifactStagingDirectory)\package'
 
   - task: PublishBuildArtifacts@1
@@ -111,6 +111,6 @@ steps:
       trace: true
       pushOperation: 'single'
       pushWorkingDirectory: '$(Build.ArtifactStagingDirectory)\package'
-      pushNupkgFileName: 'simpack.20211112.17.nupkg'
+      pushNupkgFileName: 'simpack.$(Build.BuildNumber).nupkg'
       chocolateySourceType: 'manual'
       pushApikey: '$(choco_apikey)'
