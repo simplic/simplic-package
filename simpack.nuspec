@@ -16,5 +16,6 @@
     </metadata>
     <files>
         <file src="bin\Debug\**.*;!*.pdb" target="bin"/>
+        <file src="bin\Debug\simpack.exe" target="bin"/>
     </files>
 </package>
