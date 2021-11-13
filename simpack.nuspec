@@ -3,11 +3,16 @@
     <metadata minClientVersion="1.0.0.0">
         <id>simpack</id>
         <version>1.0.0</version>
+        <iconUrl>https://github.com/simplic/simplic-package/raw/master/simpack_32x.png</iconUrl>
         <title> Simplic package cli.</title>
         <authors>SIMPLIC GMBH</authors>
-        <owners> SIMPLIC GMBH </owners>
+        <owners>SIMPLIC GMBH</owners>
+        <projectUrl>https://github.com/simplic/simplic-package</projectUrl>
+        <packageSourceUrl>https://github.com/simplic/simplic-package</packageSourceUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>CLI to pack Simplic Packages.</description>
+        <description>CLI to pack and isntall simplic packages.</description>
+        <summary>Tool for packing and installing simplic extensions.</summary>
+        <tags>simplic simpack simplic-package</tags>
     </metadata>
     <files>
         <file src="bin\Debug\**.*;!*.pdb" target="bin"/>
