@@ -4,7 +4,7 @@
         <id>simpack</id>
         <version>1.0.0</version>
         <iconUrl>https://github.com/simplic/simplic-package/raw/master/simpack_32x.png</iconUrl>
-        <title> Simplic package cli.</title>
+        <title>Simplic package cli.</title>
         <authors>SIMPLIC GMBH</authors>
         <owners>SIMPLIC GMBH</owners>
         <projectUrl>https://github.com/simplic/simplic-package</projectUrl>
@@ -13,9 +13,13 @@
         <description>CLI to pack and isntall simplic packages.</description>
         <summary>Tool for packing and installing simplic extensions.</summary>
         <tags>simplic simpack simplic-package</tags>
+        <docsUrl>https://simplic.github.io/</docsUrl>
+        <bugTrackerUrl>https://github.com/simplic/simplic-package/issues</bugTrackerUrl>
     </metadata>
     <files>
-        <file src="bin\Debug\**.*;!*.pdb" target="bin"/>
-        <file src="bin\Debug\simpack.exe" target="bin"/>
+        <file src="bin\Debug\*.dll" target="bin" />
+        <file src="bin\Debug\simpack.exe" target="bin" />
+        <file src="bin\Debug\simpack.exe.config" target="bin" />
+        <file src="LICENSE" target="bin/LICENSE.txt" />
     </files>
 </package>
