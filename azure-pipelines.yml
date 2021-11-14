@@ -84,6 +84,11 @@ steps:
       targetType: 'inline'
       script: 'New-Item -Path ''$(Build.ArtifactStagingDirectory)\package'' -ItemType Directory'
 
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: '(Get-FileHash ''bin\\Debug\\simpack.exe'').Hash | Out-File -FilePath VERIFICATION.txt'
+
   - task: ChocolateyCommand@0
     inputs:
       command: 'pack'

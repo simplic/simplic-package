@@ -20,6 +20,7 @@
         <file src="bin\Debug\*.dll" target="bin" />
         <file src="bin\Debug\simpack.exe" target="bin" />
         <file src="bin\Debug\simpack.exe.config" target="bin" />
-        <file src="LICENSE" target="bin/LICENSE.txt" />
+        <file src="LICENSE" target="tools/LICENSE.txt" />
+        <file src="VERIFICATION.txt" target="tools/VERIFICATION.txt" />
     </files>
 </package>
