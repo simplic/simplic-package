@@ -19,6 +19,7 @@ pool:
 variables:
 - group: simplic-deployment
 - group: simplic-deployment-dev02
+- group: simplic-chocolatey
 - name: buildConfiguration
   value: "Debug"
 
@@ -77,3 +78,44 @@ steps:
       nuGetFeedType: "internal"
       publishVstsFeed: "f7087ef5-bf6f-48b2-8b8b-5e513f4a7a9e"
       allowPackageConflicts: true
+
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: 'New-Item -Path ''$(Build.ArtifactStagingDirectory)\package'' -ItemType Directory'
+
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: '(Get-FileHash ''bin\\Debug\\simpack.exe'').Hash | Out-File -FilePath VERIFICATION.txt'
+
+  - task: ChocolateyCommand@0
+    inputs:
+      command: 'pack'
+      debug: true
+      verbose: true
+      trace: true
+      packOperation: 'single'
+      packWorkingDirectory: '$(Build.Repository.LocalPath)'
+      packNuspecFileName: 'simpack.nuspec'
+      packVersion: '$(Build.BuildNumber)'
+      packOutputDirectory: '$(Build.ArtifactStagingDirectory)\package'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\package'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
+
+  - task: ChocolateyCommand@0
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    inputs:
+      command: 'push'
+      debug: true
+      verbose: true
+      trace: true
+      pushOperation: 'single'
+      pushWorkingDirectory: '$(Build.ArtifactStagingDirectory)\package'
+      pushNupkgFileName: 'simpack.$(Build.BuildNumber).nupkg'
+      chocolateySourceType: 'manual'
+      pushApikey: '$(choco_apikey)'

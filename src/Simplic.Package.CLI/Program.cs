@@ -234,8 +234,6 @@ namespace Simplic.Package.CLI
             // For InstallReportService
             Simplic.Base.GlobalSettings.UserName = "Package System";
 
-            Debugger.Launch();
-
             Framework.DAL.DALManager.Init(connectionString);
             Framework.DAL.ConnectionManager.Init(Thread.CurrentThread);
 
