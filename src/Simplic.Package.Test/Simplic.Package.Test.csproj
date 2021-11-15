@@ -46,11 +46,16 @@
   <ItemGroup>
     <Compile Include="DependencyInjectionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Package.Data.DB\Simplic.Package.Data.DB.csproj">
       <Project>{061247F8-3F50-4271-852E-4AD4DC8592B0}</Project>
       <Name>Simplic.Package.Data.DB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.Report\Simplic.Package.Report.csproj">
+      <Project>{D2ABA7DA-DDB3-4D7E-8D3C-B0D6B7817B38}</Project>
+      <Name>Simplic.Package.Report</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Package.Service\Simplic.Package.Service.csproj">
       <Project>{2568b37d-7937-4368-a6e3-2ade2ad7196b}</Project>
@@ -62,11 +67,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AutoMapper">
+      <Version>10.1.1</Version>
+    </PackageReference>
     <PackageReference Include="Moq">
       <Version>4.16.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Reporting">
+      <Version>8.0.121.1026</Version>
     </PackageReference>
     <PackageReference Include="Unity.Container">
       <Version>5.11.11</Version>

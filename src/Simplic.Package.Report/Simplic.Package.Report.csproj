@@ -52,7 +52,6 @@
     <Compile Include="PackReportService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\ReportConfiguration.cs" />
-    <Compile Include="Test\ReportRepositoryTest.cs" />
     <Compile Include="UnpackReportService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -86,14 +85,7 @@
     <PackageReference Include="Unity.Abstractions">
       <Version>5.11.7</Version>
     </PackageReference>
-    <PackageReference Include="xunit">
-      <Version>2.4.1</Version>
-    </PackageReference>
-    <PackageReference Include="xunit.runner.visualstudio">
-      <Version>2.4.3</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

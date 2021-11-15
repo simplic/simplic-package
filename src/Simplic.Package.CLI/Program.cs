@@ -34,7 +34,6 @@ using Simplic.Package.StackContextArea;
 using Simplic.Package.StackFulltext;
 using Simplic.Package.StackRegister;
 using Simplic.Package.Application;
-using Unity.ServiceLocation;
 using Simplic.Localization;
 using Simplic.Log.Console;
 using Simplic.Reporting;
@@ -46,7 +45,6 @@ using Simplic.Authorization;
 using Simplic.Icon;
 using Simplic.Icon.Service;
 using Simplic.Package.Ribbon;
-using System.Diagnostics;
 
 namespace Simplic.Package.CLI
 {
@@ -217,28 +215,25 @@ namespace Simplic.Package.CLI
             container.RegisterType<ILocalizationService, LocalizationService>();
 
             // For InstallRoleService
-            container.RegisterType<IAuthorizationService, Simplic.Authorization.Service.AuthorizationService>();
-            container.RegisterType<ITrackingRepository, Simplic.Tracking.Data.DB.TrackingRepository>();
-            container.RegisterType<ITrackingService, Simplic.Tracking.Service.TrackingService>();
+            container.RegisterType<IAuthorizationService, Authorization.Service.AuthorizationService>();
+            container.RegisterType<ITrackingRepository, Tracking.Data.DB.TrackingRepository>();
+            container.RegisterType<ITrackingService, Tracking.Service.TrackingService>();
 
             // For InstallSequenceService
-            container.RegisterType<IOrganizationRepository, Simplic.TenantSystem.Data.DB.OrganizationRepository>();
-            container.RegisterType<Simplic.Configuration.IConfigurationRepository, Simplic.Configuration.Data.ConfigurationRepository>();
-            container.RegisterType<Simplic.Configuration.IConfigurationService, Simplic.Configuration.Service.ConfigurationService>();
-            container.RegisterType<Simplic.Session.ISessionService, Simplic.Session.Service.SessionService>();
-            container.RegisterType<Simplic.Cache.ICacheService, Simplic.Cache.Service.CacheService>();
-            container.RegisterType<IOrganizationService, Simplic.TenantSystem.Service.OrganizationService>(); // TODO: Implement for SequenceService
+            container.RegisterType<IOrganizationRepository, TenantSystem.Data.DB.OrganizationRepository>();
+            container.RegisterType<Configuration.IConfigurationRepository, Configuration.Data.ConfigurationRepository>();
+            container.RegisterType<Configuration.IConfigurationService, Configuration.Service.ConfigurationService>();
+            container.RegisterType<Session.ISessionService, Session.Service.SessionService>();
+            container.RegisterType<Cache.ICacheService, Cache.Service.CacheService>();
+            container.RegisterType<IOrganizationService, TenantSystem.Service.OrganizationService>(); // TODO: Implement for SequenceService
 
             container.RegisterType<IIconService, IconService>();
 
             // For InstallReportService
-            Simplic.Base.GlobalSettings.UserName = "Package System";
+            Base.GlobalSettings.UserName = "Package System";
 
-            Framework.DAL.DALManager.Init(connectionString);
-            Framework.DAL.ConnectionManager.Init(Thread.CurrentThread);
-
-            var serviceLocator = new UnityServiceLocator(container);
-            CommonServiceLocator.ServiceLocator.SetLocatorProvider(() => serviceLocator);
+            DALManager.Init(connectionString);
+            ConnectionManager.Init(Thread.CurrentThread);
 
             var singelton = ReportManager.Singleton;
             singelton.Initialize(new DefaultReportConfigurationProvider());
@@ -337,7 +332,7 @@ namespace Simplic.Package.CLI
         private void WriteLogMessage(object o, LogMessageEventArgs e)
         {
             //if ((int)e.LogLevel <= (int)verbosity)
-             //   MyWriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}]{e.LogLevel}: [{e.Message}]", e.LogLevel);
+            //   MyWriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}]{e.LogLevel}: [{e.Message}]", e.LogLevel);
         }
 
         private static void MyWriteLine(string message, LogLevel logLevel)
