@@ -237,9 +237,6 @@ namespace Simplic.Package.CLI
             Framework.DAL.DALManager.Init(connectionString);
             Framework.DAL.ConnectionManager.Init(Thread.CurrentThread);
 
-            var serviceLocator = new UnityServiceLocator(container);
-            CommonServiceLocator.ServiceLocator.SetLocatorProvider(() => serviceLocator);
-
             var singelton = ReportManager.Singleton;
             singelton.Initialize(new DefaultReportConfigurationProvider());
 
