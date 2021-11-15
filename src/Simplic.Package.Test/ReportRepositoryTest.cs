@@ -1,21 +1,19 @@
 ﻿using AutoMapper;
+using Simplic.Package.Report;
 using Simplic.Reporting;
-using System.Collections.Generic;
-using System.Windows.Documents;
-using System.Xaml;
 using Xunit;
 
-namespace Simplic.Package.Report
+namespace Simplic.Package.Test
 {
     public class ReportRepositoryTest
     {
         [Theory]
-        [InlineData("key-value", Reporting.ReportType.KeyValueReport)]
-        [InlineData("sql", Reporting.ReportType.SqlReport)]
-        [InlineData("parameter", Reporting.ReportType.ParameterReport)]
-        public void EnumResolver_Test(string type, Reporting.ReportType expectedMapped)
+        [InlineData("key-value", ReportType.KeyValueReport)]
+        [InlineData("sql", ReportType.SqlReport)]
+        [InlineData("parameter", ReportType.ParameterReport)]
+        public void EnumResolver_Test(string type, ReportType expectedMapped)
         {
-            var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<Report, Simplic.Reporting.IReportConfiguration>(MemberList.Source)
+            var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<Report.Report, IReportConfiguration>(MemberList.Source)
                                                             .ForMember(dest => dest.PrinterName, opt => opt.MapFrom(x => x.PrinterName))
                                                             .ForMember(dest => dest.Type, opt => opt.MapFrom<EnumResolver>())
                                                             .ForSourceMember(src => src.Configuration, opt => opt.DoNotValidate())
@@ -23,7 +21,7 @@ namespace Simplic.Package.Report
             mapConfig.AssertConfigurationIsValid();
             var mapper = new Mapper(mapConfig);
 
-            var deserializedReport = new Report
+            var deserializedReport = new Report.Report
             {
                 Id = new System.Guid(),
                 Type = type,
@@ -31,7 +29,7 @@ namespace Simplic.Package.Report
                 PrinterName = "printername"
             };
 
-            var mappedReportConfiguration = mapper.Map<Report, Simplic.Reporting.IReportConfiguration>(deserializedReport);
+            var mappedReportConfiguration = mapper.Map<Report.Report, IReportConfiguration>(deserializedReport);
             Assert.Equal(expectedMapped, mappedReportConfiguration.Type);
         }
     }
