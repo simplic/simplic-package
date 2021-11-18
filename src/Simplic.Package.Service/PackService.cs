@@ -39,12 +39,12 @@ namespace Simplic.Package.Service
         /// </summary>
         /// <param name="json">The package configuration file as a string</param>
         /// <returns>The written archive in bytes</returns>
-        public async Task<byte[]> Pack(string json)
+        public async Task<byte[]> Pack(string json, string targetPath = "")
         {
             try
             {
                 var packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(json);
-                return await Pack(packageConfiguration);
+                return await Pack(packageConfiguration, targetPath);
             }
             catch (JsonSerializationException jse)
             {
@@ -57,14 +57,16 @@ namespace Simplic.Package.Service
         /// </summary>
         /// <param name="packageConfiguration">The PackageConfiguration to create from</param>
         /// <returns>The written archive in bytes</returns>
-        public async Task<byte[]> Pack(PackageConfiguration packageConfiguration)
+        public async Task<byte[]> Pack(PackageConfiguration packageConfiguration, string targetPath = "")
         {
             // Validate the PackageConfiguration object
             var validatePackageConfigurationResult = await validatePackageConfigurationService.Validate(packageConfiguration);
             if (!validatePackageConfigurationResult.IsValid)
                 throw new PackageConfigurationException(validatePackageConfigurationResult.Message);
             else
-                await logService.WriteAsync(validatePackageConfigurationResult.Message, validatePackageConfigurationResult.LogLevel);
+                await logService.WriteAsync(
+                    validatePackageConfigurationResult.Message,
+                    validatePackageConfigurationResult.LogLevel);
 
             if (packageConfiguration.Guid == Guid.Empty)
             {
@@ -92,13 +94,18 @@ namespace Simplic.Package.Service
                                 validateObjectResult = await validateObjectService.Validate(_por);
 
                                 if (!validateObjectResult.IsValid)
-                                    throw new InvalidObjectException(validateObjectResult.Message, validateObjectResult.Exception);
+                                    throw new InvalidObjectException(
+                                        validateObjectResult.Message,
+                                        validateObjectResult.Exception);
                                 else
-                                    await logService.WriteAsync(validateObjectResult.Message, validateObjectResult.LogLevel);
+                                    await logService.WriteAsync(
+                                        validateObjectResult.Message,
+                                        validateObjectResult.LogLevel);
                             }
                             catch (ResolutionFailedException)
                             {
-                                await logService.WriteAsync($"Skipped Validation on {_oli.Source} due to inability to resolve validation service for {item.Key}", LogLevel.Info);
+                                await logService.WriteAsync($"Skipped Validation on {_oli.Source} due to inability " +
+                                    $"to resolve validation service for {item.Key}", LogLevel.Info);
                             }
 
                             // Write the object to the archive
@@ -168,18 +175,27 @@ namespace Simplic.Package.Service
                     await WriteToEntry(configurationEntry, jsonBytes);
                 }
 
-                string archiveName = $"{packageConfiguration.Name}_v{packageConfiguration.Version}.zip";
-                if (fileService.FileExists(archiveName))
+                if (targetPath != "" && (!targetPath.EndsWith("\\") || targetPath.EndsWith("/")))
+                    targetPath += "\\";
+
+                var archiveName = $"{packageConfiguration.Name}_v{packageConfiguration.Version}.zip";
+                var path = targetPath + archiveName;
+
+                if (fileService.FileExists(path))
                 {
-                    await logService.WriteAsync($"[TODO: Decide what to do here] A Package with name {packageConfiguration.Name}_v{packageConfiguration.Version} already exists in working directory", LogLevel.Warning);
-                    File.Delete(archiveName);
-                    await fileService.WriteAllBytesAsync(stream.ToArray(), archiveName);
+                    var target = targetPath == "" ? "working directory" : targetPath;
+
+                    await logService.WriteAsync($"[TODO: Decide what to do here] A Package with name " +
+                        $"{archiveName} already exists in {target}", LogLevel.Warning);
+
+                    File.Delete(path);
+                    await fileService.WriteAllBytesAsync(stream.ToArray(), path);
                     await logService.WriteAsync($"Succesfully created package.", LogLevel.Info);
                 }
                 else
                 {
-                    await fileService.WriteAllBytesAsync(stream.ToArray(), archiveName);
-                    await logService.WriteAsync($"Succesfully created package {archiveName}.", LogLevel.Info);
+                    await fileService.WriteAllBytesAsync(stream.ToArray(), path);
+                    await logService.WriteAsync($"Succesfully created package {path}.", LogLevel.Info);
                 }
 
                 return stream.ToArray();
