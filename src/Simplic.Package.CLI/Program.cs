@@ -70,8 +70,8 @@ namespace Simplic.Package.CLI
             var optionSet = new OptionSet()
             {
                 { "m|mkconfig=", "Creates a package.json file with given Name.", v =>  {create = true; name = v; } },
-                { "p|pack=", "Creats a package archive from the package.json in the current working directory.",
-                    v => { target = v; pack = true; } },
+                { "p|pack:", "Creats a package archive from the package.json in the current working directory.",
+                    v => { target = v ?? ""; pack = true; } },
                 { "init|initialize", "Initializes the PackageSystem by adding needed tables to database",
                     v => initialize = true },
                 { "i|install=", "Installs a package from the given path.", v => {install = true; path = v; } },
