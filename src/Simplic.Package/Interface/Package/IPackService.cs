@@ -12,13 +12,13 @@ namespace Simplic.Package
         /// </summary>
         /// <param name="json">The package configuration file as a string.</param>
         /// <returns>The written archive in bytes.</returns>
-        Task<byte[]> Pack(string json);
+        Task<byte[]> Pack(string json, string targetPath = "");
 
         /// <summary>
         /// Creates and writes a package based on the given PackageConfiguration object.
         /// </summary>
         /// <param name="packageConfiguration">The PackageConfiguration to create from.</param>
         /// <returns>The written archive in bytes.</returns>
-        Task<byte[]> Pack(PackageConfiguration packageConfiguration);
+        Task<byte[]> Pack(PackageConfiguration packageConfiguration, string targetPath = "");
     }
 }

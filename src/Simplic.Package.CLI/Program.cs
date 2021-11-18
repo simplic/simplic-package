@@ -59,6 +59,8 @@ namespace Simplic.Package.CLI
             var name = "";
 
             var pack = false;
+            var target = "";
+
             var initialize = false;
 
             var install = false;
@@ -68,12 +70,15 @@ namespace Simplic.Package.CLI
             var optionSet = new OptionSet()
             {
                 { "m|mkconfig=", "Creates a package.json file with given Name.", v =>  {create = true; name = v; } },
-                { "p|pack", "Creats a package archive from the package.json in the  current working directory.", v => pack = true },
-                { "init|initialize", "Initializes the PackageSystem by adding needed tables to database", v => initialize = true },
+                { "p|pack:", "Creats a package archive from the package.json in the current working directory.",
+                    v => { target = v ?? ""; pack = true; } },
+                { "init|initialize", "Initializes the PackageSystem by adding needed tables to database",
+                    v => initialize = true },
                 { "i|install=", "Installs a package from the given path.", v => {install = true; path = v; } },
                 { "c|connection=", "The database connection string.", v =>  {connectionString = v; } },
                 { "h|help",  "Shows help", v => showHelp = true },
-                { "v|verbosity=", "Sets the Loglevel.\n Error: 0, Warning: 1, Info: 2, Debug: 3. Default: 0", v => verbosity = (LogLevel)Int32.Parse(v) },
+                { "v|verbosity=", "Sets the Loglevel.\n Error: 0, Warning: 1, Info: 2, Debug: 3. Default: 0",
+                    v => verbosity = (LogLevel)Int32.Parse(v) }
             };
 
             if (!args.Any())
@@ -273,8 +278,8 @@ namespace Simplic.Package.CLI
                 };
 
                 var json = JsonConvert.SerializeObject(packageConfiguration, jsonSerializerSettings);
-                File.WriteAllText("package.json", json);
-                Console.WriteLine($"Succesfully created a new package.json!");
+                File.WriteAllText(target + "package.json", json);
+                Console.WriteLine($"Succesfully created a new package.json at {target}");
             }
 
             if (pack)
@@ -285,9 +290,9 @@ namespace Simplic.Package.CLI
                     return 1;
                 }
 
-                var fullPath = Path.GetFullPath($"./package.json");
+                var fullPath = Path.GetFullPath("./package.json");
                 var packService = container.Resolve<IPackService>();
-                await packService.Pack(File.ReadAllText(fullPath));
+                await packService.Pack(File.ReadAllText(fullPath), target);
                 Console.WriteLine($"Succesfully packed {fullPath}!");
             }
 
