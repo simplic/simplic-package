@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Simplic.Package.Attributes
+namespace Simplic.Package
 {
     /// <summary>
     /// Attribute to define the entry point of a package system extension.
