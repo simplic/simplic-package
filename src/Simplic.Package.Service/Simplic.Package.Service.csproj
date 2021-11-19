@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionService.cs" />
     <Compile Include="FileService.cs" />
     <Compile Include="InitializePackageSystemService.cs" />
     <Compile Include="CheckDependencyService.cs" />
