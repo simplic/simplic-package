@@ -17,6 +17,11 @@ namespace Simplic.Package
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets a list of extensions for this package
+        /// </summary>
+        public IList<string> Extensions { get; set; }
+
+        /// <summary>
         /// Gets or sets the guid.
         /// <para>
         /// Contains the uinique identifier of the package.
