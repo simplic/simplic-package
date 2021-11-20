@@ -93,9 +93,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Simplic.Package.Test.Extension\bin\Debug\Simplic.Package.Test.Extension.dll">
+    <None Include="..\Simplic.Package.Test.Extension\bin\Debug\Simplic.Package.Test.Extension.dll">
       <Link>extension\Simplic.Package.Test.Extension.dll</Link>
-    </Content>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
