@@ -29,7 +29,7 @@ namespace Simplic.Package.Service
 
                 try
                 {
-                    assembly = Assembly.LoadFile($"\\extension\\{extension}");
+                    assembly = Assembly.LoadFile($"{Environment.CurrentDirectory}\\extension\\{extension}");
                     await logService.WriteAsync($"Assembly loaded from \\extension\\{extension}", LogLevel.Info);
                 }
                 catch
