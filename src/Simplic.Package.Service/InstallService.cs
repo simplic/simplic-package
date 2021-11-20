@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity;
 
@@ -12,6 +13,7 @@ namespace Simplic.Package.Service
         private readonly ILogService logService;
         private readonly IPackageTrackingRepository packageTrackingRepository;
         private readonly IMigrationService migrationService;
+        private readonly IExtensionService extensionService;
 
         /// <summary>
         /// Initialize a new instance of <see cref="InstallService"/>.
@@ -24,12 +26,14 @@ namespace Simplic.Package.Service
             IUnityContainer container,
             ILogService logService,
             IPackageTrackingRepository packageTrackingRepository,
-            IMigrationService migrationService)
+            IMigrationService migrationService,
+            IExtensionService extensionService)
         {
             this.container = container;
             this.logService = logService;
             this.packageTrackingRepository = packageTrackingRepository;
             this.migrationService = migrationService;
+            this.extensionService = extensionService;
         }
 
         /// <summary>
@@ -67,6 +71,20 @@ namespace Simplic.Package.Service
 
             await logService.WriteAsync($"Found no installation of version {package.Version} of this package. " +
                 $"Proceeding to install package.", LogLevel.Info);
+
+            // Load extensions.
+            if (package.Extensions.Any())
+            {
+                await logService.WriteAsync("Loading extensions...", LogLevel.Info);
+                extensionService.LoadExtensions(package);
+
+                if (package.Extensions.Any(x => !ExtensionHelper.LoadedExtensions.Contains(x)))
+                {
+                    await logService.WriteAsync("Could not load all extensions", LogLevel.Error);
+                    throw new MissingExtensionException($"Could not load " +
+                        $"{package.Extensions.First(x => !ExtensionHelper.LoadedExtensions.Contains(x))}");
+                }
+            }
 
             // Install the objects
             foreach (var item in package.UnpackedObjects)

@@ -57,6 +57,7 @@
     <Compile Include="Attributes\PackageExtensionAttribute.cs" />
     <Compile Include="Exception\ExistingPackageException.cs" />
     <Compile Include="Exception\InvalidContentException.cs" />
+    <Compile Include="Exception\MissingExtensionException.cs" />
     <Compile Include="Interface\Core\IExtensionService.cs" />
     <Compile Include="Interface\Core\IInitializePackageSystemService.cs" />
     <Compile Include="Interface\Core\ILogService.cs" />
