@@ -50,5 +50,15 @@
       <Name>Simplic.Package</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Unity.Abstractions">
+      <Version>5.11.7</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>mkdir $(SolutionDir)..\sample\extension
+copy /Y  $(TargetPath) $(SolutionDir)..\sample\extension\$(ProjectName)$(TargetExt)
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -53,6 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.StackFullte
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{A157A560-3710-4C79-9A0F-EFA8EC55366C}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		..\sample\package.json = ..\sample\package.json
 	EndProjectSection
 EndProject
