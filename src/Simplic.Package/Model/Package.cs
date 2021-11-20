@@ -17,7 +17,7 @@ namespace Simplic.Package
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets a list of extensions for this package
+        /// Gets or sets a list of extensions for this package.
         /// </summary>
         public IList<string> Extensions { get; set; }
 

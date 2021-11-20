@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -12,7 +13,11 @@ namespace Simplic.Package.Service
         private readonly ILogService logService;
         private readonly IUnityContainer container;
 
-
+        /// <summary>
+        /// Initializes a new instance of <see cref="ExtensionService"/>.
+        /// </summary>
+        /// <param name="logService">Instance of an implementation of <see cref="ILogService"/>.</param>
+        /// <param name="container">Instance of an implementation of <see cref="IUnityContainer"/>.</param>
         public ExtensionService(ILogService logService, IUnityContainer container)
         {
             this.logService = logService;
@@ -21,10 +26,17 @@ namespace Simplic.Package.Service
 
 
         /// <inheritdoc/>
-        public async void LoadExtensions(Package package)
+        public async void LoadExtensions(IList<string> extensions)
         {
-            foreach (var extension in package.Extensions)
+            foreach (var extension in extensions)
             {
+                if (ExtensionHelper.LoadedExtensions.Contains(extension))
+                {
+                    await logService.WriteAsync($"Extension '{extension}' already contained in loaded extensions",
+                        LogLevel.Debug);
+                    continue;
+                }
+
                 Assembly assembly = null;
 
                 try
@@ -102,6 +114,7 @@ namespace Simplic.Package.Service
                     continue;
                 }
 
+                ExtensionHelper.LoadedExtensions.Add(extension);
                 await logService.WriteAsync($"Succesfully loaded extension {extension}.", LogLevel.Info);
             }
         }

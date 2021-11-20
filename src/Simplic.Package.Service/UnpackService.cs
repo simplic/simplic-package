@@ -15,7 +15,8 @@ namespace Simplic.Package.Service
         private readonly IUnityContainer container;
         private readonly IFileService fileService;
         private readonly ILogService logService;
-        private IValidatePackageConfigurationService validatePackageConfigurationService;
+        private readonly IValidatePackageConfigurationService validatePackageConfigurationService;
+        private readonly IExtensionService extensionService;
 
         /// <summary>
         /// Initializes a new instance of <see cref="UnpackService"/>.
@@ -24,12 +25,18 @@ namespace Simplic.Package.Service
         /// <param name="fileService"></param>
         /// <param name="logService"></param>
         /// <param name="validatePackageConfigurationService"></param>
-        public UnpackService(IUnityContainer container, IFileService fileService, ILogService logService, IValidatePackageConfigurationService validatePackageConfigurationService)
+        public UnpackService(
+            IUnityContainer container,
+            IFileService fileService,
+            ILogService logService,
+            IValidatePackageConfigurationService validatePackageConfigurationService,
+            IExtensionService extensionService)
         {
             this.container = container;
             this.fileService = fileService;
             this.logService = logService;
             this.validatePackageConfigurationService = validatePackageConfigurationService;
+            this.extensionService = extensionService;
         }
 
         /// <summary>
@@ -39,7 +46,8 @@ namespace Simplic.Package.Service
         /// <returns>A Package object</returns>
         public async Task<Package> Unpack(string packagePath)
         {
-            var packageBytes = await fileService.ReadAllBytesAsync(packagePath); // Dont have to throw anything here, just let it throw itself.
+            var packageBytes = await fileService.ReadAllBytesAsync(packagePath); 
+            // Dont have to throw anything here, just let it throw itself.
             return await Unpack(packageBytes);
         }
 
@@ -63,7 +71,9 @@ namespace Simplic.Package.Service
                     var fileContent = await fileService.ReadAllTextAsync(configurationFile.Open());
                     try
                     {
-                        packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(fileContent, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error });
+                        packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(
+                            fileContent, 
+                            new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error });
                     }
                     catch (JsonSerializationException jse)
                     {
@@ -71,11 +81,14 @@ namespace Simplic.Package.Service
                     }
 
                     // Validate the PackageConfiguration object
-                    var validatePackageConfigurationResult = await validatePackageConfigurationService.Validate(packageConfiguration);
+                    var validatePackageConfigurationResult = 
+                        await validatePackageConfigurationService.Validate(packageConfiguration);
+
                     if (!validatePackageConfigurationResult.IsValid)
                         throw new PackageConfigurationException(validatePackageConfigurationResult.Message);
                     else
-                        await logService.WriteAsync(validatePackageConfigurationResult.Message, validatePackageConfigurationResult.LogLevel);
+                        await logService.WriteAsync(validatePackageConfigurationResult.Message, 
+                            validatePackageConfigurationResult.LogLevel);
 
                     // Create the package object
                     var unpackedPackage = new Package
@@ -83,9 +96,24 @@ namespace Simplic.Package.Service
                         Name = packageConfiguration.Name,
                         Guid = packageConfiguration.Guid,
                         Version = packageConfiguration.Version,
-                        Dependencies = packageConfiguration.Dependencies
+                        Dependencies = packageConfiguration.Dependencies,
+                        Extensions = packageConfiguration.Extensions
                     };
 
+
+                    // Load extensions.
+                    if (packageConfiguration.Extensions.Any())
+                    {
+                        await logService.WriteAsync("Loading extensions...", LogLevel.Info);
+                        extensionService.LoadExtensions(packageConfiguration.Extensions);
+
+                        if (packageConfiguration.Extensions.Any(x => !ExtensionHelper.LoadedExtensions.Contains(x)))
+                        {
+                            await logService.WriteAsync("Could not load all extensions", LogLevel.Error);
+                            throw new MissingExtensionException($"Could not load " +
+                                $"{packageConfiguration.Extensions.First(x => !ExtensionHelper.LoadedExtensions.Contains(x))}");
+                        }
+                    }
 
                     // Unpack all the packages content
                     foreach (var item in packageConfiguration.Objects)
@@ -97,7 +125,8 @@ namespace Simplic.Package.Service
                         {
                             var archiveEntry = archive.GetEntry(objectListItem.Target);
                             if (archiveEntry == null)
-                                throw new MissingObjectException($"There was no archive entry found at the location specified: {objectListItem.Target}.");
+                                throw new MissingObjectException($"There was no archive entry found " +
+                                    $"at the location specified: {objectListItem.Target}.");
 
                             // Extract the main entries content
                             var archiveEntryContent = await fileService.ReadAllBytesAsync(archiveEntry.Open());
@@ -110,7 +139,8 @@ namespace Simplic.Package.Service
                                 {
                                     var payloadEntry = archive.GetEntry(_item.Target);
                                     if (payloadEntry == null)
-                                        throw new MissingObjectException($"There was no archive entry found at the location specified: {_item.Target}.");
+                                        throw new MissingObjectException($"There was no archive entry found " +
+                                            $"at the location specified: {_item.Target}.");
 
                                     payload[_item.Target] = await fileService.ReadAllBytesAsync(payloadEntry.Open());
                                 }
@@ -128,7 +158,8 @@ namespace Simplic.Package.Service
                             // Unpack the Object (make installable)
                             var unpackObjectResult = await unpackObjectService.UnpackObject(extractArchiveEntryResult);
                             if (unpackObjectResult.InstallableObject == null)
-                                throw new InvalidObjectException(unpackObjectResult.Message, unpackObjectResult.Exception);
+                                throw new InvalidObjectException(unpackObjectResult.Message, 
+                                    unpackObjectResult.Exception);
                             else
                             {
                                 await logService.WriteAsync(unpackObjectResult.Message, unpackObjectResult.LogLevel);
