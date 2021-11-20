@@ -96,9 +96,24 @@ namespace Simplic.Package.Service
                         Name = packageConfiguration.Name,
                         Guid = packageConfiguration.Guid,
                         Version = packageConfiguration.Version,
-                        Dependencies = packageConfiguration.Dependencies
+                        Dependencies = packageConfiguration.Dependencies,
+                        Extensions = packageConfiguration.Extensions
                     };
 
+
+                    // Load extensions.
+                    if (packageConfiguration.Extensions.Any())
+                    {
+                        await logService.WriteAsync("Loading extensions...", LogLevel.Info);
+                        extensionService.LoadExtensions(packageConfiguration.Extensions);
+
+                        if (packageConfiguration.Extensions.Any(x => !ExtensionHelper.LoadedExtensions.Contains(x)))
+                        {
+                            await logService.WriteAsync("Could not load all extensions", LogLevel.Error);
+                            throw new MissingExtensionException($"Could not load " +
+                                $"{packageConfiguration.Extensions.First(x => !ExtensionHelper.LoadedExtensions.Contains(x))}");
+                        }
+                    }
 
                     // Unpack all the packages content
                     foreach (var item in packageConfiguration.Objects)
