@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -25,9 +26,9 @@ namespace Simplic.Package.Service
 
 
         /// <inheritdoc/>
-        public async void LoadExtensions(Package package)
+        public async void LoadExtensions(IList<string> extensions)
         {
-            foreach (var extension in package.Extensions)
+            foreach (var extension in extensions)
             {
                 if (ExtensionHelper.LoadedExtensions.Contains(extension))
                 {

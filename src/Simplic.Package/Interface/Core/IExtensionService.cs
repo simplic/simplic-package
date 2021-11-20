@@ -1,4 +1,6 @@
-﻿namespace Simplic.Package
+﻿using System.Collections.Generic;
+
+namespace Simplic.Package
 {
     /// <summary>
     /// Service to load package extensions.
@@ -6,9 +8,9 @@
     public interface IExtensionService
     {
         /// <summary>
-        /// Loads a package extension.
+        /// Loads a list of package extensions.
         /// </summary>
-        /// <param name="package"></param>
-        void LoadExtensions(Package package);
+        /// <param name="extensions">A list of file names containing extensions.</param>
+        void LoadExtensions(IList<string> extensions);
     }
 }

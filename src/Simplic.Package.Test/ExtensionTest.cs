@@ -33,13 +33,11 @@ namespace Simplic.Package.Test
             var container = new UnityContainer();
 
             var service = new ExtensionService(logService.Object, container);
-            service.LoadExtensions(new Package
-            {
-                Extensions = new[]
+            service.LoadExtensions(new[]
                 {
                     "Simplic.Package.Test.Extension.dll"
                 }
-            });
+            );
 
             Assert.Equal(0, errorCounter);
         }

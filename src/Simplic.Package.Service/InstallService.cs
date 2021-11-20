@@ -76,7 +76,7 @@ namespace Simplic.Package.Service
             if (package.Extensions.Any())
             {
                 await logService.WriteAsync("Loading extensions...", LogLevel.Info);
-                extensionService.LoadExtensions(package);
+                extensionService.LoadExtensions(package.Extensions);
 
                 if (package.Extensions.Any(x => !ExtensionHelper.LoadedExtensions.Contains(x)))
                 {
