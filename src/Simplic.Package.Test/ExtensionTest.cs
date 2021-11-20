@@ -20,20 +20,15 @@ namespace Simplic.Package.Test
             var container = new UnityContainer();
             var logService = DependencyInjectionHelper.GetContainer().Resolve<ILogService>();
 
-            var solutionDir = Directory
-                .GetParent(Assembly.GetExecutingAssembly().Location)
-                .Parent.Parent.Parent.FullName;
-
-            var sampleDir = Path.Combine(solutionDir, "..\\sample\\");
-
-            Directory.SetCurrentDirectory(sampleDir);
 
             var service = new ExtensionService(logService, container);
-
-
-
+            service.LoadExtensions(new Package 
+            {
+                Extensions = new[] 
+                {
+                    "Simplic.Package.Test.Extension.dll"
+                }
+            });
         }
-
-
     }
 }
