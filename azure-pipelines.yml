@@ -66,7 +66,7 @@ steps:
   - task: NuGetCommand@2
     inputs:
       command: "pack"
-      packagesToPack: "src/Simplic.**/*.csproj;!src/Simplic.**/*.Test.csproj"
+      packagesToPack: "src/Simplic.**/*.csproj;!src/Simplic.**/*.Test.csproj;!src/Simplic.**/*.Text.Extension.csproj"
       configuration: "$(buildConfiguration)"
       versioningScheme: "off"
 

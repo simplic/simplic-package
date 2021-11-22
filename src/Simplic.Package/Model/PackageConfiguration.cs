@@ -58,6 +58,11 @@ namespace Simplic.Package
         public IList<Dependency> Dependencies { get; set; } = new List<Dependency>();
 
         /// <summary>
+        /// Gets or sets a list of extensions for this package.
+        /// </summary>
+        public IList<string> Extensions { get; set; } = new List<string>();
+
+        /// <summary>
         /// Gets or sets the objects
         /// </summary>
         [JsonProperty(Required = Required.Always)]

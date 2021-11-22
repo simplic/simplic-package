@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Service", "Simplic.Package.Service\Simplic.Package.Service.csproj", "{2568B37D-7937-4368-A6E3-2ADE2AD7196B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Test", "Simplic.Package.Test\Simplic.Package.Test.csproj", "{FA18C7B4-2535-4369-BFE3-BB6F2F7EF07D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{462F56D5-30E7-4396-BA18-929531679DFA} = {462F56D5-30E7-4396-BA18-929531679DFA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.CLI", "Simplic.Package.CLI\Simplic.Package.CLI.csproj", "{D49674CC-DB8D-4C91-A74E-6E178E5F6CA3}"
 EndProject
@@ -53,6 +56,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.StackFullte
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{A157A560-3710-4C79-9A0F-EFA8EC55366C}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		..\sample\package.json = ..\sample\package.json
 	EndProjectSection
 EndProject
@@ -152,6 +156,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ENV", "ENV", "{DFD9C6CB-50F
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Ribbon", "Simplic.Package.Ribbon\Simplic.Package.Ribbon.csproj", "{B528F0D8-D0A8-4C46-9416-F812D292468F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Test.Extension", "Simplic.Package.Test.Extension\Simplic.Package.Test.Extension.csproj", "{462F56D5-30E7-4396-BA18-929531679DFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -255,6 +261,10 @@ Global
 		{B528F0D8-D0A8-4C46-9416-F812D292468F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B528F0D8-D0A8-4C46-9416-F812D292468F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B528F0D8-D0A8-4C46-9416-F812D292468F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{462F56D5-30E7-4396-BA18-929531679DFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{462F56D5-30E7-4396-BA18-929531679DFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{462F56D5-30E7-4396-BA18-929531679DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{462F56D5-30E7-4396-BA18-929531679DFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

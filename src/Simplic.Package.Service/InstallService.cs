@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity;
 
@@ -12,6 +13,7 @@ namespace Simplic.Package.Service
         private readonly ILogService logService;
         private readonly IPackageTrackingRepository packageTrackingRepository;
         private readonly IMigrationService migrationService;
+        private readonly IExtensionService extensionService;
 
         /// <summary>
         /// Initialize a new instance of <see cref="InstallService"/>.
@@ -20,12 +22,18 @@ namespace Simplic.Package.Service
         /// <param name="logService"></param>
         /// <param name="packageTrackingRepository"></param>
         /// <param name="migrationService"></param>
-        public InstallService(IUnityContainer container, ILogService logService, IPackageTrackingRepository packageTrackingRepository, IMigrationService migrationService)
+        public InstallService(
+            IUnityContainer container,
+            ILogService logService,
+            IPackageTrackingRepository packageTrackingRepository,
+            IMigrationService migrationService,
+            IExtensionService extensionService)
         {
             this.container = container;
             this.logService = logService;
             this.packageTrackingRepository = packageTrackingRepository;
             this.migrationService = migrationService;
+            this.extensionService = extensionService;
         }
 
         /// <summary>
@@ -48,16 +56,35 @@ namespace Simplic.Package.Service
 
             if (package.Version == existingPackageVersion)
             {
-                throw new ExistingPackageException($"The version {existingPackageVersion} of this package is already installed.");
+                throw new ExistingPackageException($"The version {existingPackageVersion}" +
+                    $" of this package is already installed.");
             }
 
             else if (package.Version < existingPackageVersion)
             {
-                await logService.WriteAsync($"A later version ({existingPackageVersion}) of {package.Name} is already installed.", LogLevel.Info);
-                throw new ExistingPackageException($"A later version ({existingPackageVersion}) of this package is already installed.");
+                await logService.WriteAsync($"A later version ({existingPackageVersion}) " +
+                    $"of {package.Name} is already installed.", LogLevel.Info);
+
+                throw new ExistingPackageException($"A later version ({existingPackageVersion})" +
+                    $" of this package is already installed.");
             }
 
-            await logService.WriteAsync($"Found no installation of version {package.Version} of this package. Proceeding to install package.", LogLevel.Info);
+            await logService.WriteAsync($"Found no installation of version {package.Version} of this package. " +
+                $"Proceeding to install package.", LogLevel.Info);
+
+            // Load extensions.
+            if (package.Extensions.Any())
+            {
+                await logService.WriteAsync("Loading extensions...", LogLevel.Info);
+                extensionService.LoadExtensions(package.Extensions);
+
+                if (package.Extensions.Any(x => !ExtensionHelper.LoadedExtensions.Contains(x)))
+                {
+                    await logService.WriteAsync("Could not load all extensions", LogLevel.Error);
+                    throw new MissingExtensionException($"Could not load " +
+                        $"{package.Extensions.First(x => !ExtensionHelper.LoadedExtensions.Contains(x))}");
+                }
+            }
 
             // Install the objects
             foreach (var item in package.UnpackedObjects)
@@ -87,9 +114,11 @@ namespace Simplic.Package.Service
             // Add to InstalledPackages in database
             var success = await packageTrackingRepository.AddPackgageVersion(package);
             if (success)
-                await logService.WriteAsync($"Wrote package with name {package.Name} and version {package.Version} to installed packages table", LogLevel.Info);
+                await logService.WriteAsync($"Wrote package with name {package.Name} " +
+                    $"and version {package.Version} to installed packages table", LogLevel.Info);
             else
-                await logService.WriteAsync($"Failed to write package with name {package.Name} and version {package.Version} to installed packages table.", LogLevel.Error);
+                await logService.WriteAsync($"Failed to write package with name {package.Name}" +
+                    $" and version {package.Version} to installed packages table.", LogLevel.Error);
         }
 
         /// <inheritdoc/>
