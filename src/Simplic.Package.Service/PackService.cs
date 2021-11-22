@@ -94,6 +94,7 @@ namespace Simplic.Package.Service
                     throw new MissingExtensionException($"Could not load " +
                         $"{packageConfiguration.Extensions.First(x => !ExtensionHelper.LoadedExtensions.Contains(x))}");
                 }
+
             }
 
             // Create the package archive
@@ -180,6 +181,9 @@ namespace Simplic.Package.Service
 
                         }
                     }
+
+                    if (packageConfiguration.Extensions.Any())
+                        archive.CreateEntryFromDirectory("extension\\", "extension\\");
 
                     // Write package config
                     var configurationEntry = archive.CreateEntry("package.json");

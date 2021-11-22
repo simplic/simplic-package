@@ -54,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnpackService.cs" />
     <Compile Include="ValidatePackageConfigurationService.cs" />
+    <Compile Include="ZipArchiveExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Package\Simplic.Package.csproj">
