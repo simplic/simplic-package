@@ -18,6 +18,7 @@ namespace Simplic.Package.Service
         private readonly ILogService logService;
         private readonly IValidatePackageConfigurationService validatePackageConfigurationService;
         private readonly IFileService fileService;
+        private readonly IExtensionService extensionService;
 
         /// <summary>
         /// Initialize a new instance of <see cref="PackService"/>.
@@ -26,12 +27,18 @@ namespace Simplic.Package.Service
         /// <param name="logService"></param>
         /// <param name="validatePackageConfigurationService"></param>
         /// <param name="fileService"></param>
-        public PackService(IUnityContainer container, ILogService logService, IValidatePackageConfigurationService validatePackageConfigurationService, IFileService fileService)
+        public PackService(
+            IUnityContainer container,
+            ILogService logService,
+            IValidatePackageConfigurationService validatePackageConfigurationService,
+            IFileService fileService,
+            IExtensionService extensionService)
         {
             this.container = container;
             this.logService = logService;
             this.validatePackageConfigurationService = validatePackageConfigurationService;
             this.fileService = fileService;
+            this.extensionService = extensionService;
         }
 
         /// <summary>
@@ -73,6 +80,21 @@ namespace Simplic.Package.Service
                 var error = $"Empty guid (`{Guid.Empty}`) is not valid package id.";
                 await logService.WriteAsync(error, LogLevel.Error);
                 throw new PackageConfigurationException(error);
+            }
+
+            // Load extensions.
+            if (packageConfiguration.Extensions.Any())
+            {
+                await logService.WriteAsync("Loading extensions...", LogLevel.Info);
+                extensionService.LoadExtensions(packageConfiguration.Extensions);
+
+                if (packageConfiguration.Extensions.Any(x => !ExtensionHelper.LoadedExtensions.Contains(x)))
+                {
+                    await logService.WriteAsync("Could not load all extensions", LogLevel.Error);
+                    throw new MissingExtensionException($"Could not load " +
+                        $"{packageConfiguration.Extensions.First(x => !ExtensionHelper.LoadedExtensions.Contains(x))}");
+                }
+
             }
 
             // Create the package archive
@@ -159,6 +181,9 @@ namespace Simplic.Package.Service
 
                         }
                     }
+
+                    if (packageConfiguration.Extensions.Any())
+                        archive.CreateEntryFromDirectory("extension\\", "extension\\");
 
                     // Write package config
                     var configurationEntry = archive.CreateEntry("package.json");

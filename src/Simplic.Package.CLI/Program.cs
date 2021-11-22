@@ -45,6 +45,8 @@ using Simplic.Authorization;
 using Simplic.Icon;
 using Simplic.Icon.Service;
 using Simplic.Package.Ribbon;
+using System.Diagnostics;
+using Unity.ServiceLocation;
 
 namespace Simplic.Package.CLI
 {
@@ -52,6 +54,8 @@ namespace Simplic.Package.CLI
     {
         public static async Task<int> Main(string[] args)
         {
+            Debugger.Launch();
+
             var showHelp = false;
             var verbosity = LogLevel.Debug;
 
@@ -113,6 +117,7 @@ namespace Simplic.Package.CLI
             #region Register types
             var container = new UnityContainer();
             container.RegisterType<ILogService, LogService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IExtensionService, ExtensionService>();
             container.RegisterType<IPackService, PackService>();
             container.RegisterType<IUnpackService, UnpackService>();
             container.RegisterType<IInstallService, InstallService>();
@@ -233,6 +238,9 @@ namespace Simplic.Package.CLI
             container.RegisterType<IOrganizationService, TenantSystem.Service.OrganizationService>(); // TODO: Implement for SequenceService
 
             container.RegisterType<IIconService, IconService>();
+
+            var serviceLocator = new UnityServiceLocator(container);
+            CommonServiceLocator.ServiceLocator.SetLocatorProvider(() => serviceLocator);
 
             // For InstallReportService
             Base.GlobalSettings.UserName = "Package System";
