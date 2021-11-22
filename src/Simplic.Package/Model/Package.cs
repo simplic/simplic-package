@@ -19,7 +19,7 @@ namespace Simplic.Package
         /// <summary>
         /// Gets or sets a list of extensions for this package.
         /// </summary>
-        public IList<string> Extensions { get; set; }
+        public IList<string> Extensions { get; set; } = new List<string>();
 
         /// <summary>
         /// Gets or sets the guid.
