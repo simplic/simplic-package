@@ -14,9 +14,9 @@ namespace Simplic.Package
         void LoadExtensions(IList<string> extensions);
 
         /// <summary>
-        /// Loads a list of package extensions.
+        /// Loads a list of extensions from their bynary file.
         /// </summary>
-        /// <param name="asseblies"></param>
+        /// <param name="asseblies">A dictionary containing the name and assembly as byte array.</param>
         void LoadExtensionsFromBinaries(IDictionary<string, byte[]> asseblies);
     }
 }
