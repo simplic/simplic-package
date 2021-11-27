@@ -105,7 +105,15 @@ namespace Simplic.Package.Service
                     if (packageConfiguration.Extensions.Any())
                     {
                         await logService.WriteAsync("Loading extensions...", LogLevel.Info);
-                        extensionService.LoadExtensions(packageConfiguration.Extensions);
+                        var dict = new Dictionary<string, byte[]>();
+
+                        foreach(var extension in packageConfiguration.Extensions)
+                        {
+                            var entry = archive.Entries.FirstOrDefault(x => x.Name == extension);
+                            dict.Add(extension, ReadStream(entry.Open()));
+                        }
+
+                        extensionService.LoadExtensionsFromBinaries(dict);
 
                         if (packageConfiguration.Extensions.Any(x => !ExtensionHelper.LoadedExtensions.Contains(x)))
                         {
@@ -175,6 +183,15 @@ namespace Simplic.Package.Service
                     }
                     return unpackedPackage;
                 }
+            }
+        }
+
+        private static byte[] ReadStream(Stream stream)
+        {
+            using (var ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                return ms.ToArray();
             }
         }
     }
