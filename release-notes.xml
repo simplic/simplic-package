@@ -5,7 +5,7 @@
   <ChangeSet guid="46048834-2076-4cbb-ae14-0ec56a42abd2">
     <Change type="feature">Upgrade from SAP Sybase Sql Anywhere 12 to SAP Sybase Sql Anywhere 17.</Change>
   </ChangeSet>
-  <ChageSet>
+  <ChageSet guid="de1f6b05-0946-43ca-97ec-f61d154adcb5">
     <Change type="feature">
       Add system to laod extensions dynamically during execution.
     </Change>
