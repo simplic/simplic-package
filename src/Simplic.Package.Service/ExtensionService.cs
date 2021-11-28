@@ -27,6 +27,13 @@ namespace Simplic.Package.Service
         /// <inheritdoc/>
         public async void LoadExtensions(IList<string> extensions)
         {
+            //load all assemblies in extension folder.
+
+            foreach (var file in Directory.GetFiles($"{Environment.CurrentDirectory}\\extension"))
+            {
+                Assembly.LoadFrom(file);
+            }
+
             foreach (var extension in extensions)
             {
                 if (ExtensionHelper.LoadedExtensions.Contains(extension))
@@ -49,6 +56,7 @@ namespace Simplic.Package.Service
                         $"{Path.GetFullPath($"\\extension\\{extension}")}", LogLevel.Error);
                     continue;
                 }
+
 
                 if (assembly == null)
                     continue;

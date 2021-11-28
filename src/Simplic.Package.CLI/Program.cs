@@ -47,6 +47,7 @@ using Simplic.Icon.Service;
 using Simplic.Package.Ribbon;
 using Unity.ServiceLocation;
 using Simplic.Package.Configuration;
+using System.Diagnostics;
 
 namespace Simplic.Package.CLI
 {
@@ -54,6 +55,8 @@ namespace Simplic.Package.CLI
     {
         public static async Task<int> Main(string[] args)
         {
+            Debugger.Launch();
+
             var showHelp = false;
             var verbosity = LogLevel.Debug;
 
