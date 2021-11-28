@@ -55,8 +55,6 @@ namespace Simplic.Package.CLI
     {
         public static async Task<int> Main(string[] args)
         {
-            Debugger.Launch();
-
             var showHelp = false;
             var verbosity = LogLevel.Debug;
 
