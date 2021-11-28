@@ -46,6 +46,7 @@ using Simplic.Icon;
 using Simplic.Icon.Service;
 using Simplic.Package.Ribbon;
 using Unity.ServiceLocation;
+using Simplic.Package.Configuration;
 
 namespace Simplic.Package.CLI
 {
@@ -141,6 +142,10 @@ namespace Simplic.Package.CLI
             container.RegisterType<IObjectRepository, ComboBoxRepository>("comboBox");
             container.RegisterType<IPackObjectService, PackComboBoxService>("comboBox");
             container.RegisterType<IUnpackObjectService, UnpackComboBoxService>("comboBox");
+
+            container.RegisterType<IPackObjectService, PackConfigurationService>("configuration");
+            container.RegisterType<IUnpackObjectService, UnpackConfigurationService>("configuration");
+            container.RegisterType<IInstallObjectService, InstallConfigurationService>("configuration");
 
             container.RegisterType<IInstallObjectService, InstallEplReportService>("eplReport");
             container.RegisterType<IObjectRepository, EplReportRepository>("eplReport");
