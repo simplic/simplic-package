@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simplic.Configuration;
+using System;
 using System.Threading.Tasks;
 
 namespace Simplic.Package.Configuration
