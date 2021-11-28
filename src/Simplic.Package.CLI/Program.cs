@@ -233,8 +233,8 @@ namespace Simplic.Package.CLI
 
             // For InstallSequenceService
             container.RegisterType<IOrganizationRepository, TenantSystem.Data.DB.OrganizationRepository>();
-            container.RegisterType<Configuration.IConfigurationRepository, Configuration.Data.ConfigurationRepository>();
-            container.RegisterType<Configuration.IConfigurationService, Configuration.Service.ConfigurationService>();
+            container.RegisterType<Simplic.Configuration.IConfigurationRepository, Simplic.Configuration.Data.ConfigurationRepository>();
+            container.RegisterType<Simplic.Configuration.IConfigurationService, Simplic.Configuration.Service.ConfigurationService>();
             container.RegisterType<Session.ISessionService, Session.Service.SessionService>();
             container.RegisterType<Cache.ICacheService, Cache.Service.CacheService>();
             container.RegisterType<IOrganizationService, TenantSystem.Service.OrganizationService>(); // TODO: Implement for SequenceService
