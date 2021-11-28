@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Simplic.Package.Configuration.Model
+﻿namespace Simplic.Package.Configuration
 {
     /// <summary>
     /// Defines the source of the value.
