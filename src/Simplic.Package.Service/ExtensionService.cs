@@ -72,7 +72,7 @@ namespace Simplic.Package.Service
         {
             foreach (var dll in archive.Entries.Where(x =>
                 x.FullName.StartsWith("extension\\") &&
-                x.FullName.EndsWith(".dll")))
+                x.FullName.ToLower().EndsWith(".dll")))
             {
                 using (var filestream = new FileStream($"{ExtensionHelper.GetTempPath()}\\{dll.Name}", FileMode.Create))
                 {
