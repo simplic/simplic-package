@@ -10,4 +10,7 @@
       Add system to laod extensions dynamically during execution.
     </Change>
   </ChageSet>
+  <ChangeSet>
+    <Change type="feature">Adds services to pack, unpack and install configurations.</Change>
+  </ChangeSet>
 </ReleaseNotes>

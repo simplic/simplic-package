@@ -82,6 +82,10 @@
       <Project>{83a3b926-8e9f-4875-b6fb-0b439e7792b5}</Project>
       <Name>Simplic.Package.ComboBox</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.Configuration\Simplic.Package.Configuration.csproj">
+      <Project>{981FF658-0F11-463E-A283-8459328281A0}</Project>
+      <Name>Simplic.Package.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Package.Data.DB\Simplic.Package.Data.DB.csproj">
       <Project>{061247F8-3F50-4271-852E-4AD4DC8592B0}</Project>
       <Name>Simplic.Package.Data.DB</Name>
