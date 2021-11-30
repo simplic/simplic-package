@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using Unity;
@@ -27,6 +28,14 @@ namespace Simplic.Package.Service
         /// <inheritdoc/>
         public async void LoadExtensions(IList<string> extensions)
         {
+            //load all assemblies in extension folder.
+
+            foreach (var dll in Directory.GetFiles($"{Environment.CurrentDirectory}\\extension")
+                .Where(x => x.ToLower().EndsWith(".dll")))
+            {
+                File.Copy(dll, $"{ExtensionHelper.GetTempPath()}\\{Path.GetFileName(dll)}");
+            }
+
             foreach (var extension in extensions)
             {
                 if (ExtensionHelper.LoadedExtensions.Contains(extension))
@@ -50,6 +59,7 @@ namespace Simplic.Package.Service
                     continue;
                 }
 
+
                 if (assembly == null)
                     continue;
 
@@ -58,13 +68,27 @@ namespace Simplic.Package.Service
         }
 
         /// <inheritdoc/>
-        public async void LoadExtensionsFromBinaries(IDictionary<string, byte[]> asseblies)
+        public async void LoadExtensionsFromZipArchive(IList<string> extensions, ZipArchive archive)
         {
-            foreach (var entry in asseblies)
+            foreach (var dll in archive.Entries.Where(x =>
+                x.FullName.StartsWith("extension\\") &&
+                x.FullName.ToLower().EndsWith(".dll")))
             {
-                if (ExtensionHelper.LoadedExtensions.Contains(entry.Key))
+                using (var filestream = new FileStream($"{ExtensionHelper.GetTempPath()}\\{dll.Name}", FileMode.Create))
                 {
-                    await logService.WriteAsync($"Extension '{entry.Key}' already contained in loaded extensions",
+                    dll.Open().CopyTo(filestream);
+                    filestream.Close();
+                }
+
+            }
+
+            foreach (var extension in extensions)
+            {
+                var dll = archive.Entries.FirstOrDefault(x => x.Name == extension);
+
+                if (ExtensionHelper.LoadedExtensions.Contains(extension))
+                {
+                    await logService.WriteAsync($"Extension '{extension}' already contained in loaded extensions",
                         LogLevel.Debug);
                     continue;
                 }
@@ -73,20 +97,20 @@ namespace Simplic.Package.Service
 
                 try
                 {
-                    assembly = Assembly.Load(entry.Value);
-                    await logService.WriteAsync($"Assembly loaded from {entry.Key}", LogLevel.Info);
+                    assembly = Assembly.Load(ReadStream(dll.Open()));
+                    await logService.WriteAsync($"Assembly loaded from {extension}", LogLevel.Info);
                 }
                 catch
                 {
                     await logService.WriteAsync($"Could not load extension at: " +
-                        $"{entry.Key}", LogLevel.Error);
+                        $"{extension}", LogLevel.Error);
                     continue;
                 }
 
                 if (assembly == null)
                     continue;
 
-                LoadExtension(assembly, entry.Key);
+                LoadExtension(assembly, extension);
             }
         }
 
@@ -159,6 +183,16 @@ namespace Simplic.Package.Service
 
             ExtensionHelper.LoadedExtensions.Add(extensionName);
             await logService.WriteAsync($"Succesfully loaded extension {extensionName}.", LogLevel.Info);
+        }
+
+
+        private static byte[] ReadStream(Stream stream)
+        {
+            using (var ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                return ms.ToArray();
+            }
         }
     }
 }

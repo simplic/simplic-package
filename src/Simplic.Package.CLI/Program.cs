@@ -47,6 +47,7 @@ using Simplic.Icon.Service;
 using Simplic.Package.Ribbon;
 using Unity.ServiceLocation;
 using Simplic.Package.Configuration;
+using System.Diagnostics;
 
 namespace Simplic.Package.CLI
 {
