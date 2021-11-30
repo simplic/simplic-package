@@ -31,7 +31,7 @@ namespace Simplic.Package.Service
             //load all assemblies in extension folder.
 
             foreach (var dll in Directory.GetFiles($"{Environment.CurrentDirectory}\\extension")
-                .Where(x => x.EndsWith(".dll")))
+                .Where(x => x.ToLower().EndsWith(".dll")))
             {
                 File.Copy(dll, $"{ExtensionHelper.GetTempPath()}\\{Path.GetFileName(dll)}");
             }
