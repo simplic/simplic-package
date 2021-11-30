@@ -30,9 +30,10 @@ namespace Simplic.Package.Service
         {
             //load all assemblies in extension folder.
 
-            foreach (var file in Directory.GetFiles($"{Environment.CurrentDirectory}\\extension"))
+            foreach (var dll in Directory.GetFiles($"{Environment.CurrentDirectory}\\extension")
+                .Where(x => x.EndsWith(".dll")))
             {
-                Assembly.LoadFrom(file);
+                File.Copy(dll, $"{ExtensionHelper.GetTempPath()}\\{Path.GetFileName(dll)}");
             }
 
             foreach (var extension in extensions)
@@ -69,11 +70,16 @@ namespace Simplic.Package.Service
         /// <inheritdoc/>
         public async void LoadExtensionsFromZipArchive(IList<string> extensions, ZipArchive archive)
         {
-            foreach (var dll in archive.Entries.Where(x => 
+            foreach (var dll in archive.Entries.Where(x =>
                 x.FullName.StartsWith("extension\\") &&
                 x.FullName.EndsWith(".dll")))
             {
-                Assembly.Load(ReadStream(dll.Open()));
+                using (var filestream = new FileStream($"{ExtensionHelper.GetTempPath()}\\{dll.Name}", FileMode.Create))
+                {
+                    dll.Open().CopyTo(filestream);
+                    filestream.Close();
+                }
+
             }
 
             foreach (var extension in extensions)
