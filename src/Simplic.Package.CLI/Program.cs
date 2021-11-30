@@ -45,8 +45,9 @@ using Simplic.Authorization;
 using Simplic.Icon;
 using Simplic.Icon.Service;
 using Simplic.Package.Ribbon;
-using System.Diagnostics;
 using Unity.ServiceLocation;
+using Simplic.Package.Configuration;
+using System.Diagnostics;
 
 namespace Simplic.Package.CLI
 {
@@ -54,8 +55,6 @@ namespace Simplic.Package.CLI
     {
         public static async Task<int> Main(string[] args)
         {
-            Debugger.Launch();
-
             var showHelp = false;
             var verbosity = LogLevel.Debug;
 
@@ -145,6 +144,10 @@ namespace Simplic.Package.CLI
             container.RegisterType<IPackObjectService, PackComboBoxService>("comboBox");
             container.RegisterType<IUnpackObjectService, UnpackComboBoxService>("comboBox");
 
+            container.RegisterType<IPackObjectService, PackConfigurationService>("configuration");
+            container.RegisterType<IUnpackObjectService, UnpackConfigurationService>("configuration");
+            container.RegisterType<IInstallObjectService, InstallConfigurationService>("configuration");
+
             container.RegisterType<IInstallObjectService, InstallEplReportService>("eplReport");
             container.RegisterType<IObjectRepository, EplReportRepository>("eplReport");
             container.RegisterType<IPackObjectService, PackEplReportService>("eplReport");
@@ -231,8 +234,8 @@ namespace Simplic.Package.CLI
 
             // For InstallSequenceService
             container.RegisterType<IOrganizationRepository, TenantSystem.Data.DB.OrganizationRepository>();
-            container.RegisterType<Configuration.IConfigurationRepository, Configuration.Data.ConfigurationRepository>();
-            container.RegisterType<Configuration.IConfigurationService, Configuration.Service.ConfigurationService>();
+            container.RegisterType<Simplic.Configuration.IConfigurationRepository, Simplic.Configuration.Data.ConfigurationRepository>();
+            container.RegisterType<Simplic.Configuration.IConfigurationService, Simplic.Configuration.Service.ConfigurationService>();
             container.RegisterType<Session.ISessionService, Session.Service.SessionService>();
             container.RegisterType<Cache.ICacheService, Cache.Service.CacheService>();
             container.RegisterType<IOrganizationService, TenantSystem.Service.OrganizationService>(); // TODO: Implement for SequenceService

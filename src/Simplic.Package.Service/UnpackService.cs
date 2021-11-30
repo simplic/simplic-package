@@ -46,7 +46,7 @@ namespace Simplic.Package.Service
         /// <returns>A Package object</returns>
         public async Task<Package> Unpack(string packagePath)
         {
-            var packageBytes = await fileService.ReadAllBytesAsync(packagePath); 
+            var packageBytes = await fileService.ReadAllBytesAsync(packagePath);
             // Dont have to throw anything here, just let it throw itself.
             return await Unpack(packageBytes);
         }
@@ -72,7 +72,7 @@ namespace Simplic.Package.Service
                     try
                     {
                         packageConfiguration = JsonConvert.DeserializeObject<PackageConfiguration>(
-                            fileContent, 
+                            fileContent,
                             new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error });
                     }
                     catch (JsonSerializationException jse)
@@ -81,13 +81,13 @@ namespace Simplic.Package.Service
                     }
 
                     // Validate the PackageConfiguration object
-                    var validatePackageConfigurationResult = 
+                    var validatePackageConfigurationResult =
                         await validatePackageConfigurationService.Validate(packageConfiguration);
 
                     if (!validatePackageConfigurationResult.IsValid)
                         throw new PackageConfigurationException(validatePackageConfigurationResult.Message);
                     else
-                        await logService.WriteAsync(validatePackageConfigurationResult.Message, 
+                        await logService.WriteAsync(validatePackageConfigurationResult.Message,
                             validatePackageConfigurationResult.LogLevel);
 
                     // Create the package object
@@ -105,7 +105,8 @@ namespace Simplic.Package.Service
                     if (packageConfiguration.Extensions.Any())
                     {
                         await logService.WriteAsync("Loading extensions...", LogLevel.Info);
-                        extensionService.LoadExtensions(packageConfiguration.Extensions);
+
+                        extensionService.LoadExtensionsFromZipArchive(packageConfiguration.Extensions, archive);
 
                         if (packageConfiguration.Extensions.Any(x => !ExtensionHelper.LoadedExtensions.Contains(x)))
                         {
@@ -158,7 +159,7 @@ namespace Simplic.Package.Service
                             // Unpack the Object (make installable)
                             var unpackObjectResult = await unpackObjectService.UnpackObject(extractArchiveEntryResult);
                             if (unpackObjectResult.InstallableObject == null)
-                                throw new InvalidObjectException(unpackObjectResult.Message, 
+                                throw new InvalidObjectException(unpackObjectResult.Message,
                                     unpackObjectResult.Exception);
                             else
                             {
