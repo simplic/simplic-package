@@ -32,8 +32,7 @@ namespace Simplic.Package.Service
 
             tempPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
 
-            if (!Directory.Exists(tempPath))
-                Directory.CreateDirectory(tempPath);
+            Directory.CreateDirectory(tempPath);
 
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
