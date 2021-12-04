@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\PackageExtensionAttribute.cs" />
+    <Compile Include="Enum\ApplicationMode.cs" />
     <Compile Include="Exception\ExistingPackageException.cs" />
     <Compile Include="Exception\InvalidContentException.cs" />
     <Compile Include="Exception\MissingExtensionException.cs" />
