@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Unity;
+using Unity.Exceptions;
 
 namespace Simplic.Package.Service
 {
@@ -91,6 +92,30 @@ namespace Simplic.Package.Service
             {
                 var installObjectService = container.Resolve<IInstallObjectService>(item.Key); // TODO: Exception handeling ?
 
+                // Request values.
+                try
+                {
+                    var requestValueService = container.Resolve<IRequestValueService>(item.Key);
+                    if (requestValueService != null)
+                    {
+                        var res = requestValueService.RequestValue(item.Value);
+                        if (!res.Success)
+                        {
+                            await logService.WriteAsync($"Could not request all values for {item.Key}", LogLevel.Error);
+                        }
+                    }
+                }
+                catch (DependencyMissingException)
+                {
+                    // pass (no value request service registered).
+                }
+                catch (Exception ex)
+                {
+                    await logService.WriteAsync($"Error while requestion value for {item.Key}", LogLevel.Error, ex);
+                    throw;
+                }
+
+                // Installation of all objects.
                 foreach (var installableObject in item.Value)
                 {
                     var install = installableObject.Mode == InstallMode.Deploy;
