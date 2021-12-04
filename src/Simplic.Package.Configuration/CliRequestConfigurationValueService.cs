@@ -38,7 +38,7 @@ namespace Simplic.Package.Configuration
                                 $"\"{configuration.ConfigurationName}\" " +
                                 $"in PlugIn: \"{configuration.PlugInName}\":");
 
-                            configuration.Value = Console.ReadLine();
+                            configuration.Value = Console.ReadLine().Trim(); ;
                         }
                     }
                 }

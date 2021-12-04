@@ -41,46 +41,17 @@ namespace Simplic.Package.Configuration
             try
             {
                 // Installs a configuration where the value is present in the package.
-                if (configuration.ValueSource == ConfigurationValueSource.PackageValue)
-                {
-                    configurationService.SetValue(
-                        configuration.ConfigurationName,
-                        configuration.PlugInName,
-                        configuration.UserName,
-                        configuration.Value);
 
-                    await logService.WriteAsync($"Configuration {configuration.ConfigurationName} " +
-                        $"successfully installed.", LogLevel.Info);
+                configurationService.SetValue(
+                    configuration.ConfigurationName,
+                    configuration.PlugInName,
+                    configuration.UserName,
+                    configuration.Value);
 
-                    return new InstallObjectResult { Success = true };
-                }
-                else if (configuration.ValueSource == ConfigurationValueSource.RequestValue)
-                {
+                await logService.WriteAsync($"Configuration {configuration.ConfigurationName} " +
+                    $"successfully installed.", LogLevel.Info);
 
-                    Console.WriteLine($"\n \nConfiguration value needed for: \"{configuration.ConfigurationName}\" " +
-                        $"in PlugIn: \"{configuration.PlugInName}\":");
-
-                    configuration.Value = Console.ReadLine().Trim();
-
-                    configurationService.SetValue(
-                        configuration.ConfigurationName,
-                        configuration.PlugInName,
-                        configuration.UserName,
-                        configuration.Value);
-
-                    await logService.WriteAsync($"Configuration {configuration.ConfigurationName} " +
-                        $"successfully installed.", LogLevel.Info);
-
-                    return new InstallObjectResult { Success = true };
-                }
-                else
-                {
-                    await logService.WriteAsync($"Unable to install Configuration: {configuration.ConfigurationName}," +
-                        $"no value mode found.", LogLevel.Error);
-
-                    return new InstallObjectResult { Success = false };
-                }
-
+                return new InstallObjectResult { Success = true };
             }
             catch (Exception ex)
             {
