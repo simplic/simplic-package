@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CliRequestConfigurationValueService.cs" />
     <Compile Include="InstallConfigurationService.cs" />
     <Compile Include="Model\Configuration.cs" />
     <Compile Include="Model\ConfigurationValueSource.cs" />
