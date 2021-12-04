@@ -67,6 +67,7 @@
     <Compile Include="Interface\Core\IMigrationService.cs" />
     <Compile Include="Interface\Object\IRequestValueService.cs" />
     <Compile Include="Interface\Package\IValidatePackageConfigurationService.cs" />
+    <Compile Include="Model\ApplicationSettings.cs" />
     <Compile Include="Model\LogResult\InitializePackageSystemResult.cs" />
     <Compile Include="Interface\Core\IInitializePackageSystemRepository.cs" />
     <Compile Include="Model\LogResult\LogResult.cs" />
