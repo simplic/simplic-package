@@ -60,8 +60,6 @@ namespace Simplic.Package.Configuration
 
                 return new InstallObjectResult { Success = false };
             }
-
-
         }
 
         public Task<UninstallObjectResult> UninstallObject(InstallableObject installableObject)
