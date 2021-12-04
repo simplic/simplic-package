@@ -104,7 +104,7 @@ namespace Simplic.Package.Service
                         }
                     }
                 }
-                catch (DependencyMissingException)
+                catch (ResolutionFailedException)
                 {
                     // pass (no value request service registered).
                 }
