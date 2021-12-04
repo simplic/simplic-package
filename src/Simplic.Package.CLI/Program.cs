@@ -84,7 +84,7 @@ namespace Simplic.Package.CLI
                 { "h|help",  "Shows help", v => showHelp = true },
                 { "v|verbosity=", "Sets the Loglevel.\n Error: 0, Warning: 1, Info: 2, Debug: 3. Default: 0",
                     v => verbosity = (LogLevel)Int32.Parse(v) },
-                { "test", 
+                { "test",
                     "Starts the application in test mode, this should just be set in automated tests." +
                     " This will not test wether the package is installable, this will disable some features " +
                     "that require user intput for testing purposes", v => testMode = true }
@@ -260,9 +260,13 @@ namespace Simplic.Package.CLI
             Base.GlobalSettings.UserName = "Package System";
 
             //CLI Value request services
-            if(ApplicationSettings.ApplicationMode == ApplicationMode.CLI)
+            if (ApplicationSettings.ApplicationMode == ApplicationMode.CLI)
             {
                 container.RegisterType<IRequestValueService, CliRequestConfigurationValueService>("configuration");
+            }
+            else if (ApplicationSettings.ApplicationMode == ApplicationMode.Test)
+            {
+                container.RegisterType<IRequestValueService, TestRequestConfigurationValueService>("configuration");
             }
 
             DALManager.Init(connectionString);
