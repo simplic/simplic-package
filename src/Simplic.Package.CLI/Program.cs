@@ -259,7 +259,7 @@ namespace Simplic.Package.CLI
             // For InstallReportService
             Base.GlobalSettings.UserName = "Package System";
 
-            //CLI Value request services
+            // CLI Value request services
             if (ApplicationSettings.ApplicationMode == ApplicationMode.CLI)
             {
                 container.RegisterType<IRequestValueService, CliRequestConfigurationValueService>("configuration");
