@@ -41,11 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CliRequestConfigurationValueService.cs" />
     <Compile Include="InstallConfigurationService.cs" />
     <Compile Include="Model\Configuration.cs" />
     <Compile Include="Model\ConfigurationValueSource.cs" />
     <Compile Include="PackConfigurationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestRequestConfigurationValueService.cs" />
     <Compile Include="UnpackConfigurationService.cs" />
   </ItemGroup>
   <ItemGroup>
