@@ -70,6 +70,8 @@ namespace Simplic.Package.CLI
             var path = "";
             var connectionString = "dbn=PackageTest;server=PackageTest;uid=admin;pwd=school";
 
+            var testMode = false;
+
             var optionSet = new OptionSet()
             {
                 { "m|mkconfig=", "Creates a package.json file with given Name.", v =>  {create = true; name = v; } },
@@ -81,7 +83,11 @@ namespace Simplic.Package.CLI
                 { "c|connection=", "The database connection string.", v =>  {connectionString = v; } },
                 { "h|help",  "Shows help", v => showHelp = true },
                 { "v|verbosity=", "Sets the Loglevel.\n Error: 0, Warning: 1, Info: 2, Debug: 3. Default: 0",
-                    v => verbosity = (LogLevel)Int32.Parse(v) }
+                    v => verbosity = (LogLevel)Int32.Parse(v) },
+                { "test",
+                    "Starts the application in test mode, this should just be set in automated tests." +
+                    " This will not test wether the package is installable, this will disable some features " +
+                    "that require user intput for testing purposes", v => testMode = true }
             };
 
             if (!args.Any())
@@ -112,6 +118,11 @@ namespace Simplic.Package.CLI
                 ShowHelp(optionSet);
                 return 0;
             }
+
+            if (testMode)
+                ApplicationSettings.ApplicationMode = ApplicationMode.Test;
+            else
+                ApplicationSettings.ApplicationMode = ApplicationMode.CLI;
 
             #region Register types
             var container = new UnityContainer();
@@ -247,6 +258,16 @@ namespace Simplic.Package.CLI
 
             // For InstallReportService
             Base.GlobalSettings.UserName = "Package System";
+
+            // CLI Value request services
+            if (ApplicationSettings.ApplicationMode == ApplicationMode.CLI)
+            {
+                container.RegisterType<IRequestValueService, CliRequestConfigurationValueService>("configuration");
+            }
+            else if (ApplicationSettings.ApplicationMode == ApplicationMode.Test)
+            {
+                container.RegisterType<IRequestValueService, TestRequestConfigurationValueService>("configuration");
+            }
 
             DALManager.Init(connectionString);
             ConnectionManager.Init(Thread.CurrentThread);
