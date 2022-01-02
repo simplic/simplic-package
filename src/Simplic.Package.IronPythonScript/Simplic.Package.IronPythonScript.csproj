@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="InstallScriptService.cs" />
     <Compile Include="IronPythonScript.cs" />
+    <Compile Include="PackScriptService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
