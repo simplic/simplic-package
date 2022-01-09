@@ -21,7 +21,7 @@ namespace Simplic.Package.IronPythonScript
                     var classname = Path.GetFileName(installableObject.Target);
                     var classInstance = GlobalDlrHost.Host.DefaultScope.CreateClassInstance(classname);
 
-                    classInstance.Instance.Execute();
+                    classInstance.Instance.execute();
                 }
                 return Task.FromResult(new InstallObjectResult { Success = true });
             }
