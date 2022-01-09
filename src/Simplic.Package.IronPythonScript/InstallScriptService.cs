@@ -1,5 +1,4 @@
-﻿using Simplic.Framework.Core;
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -17,9 +16,9 @@ namespace Simplic.Package.IronPythonScript
             {
                 if (installableObject.Content is IronPythonScript script)
                 {
-                    GlobalDlrHost.Host.DefaultScope.Execute(script.Script);
+                    PackagePythonDlrHost.Host.DefaultScope.Execute(script.Script);
                     var classname = Path.GetFileName(installableObject.Target);
-                    var classInstance = GlobalDlrHost.Host.DefaultScope.CreateClassInstance(classname);
+                    var classInstance = PackagePythonDlrHost.Host.DefaultScope.CreateClassInstance(classname);
 
                     classInstance.Instance.execute();
                 }
