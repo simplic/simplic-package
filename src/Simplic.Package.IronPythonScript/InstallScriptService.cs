@@ -6,6 +6,7 @@ namespace Simplic.Package.IronPythonScript
 {
     /// <summary>
     /// Service to install an iron python script.
+    /// Or in this case execute, not install.
     /// </summary>
     public class InstallScriptService : IInstallObjectService
     {

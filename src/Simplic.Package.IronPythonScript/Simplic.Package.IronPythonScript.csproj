@@ -61,9 +61,6 @@
     <PackageReference Include="Simplic.Dlr">
       <Version>1.4.20.322</Version>
     </PackageReference>
-    <PackageReference Include="Simplic.Framework.Base">
-      <Version>8.1.22.101</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
