@@ -10,8 +10,15 @@ namespace Simplic.Package.IronPythonScript
     /// </summary>
     public class InstallScriptService : IInstallObjectService
     {
+        private readonly ILogService logService;
+
+        public InstallScriptService(ILogService logService)
+        {
+            this.logService = logService;
+        }
+
         /// <inheritdoc/>
-        public Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
+        public async Task<InstallObjectResult> InstallObject(InstallableObject installableObject)
         {
             try
             {
@@ -23,11 +30,12 @@ namespace Simplic.Package.IronPythonScript
 
                     classInstance.Instance.execute();
                 }
-                return Task.FromResult(new InstallObjectResult { Success = true });
+                return new InstallObjectResult { Success = true };
             }
-            catch
+            catch (Exception ex)
             {
-                return Task.FromResult(new InstallObjectResult { Success = false });
+                await logService.WriteAsync("Error during script execution", LogLevel.Error, ex);
+                return new InstallObjectResult { Success = false };
             }
         }
 

@@ -110,6 +110,10 @@
       <Project>{efbf2689-c964-48a0-ad3e-bf7373e3ce3e}</Project>
       <Name>Simplic.Package.Icon</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Simplic.Package.IronPythonScript\Simplic.Package.IronPythonScript.csproj">
+      <Project>{6eb2673b-73c1-4c52-bdf3-db6994364cef}</Project>
+      <Name>Simplic.Package.IronPythonScript</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Package.Itembox\Simplic.Package.ItemBox.csproj">
       <Project>{4eae3b26-1813-42cd-86a5-6df5e2c1048d}</Project>
       <Name>Simplic.Package.ItemBox</Name>
