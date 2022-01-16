@@ -75,9 +75,7 @@ namespace Simplic.Package.Service
             // Load extensions.
             if (package.Extensions.Any())
             {
-                await logService.WriteAsync("Loading extensions...", LogLevel.Info);
-                extensionService.LoadExtensions(package.Extensions);
-
+                //extensions should be loaded during unpack.
                 if (package.Extensions.Any(x => !ExtensionHelper.LoadedExtensions.Contains(x)))
                 {
                     await logService.WriteAsync("Could not load all extensions", LogLevel.Error);

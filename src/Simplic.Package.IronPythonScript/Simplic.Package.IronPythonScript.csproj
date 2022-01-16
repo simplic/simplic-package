@@ -43,9 +43,12 @@
   <ItemGroup>
     <Compile Include="InstallScriptService.cs" />
     <Compile Include="IronPythonScript.cs" />
+    <Compile Include="Modules\DependencyInjection.cs" />
+    <Compile Include="Modules\Sql.cs" />
     <Compile Include="PackagePythonDlrHost.cs" />
     <Compile Include="PackScriptService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PythonApiModule.cs" />
     <Compile Include="UnpackScriptService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -58,12 +61,25 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CommonServiceLocator">
+      <Version>2.0.6</Version>
+    </PackageReference>
+    <PackageReference Include="Dapper">
+      <Version>2.0.123</Version>
+    </PackageReference>
     <PackageReference Include="IronPython">
       <Version>2.7.9</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Dlr">
       <Version>1.4.20.322</Version>
     </PackageReference>
+    <PackageReference Include="Simplic.Sql">
+      <Version>6.3.121.1212</Version>
+    </PackageReference>
+    <PackageReference Include="Unity.Abstractions">
+      <Version>5.11.7</Version>
+    </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
