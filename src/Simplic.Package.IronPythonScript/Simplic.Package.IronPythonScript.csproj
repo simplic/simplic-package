@@ -58,6 +58,9 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="IronPython">
+      <Version>2.7.9</Version>
+    </PackageReference>
     <PackageReference Include="Simplic.Dlr">
       <Version>1.4.20.322</Version>
     </PackageReference>

@@ -14,7 +14,7 @@ namespace Simplic.Package.IronPythonScript
             {
                 Content = new IronPythonScript
                 {
-                    Script = extractArchiveEntryResult.Data.ToString()
+                    Script = System.Text.Encoding.Default.GetString(extractArchiveEntryResult.Data)
                 },
                 Target = extractArchiveEntryResult.Location,
                 Mode = extractArchiveEntryResult.Mode
