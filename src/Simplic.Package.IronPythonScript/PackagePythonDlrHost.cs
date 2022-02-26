@@ -1,4 +1,6 @@
 ﻿using Simplic.Dlr;
+using System;
+using System.IO;
 
 namespace Simplic.Package.IronPythonScript
 {
@@ -22,6 +24,11 @@ namespace Simplic.Package.IronPythonScript
         {
             Language = new IronPythonLanguage();
             Host = new DlrHost<IronPythonLanguage>(Language);
+
+            var studioPath = Environment.GetEnvironmentVariable("Simplic Studio");
+            var path = Path.Combine(studioPath, "Scripts", "Python");
+
+            Host.AddSearchPath(path);
         }
 
         /// <summary>

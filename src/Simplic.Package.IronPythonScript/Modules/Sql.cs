@@ -20,7 +20,7 @@ namespace Simplic.Package.IronPythonScript
             {
                 sqlService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISqlService>();
             }
-
+            
             public static IList<object> execute(string query, IList<object> parameter)
             {
                 return sqlService.OpenConnection(connection =>
