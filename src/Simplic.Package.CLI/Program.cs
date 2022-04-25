@@ -48,6 +48,7 @@ using Simplic.Package.Ribbon;
 using Unity.ServiceLocation;
 using Simplic.Package.Configuration;
 using System.Diagnostics;
+using Simplic.Package.IronPythonScript;
 
 namespace Simplic.Package.CLI
 {
@@ -55,6 +56,8 @@ namespace Simplic.Package.CLI
     {
         public static async Task<int> Main(string[] args)
         {
+            Debugger.Launch();
+
             var showHelp = false;
             var verbosity = LogLevel.Debug;
 
@@ -232,6 +235,10 @@ namespace Simplic.Package.CLI
             container.RegisterType<IObjectRepository, StackRegisterRepository>("stackRegister");
             container.RegisterType<IPackObjectService, PackStackRegisterService>("stackRegister");
             container.RegisterType<IUnpackObjectService, UnpackStackRegisterService>("stackRegister");
+
+            container.RegisterType<IInstallObjectService, InstallScriptService>("script");
+            container.RegisterType<IPackObjectService, PackScriptService>("script");
+            container.RegisterType<IUnpackObjectService, UnpackScriptService>("script");
 
             container.RegisterType<ISqlService, SqlService>();
             container.RegisterType<ISqlColumnService, SqlColumnService>();

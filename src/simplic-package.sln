@@ -161,6 +161,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Test.Extens
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.Configuration", "Simplic.Package.Configuration\Simplic.Package.Configuration.csproj", "{981FF658-0F11-463E-A283-8459328281A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Package.IronPythonScript", "Simplic.Package.IronPythonScript\Simplic.Package.IronPythonScript.csproj", "{6EB2673B-73C1-4C52-BDF3-DB6994364CEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -271,6 +273,10 @@ Global
 		{981FF658-0F11-463E-A283-8459328281A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{981FF658-0F11-463E-A283-8459328281A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{981FF658-0F11-463E-A283-8459328281A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EB2673B-73C1-4C52-BDF3-DB6994364CEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB2673B-73C1-4C52-BDF3-DB6994364CEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB2673B-73C1-4C52-BDF3-DB6994364CEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB2673B-73C1-4C52-BDF3-DB6994364CEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -315,6 +321,7 @@ Global
 		{694EC2CB-4973-4BFB-B45C-74CAB326EDEF} = {A157A560-3710-4C79-9A0F-EFA8EC55366C}
 		{B528F0D8-D0A8-4C46-9416-F812D292468F} = {FEC87CDA-841F-43DB-882C-7F40DF7A8B5D}
 		{981FF658-0F11-463E-A283-8459328281A0} = {FEC87CDA-841F-43DB-882C-7F40DF7A8B5D}
+		{6EB2673B-73C1-4C52-BDF3-DB6994364CEF} = {FEC87CDA-841F-43DB-882C-7F40DF7A8B5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4EA82266-D86E-4D97-B0C6-41D6E7D8A584}
