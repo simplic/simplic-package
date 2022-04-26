@@ -7,14 +7,16 @@
         <title>Simplic package cli.</title>
         <authors>SIMPLIC GMBH</authors>
         <owners>SIMPLIC GMBH</owners>
+        <copyright>2021</copyright>
         <projectUrl>https://github.com/simplic/simplic-package</projectUrl>
         <packageSourceUrl>https://github.com/simplic/simplic-package</packageSourceUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>CLI to pack and isntall simplic packages.</description>
-        <summary>Tool for packing and installing simplic extensions.</summary>
+        <description>CLI to create and install packages for the Simplic Studio.</description>
+        <summary>Tool for creating and installing simplic extensions.</summary>
         <tags>simplic simpack simplic-package</tags>
         <docsUrl>https://simplic.github.io/</docsUrl>
         <bugTrackerUrl>https://github.com/simplic/simplic-package/issues</bugTrackerUrl>
+        <licenceUrl>https://github.com/simplic/simplic-package/blob/master/LICENSE</licenceUrl>
     </metadata>
     <files>
         <file src="bin\Debug\*.dll" target="bin" />
