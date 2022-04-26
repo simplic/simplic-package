@@ -87,7 +87,7 @@ steps:
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
-      script: '(Get-FileHash ''bin\\Debug\\simpack.exe'').Hash | Out-File -FilePath VERIFICATION.txt'
+      script: '(Get-FileHash ''bin\\Debug\\simpack.exe'').Hash | Add-Content VERIFICATION.txt
 
   - task: ChocolateyCommand@0
     inputs:
